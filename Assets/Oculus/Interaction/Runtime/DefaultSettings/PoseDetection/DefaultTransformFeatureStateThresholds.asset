@@ -29,8 +29,8 @@ MonoBehaviour:
     _minTimeInState: 0
   - _feature: 2
     _thresholds:
-    - _thresholdMidpoint: 60
-      _thresholdWidth: 60
+    - _thresholdMidpoint: 70
+      _thresholdWidth: 40
       _firstState: 6
       _secondState: 8
     _minTimeInState: 0

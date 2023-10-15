@@ -12,7 +12,7 @@ public class GestureMovement : MonoBehaviour
     private Transform _activeHandAnchor;
     private Vector3 _lastHandPos = Vector3.zero;
     
-    public void Move()
+    public void UpdateMovement()
     {
         if (_lastHandPos != Vector3.zero)
         {

@@ -5,49 +5,37 @@ using UnityEngine;
 using UnityEngine.Serialization;
 
 [RequireComponent(typeof(GestureMovement))]
-[RequireComponent(typeof(GestureSnapTurn))]
+[RequireComponent(typeof(GestureTurn))]
 public class GestureLocomotion : MonoBehaviour
 {
     private GestureMovement _movement;
-    private GestureSnapTurn _snapTurn;
-
-    [SerializeField] private bool _isLeftActivated;
-    [SerializeField] private bool _isRightActivated;
+    private GestureTurn _turn; 
+    private bool _isLeftActivated, _isRightActivated;
 
     private void Awake()
     {
         _movement = GetComponent<GestureMovement>();
-        _snapTurn = GetComponent<GestureSnapTurn>();
+        _turn = GetComponent<GestureTurn>();
     }
 
     private void Update()
     {
-        if (_isLeftActivated && _isRightActivated) _snapTurn.SnapTurn();
-        else if (_isRightActivated) _movement.Move();
-        //else if (_isLeftActivated) _movement.Teleport();
+        if (_isLeftActivated && _isRightActivated) _turn.UpdateTurn();
+        else if (_isLeftActivated || _isRightActivated) _movement.UpdateMovement();
     }
 
-    public void OnLeftActivate()
+    public void OnActivate(bool isRight)
     {
-        _isLeftActivated = true;
-        _movement.SetProperty(false);
+        if (isRight) _isRightActivated = true;
+        else _isLeftActivated = true;
+        _movement.SetProperty(isRight);
     }
 
-    public void OnLeftDeactivate()
+    public void OnDeactivate(bool isRight)
     {
-        _isLeftActivated = false;
-        _snapTurn.ResetProperty();
-    }
-    
-    public void OnRightActivate()
-    {
-        _isRightActivated = true;
-        _movement.SetProperty(true);
-    }
-
-    public void OnRightDeactivate()
-    {
-        _isRightActivated = false;
-        _snapTurn.ResetProperty();
+        if (isRight) _isRightActivated = false;
+        else _isLeftActivated = false;
+        
+        _turn.ResetProperty();
     }
 }
