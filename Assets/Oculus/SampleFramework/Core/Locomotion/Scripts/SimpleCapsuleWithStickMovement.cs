@@ -65,7 +65,7 @@ public class SimpleCapsuleWithStickMovement : MonoBehaviour
         moveDir += ort * (primaryAxis.x * Vector3.right);
         moveDir += ort * (primaryAxis.y * Vector3.forward);
         //_rigidbody.MovePosition(_rigidbody.transform.position + moveDir * Speed * Time.fixedDeltaTime);
-        _rigidbody.MovePosition(_rigidbody.position + moveDir * Speed * Time.fixedDeltaTime);
+        _rigidbody.MovePosition(_rigidbody.position + moveDir * (Speed * Time.fixedDeltaTime));
     }
 
     void SnapTurn()
