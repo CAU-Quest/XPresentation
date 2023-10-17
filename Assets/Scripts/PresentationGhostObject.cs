@@ -1,9 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Oculus.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
-//using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.EventSystems;
 
 public class PresentationGhostObject : MonoBehaviour
 {
@@ -13,8 +14,8 @@ public class PresentationGhostObject : MonoBehaviour
 
     public void Start()
     {
-        //UnityAction<SelectExitEventArgs> action = SaveTransformToSlide;
-        //GetComponent<XRGrabInteractable>().selectExited.AddListener(action);
+        UnityEngine.Events.UnityAction<Oculus.Interaction.PointerEvent> pointerAction = (args) => SaveTransformToSlide();
+        GetComponent<PointableUnityEventWrapper>().WhenUnselect.AddListener(pointerAction);
     }
 
     public void applyTransform()
@@ -26,8 +27,8 @@ public class PresentationGhostObject : MonoBehaviour
     {
         applyTransform();
     }
-    /*
-    public void SaveTransformToSlide(SelectExitEventArgs args)
+    
+    public void SaveTransformToSlide()
     {
         TransformData transformData = new TransformData();
         transformData.position = transform.position;
@@ -41,7 +42,6 @@ public class PresentationGhostObject : MonoBehaviour
         
         Debug.Log("Ghost Save Complete");
     }
-    */
 
     public int GetID()
     {

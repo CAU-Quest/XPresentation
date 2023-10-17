@@ -114,6 +114,13 @@ public class MainSystem : MonoBehaviour, ISubject
         }
     }
 
+    public void ToggleMode()
+    {
+        this.mode++;
+        this.mode %= 4;
+        NotifyObservers();
+    }
+
     public void AnimationToggle()
     {
         isPlayingAnimation = !isPlayingAnimation;

@@ -9,9 +9,11 @@ public class HandCanvasText : MonoBehaviour, ISystemObserver
     public TextMeshProUGUI tmpSlideNum;
     public TextMeshProUGUI tmpMode;
 
+    public GameObject[] icons;
+
     public void ObserverUpdateMode(int mode)// 0 - Edit Mode, 1 - Deploy Mode, 2 - Slide Mode, 3 - Animation Mode
     {
-        tmpMode.text = "Mode : ";
+        tmpMode.text = "";
         switch (mode)
         {
             case 0:
@@ -27,11 +29,16 @@ public class HandCanvasText : MonoBehaviour, ISystemObserver
                 tmpMode.text += "Animation Mode";
                 break;
         }
+
+        for (int i = 0; i < 4; i++)
+        {
+            icons[i].SetActive(mode == i);
+        }
     }
     
     public void ObserverUpdateSlide(int slide)
     {
-        tmpSlideNum.text = "Current Slide : " + slide;
+        tmpSlideNum.text = "Slide : " + slide;
     }
 
     public void ObserverRemoveSlide(int index)
