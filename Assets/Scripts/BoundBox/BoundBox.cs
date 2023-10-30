@@ -1,7 +1,6 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using DimBoxesCustom;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -82,7 +81,11 @@ namespace DimBoxes
         private Vector3 previousPosition;
         private Quaternion previousRotation;
 
-
+        public Vector3[] GetCorner()
+        {
+            return corners;
+        }
+        
         void Reset()
         {
             //CalculateBounds();
@@ -101,13 +104,20 @@ namespace DimBoxes
                 return;
             }*/
 
-            previousPosition = transform.position;
-            previousRotation = transform.rotation;
+            previousPosition = transform.parent.position;
+            previousRotation = transform.parent.rotation;
             startingBoundSize = bound.size;
-            startingScale = transform.localScale;
+            startingScale = transform.parent.localScale;
             previousScale = startingScale;
             startingBoundCenterLocal = transform.InverseTransformPoint(bound.center);
             Init();
+        }
+
+        public void UpdateBounds()
+        {
+            CalculateBounds();
+            SetPoints();
+            SetLines();
         }
 
         public virtual void Init()
@@ -119,17 +129,16 @@ namespace DimBoxes
 
         void LateUpdate()
         {
-            CalculateBounds();
-            if (transform.localScale != previousScale)
+            if (transform.parent.localScale != previousScale)
             {
                 SetPoints();
             }
-            if (transform.position != previousPosition || transform.rotation != previousRotation || transform.localScale != previousScale)
+            if (transform.parent.position != previousPosition || transform.parent.rotation != previousRotation || transform.parent.localScale != previousScale)
             {
                 SetLines();
-                previousRotation = transform.rotation;
-                previousPosition = transform.position;
-                previousScale = transform.localScale;
+                previousRotation = transform.parent.rotation;
+                previousPosition = transform.parent.position;
+                previousScale = transform.parent.localScale;
             }
             //if(wire_renderer) cameralines.setOutlines(lines, wireColor, new Vector3[0][]);
         }
@@ -304,12 +313,6 @@ namespace DimBoxes
                 lr.colorGradient = colorGradient;
                 lr.material = lineMaterial;
             }
-        }
-
-        protected virtual void OnMouseDown()
-        {
-            if (!interactive) return;
-            enabled = !enabled;
         }
 
         void OnEnable()

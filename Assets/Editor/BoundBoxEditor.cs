@@ -68,6 +68,11 @@ namespace DimBoxes
                 serializedObject.ApplyModifiedProperties();
                 BoundBox.OnValidate();
             }
+            
+            if (GUILayout.Button("Calculate Bounds"))
+            {
+                BoundBox.UpdateBounds();
+            }
         }
     }
 }

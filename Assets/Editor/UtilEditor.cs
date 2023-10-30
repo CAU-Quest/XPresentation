@@ -24,3 +24,19 @@ public class CenterChildPositionEditor : Editor
         }
     }
 }
+
+[CustomEditor(typeof(VertexHandler))]
+public class VertexHandlerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        VertexHandler presentationObject = (VertexHandler)target;
+        if (GUILayout.Button("Update Vertex"))
+        {
+            presentationObject.UpdateVertex();
+        }
+    }
+}
+
