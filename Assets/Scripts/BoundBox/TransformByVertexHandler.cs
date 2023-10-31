@@ -121,7 +121,6 @@ public class TransformByVertexHandler : MonoBehaviour
         }*/
         
         int index;
-        center = Vector3.zero;
         
         for (int top = 0; top < 2; top++)
         {
@@ -130,13 +129,10 @@ public class TransformByVertexHandler : MonoBehaviour
                 for (int front = 0; front < 2; front++)
                 {
                     index = top * 4 + front * 2 + left;
-                    center += corners[left, top, front];
                     vertexList[index].transform.localPosition = corners[left, top, front];
                 }
             }
         }
-        this.center = center / 8f;
-        
     }
 
     int invertVal(int val)
@@ -146,12 +142,16 @@ public class TransformByVertexHandler : MonoBehaviour
 
     public void MoveVertex(int left, int top, int front, Vector3 pos)
     {
-        Vector3 otherPoint = corners[invertVal(left), invertVal(top), invertVal(front)];
+        int index = invertVal(top) * 4 + invertVal(front) * 2 + invertVal(left);
+        Vector3 otherPoint = vertexList[index].transform.localPosition;
+        Debug.Log("position :" + pos);
+        Debug.Log("other point :" + otherPoint);
         float currentWidth = Mathf.Abs(pos.x - otherPoint.x);
         float currentDepth = Mathf.Abs(pos.y - otherPoint.y);
         float currentHeight = Mathf.Abs(pos.z - otherPoint.z);
 
         center = (pos + otherPoint) / 2f;
+        Debug.Log("center : " + center);
         
         UpdateVertex();
         CalculateScale(currentWidth, currentDepth, currentHeight);
@@ -159,7 +159,7 @@ public class TransformByVertexHandler : MonoBehaviour
 
     public void CalculateScale(float currentWidth, float currentDepth, float currentHeight)
     {
-        transform.localPosition = center;
+        transform.position = center;
         transform.localScale = new Vector3(currentWidth / width, currentDepth / depth, currentHeight / height);
     }
     
