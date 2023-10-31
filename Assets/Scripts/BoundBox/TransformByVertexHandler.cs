@@ -24,14 +24,12 @@ public class TransformByVertexHandler : MonoBehaviour
     
     void Reset()
     {
-        Start();
         Init();
     }
     
     void Start()
     {
-        corners = new Vector3[2, 2, 2];
-        setVertex();
+        Init();
     }
 
     private void Init()
@@ -43,7 +41,8 @@ public class TransformByVertexHandler : MonoBehaviour
     }
 
     private void SetCorner(Vector3[] vertex) // { topFrontRight, topFrontLeft, topBackLeft, topBackRight, bottomFrontRight, bottomFrontLeft, bottomBackLeft, bottomBackRight };
-    {                                        // corners[left, top, front]
+    {                         
+        corners = new Vector3[2, 2, 2];      // corners[left, top, front]
         corners[0, 0, 0] = vertex[1];
         corners[0, 0, 1] = vertex[2];
         corners[0, 1, 0] = vertex[5];
@@ -70,7 +69,7 @@ public class TransformByVertexHandler : MonoBehaviour
 
     private void setVertex() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
     {
-        vertexList = transform.parent.gameObject.GetComponentsInChildren<VertexHandler>();
+        vertexList = GetComponentsInChildren<VertexHandler>();
         if (vertexList.Length == 0)
         {
             vertexList = new VertexHandler[8];
@@ -78,7 +77,7 @@ public class TransformByVertexHandler : MonoBehaviour
             {
 #if UNITY_EDITOR
                 GameObject go = PrefabUtility.InstantiatePrefab(vertexPrefab) as GameObject;
-                go.transform.SetParent(transform.parent);
+                go.transform.SetParent(transform);
                 go.transform.position = Vector3.zero;
                 go.transform.rotation = Quaternion.identity;
 #else
@@ -90,47 +89,13 @@ public class TransformByVertexHandler : MonoBehaviour
         }
     }
 
-    public void MoveVertex(int left, int top, int front, Vector3 pos)
-    {
-        for (int i = 0; i < 2; i++)
-        {
-            for (int j = 0; j < 2; j++)
-            {
-                corners[left, i, j].x = pos.x;
-                corners[i, top, j].y = pos.y;
-                corners[i, j, front].z = pos.z;
-            }
-        }
-        UpdateVertex();
-    }
-    
     
 
     private void UpdateVertex() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
     {
-        int index;
-        for (int top = 0; top < 2; top++)
-        {
-            for (int left = 0; left < 2; left++)
-            {
-                for (int front = 0; front < 2; front++)
-                {
-                    index = top * 4 + front * 2 + left;
-                    vertexList[index].transform.localPosition = corners[left, top, front];
-                }
-            }
-        }
-        
-        CalculateScale();
-    }
-
-    public void CalculateScale()
-    {
-        float currentWidth = Vector3.Distance(corners[0, 0, 0], corners[1, 0, 0]);
-        float currentDepth = Vector3.Distance(corners[0, 0, 0], corners[0, 1, 0]);
-        float currentHeight = Vector3.Distance(corners[0, 0, 0], corners[0, 0, 1]);
-
+        /*
         Vector3 center = Vector3.zero;
+        int index;
         for (int top = 0; top < 2; top++)
         {
             for (int left = 0; left < 2; left++)
@@ -141,27 +106,76 @@ public class TransformByVertexHandler : MonoBehaviour
                 }
             }
         }
-        this.center = center / 8;
+        this.center = center / 8f;
 
-        transform.position = center;
+        for (int top = 0; top < 2; top++)
+        {
+            for (int left = 0; left < 2; left++)
+            {
+                for (int front = 0; front < 2; front++)
+                {
+                    index = top * 4 + front * 2 + left;
+                    vertexList[index].transform.localPosition = corners[left, top, front] + this.center;
+                }
+            }
+        }*/
+        
+        int index;
+        center = Vector3.zero;
+        
+        for (int top = 0; top < 2; top++)
+        {
+            for (int left = 0; left < 2; left++)
+            {
+                for (int front = 0; front < 2; front++)
+                {
+                    index = top * 4 + front * 2 + left;
+                    center += corners[left, top, front];
+                    vertexList[index].transform.localPosition = corners[left, top, front];
+                }
+            }
+        }
+        this.center = center / 8f;
+        
+    }
+
+    int invertVal(int val)
+    {
+        return (val == 0) ? 1 : 0;
+    }
+
+    public void MoveVertex(int left, int top, int front, Vector3 pos)
+    {
+        Vector3 otherPoint = corners[invertVal(left), invertVal(top), invertVal(front)];
+        float currentWidth = Mathf.Abs(pos.x - otherPoint.x);
+        float currentDepth = Mathf.Abs(pos.y - otherPoint.y);
+        float currentHeight = Mathf.Abs(pos.z - otherPoint.z);
+
+        center = (pos + otherPoint) / 2f;
+        
+        UpdateVertex();
+        CalculateScale(currentWidth, currentDepth, currentHeight);
+    }
+
+    public void CalculateScale(float currentWidth, float currentDepth, float currentHeight)
+    {
+        transform.localPosition = center;
         transform.localScale = new Vector3(currentWidth / width, currentDepth / depth, currentHeight / height);
     }
     
     void OnEnable()
     {
-        vertexList = transform.parent.gameObject.GetComponentsInChildren<VertexHandler>(true);
-        VertexHandler[] lrs = transform.parent.gameObject.GetComponentsInChildren<VertexHandler>(true);
+        vertexList = GetComponentsInChildren<VertexHandler>(true);
+        VertexHandler[] lrs = GetComponentsInChildren<VertexHandler>(true);
         for (int i = 0; i < lrs.Length; i++)
         {
             if (!lrs[i].gameObject.activeSelf) DestroyImmediate(lrs[i].gameObject);
         }
         Init();
-        
-        
     }
     void OnDestroy()
     {
-        VertexHandler[] lrs = transform.parent.gameObject.GetComponentsInChildren<VertexHandler>(true);
+        VertexHandler[] lrs = GetComponentsInChildren<VertexHandler>(true);
         for (int i = 0; i < lrs.Length; i++)
         {
             DestroyImmediate(lrs[i].gameObject);
@@ -170,7 +184,7 @@ public class TransformByVertexHandler : MonoBehaviour
 
     void OnDisable()
     {
-        VertexHandler[] lrs = transform.parent.gameObject.GetComponentsInChildren<VertexHandler>();
+        VertexHandler[] lrs = GetComponentsInChildren<VertexHandler>();
         for (int i = 0; i < lrs.Length; i++)
         {
             lrs[i].enabled = false;

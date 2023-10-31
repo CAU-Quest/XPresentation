@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -50,7 +51,7 @@ namespace DimBoxes
         [HideInInspector]
         public Vector3 meshBoundOffset;
 
-        protected Vector3[] corners = new Vector3[0];
+        public Vector3[] corners = new Vector3[0];
 
         protected Vector3[,] lines = new Vector3[0, 0];
 
@@ -155,6 +156,8 @@ namespace DimBoxes
 
             for (int i = 0; i < meshes.Length; i++)
             {
+                if (meshes[i].gameObject.layer == 7) continue;
+                
                 Mesh ms = meshes[i].sharedMesh;
                 int vc = ms.vertexCount;
                 for (int j = 0; j < vc; j++)
