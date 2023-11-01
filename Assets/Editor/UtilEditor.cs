@@ -24,14 +24,21 @@ public class CenterPositionByVertexEditor : Editor
     }
 }
 
-[CustomEditor(typeof(VertexHandler))]
-public class VertexHandlerEditor : Editor
+[CustomEditor(typeof(SelectObject))]
+public class SelectObjectEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
 
+        SelectObject SelectObject = (SelectObject)target;
         
+        
+        if (GUILayout.Button("Select"))
+        {
+            SelectObject.Select();
+        }
+
     }
 }
 [CustomEditor(typeof(TransformByVertexHandler))]

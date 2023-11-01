@@ -41,6 +41,28 @@ public class XRSelector : MonoBehaviour
         if(boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null)
             Debug.Log("Selected Object doesn't have correct components");
     }
+
+    public void SetComponent()
+    {
+        if (selectedObject == null)
+        {
+            Debug.Log("There is no selected Object");
+            return;
+        }
+        
+        centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
+        boundBox = selectedObject.GetComponent<BoundBox>();
+        transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
+        if (boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null)
+        {
+            Debug.Log("Selected Object doesn't have correct components");
+            return;
+        }
+        
+        boundBox.UpdateBounds();
+        centerPositionByVertex.CenterPosition();
+        boundBox.UpdateBounds();
+    }
     
 #if UNITY_EDITOR
     public void OnValidate()
@@ -62,8 +84,6 @@ public class XRSelector : MonoBehaviour
         if(boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null)
             Debug.Log("Selected Object doesn't have correct components");
     }
-
-
 #endif
     
 }

@@ -169,6 +169,22 @@ public class TransformByVertexHandler : MonoBehaviour
         
         transform.position = center;
         transform.localScale = newScale;
+
+
+        lineList[0].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(initalWidth * newScale.x, 1f, 1f);
+        lineList[1].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(initalWidth * newScale.x, 1f, 1f);
+        lineList[2].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(initalWidth * newScale.x, 1f, 1f);
+        lineList[3].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(initalWidth * newScale.x, 1f, 1f);
+        
+        lineList[4].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, initalWidth * newScale.y, 1f);
+        lineList[5].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, initalWidth * newScale.y, 1f);
+        lineList[6].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, initalWidth * newScale.y, 1f);
+        lineList[7].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, initalWidth * newScale.y, 1f);
+        
+        lineList[8].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, 1f, initalWidth * newScale.z);
+        lineList[9].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, 1f, initalWidth * newScale.z);
+        lineList[10].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, 1f, initalWidth * newScale.z);
+        lineList[11].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, 1f, initalWidth * newScale.z);
     }
     
     
