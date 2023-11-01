@@ -7,7 +7,8 @@ using UnityEngine;
 public class VertexHandler : MonoBehaviour
 {
     [SerializeField]
-    private TransformByVertexHandler handler;
+    private bool isSelected;
+    
     [SerializeField]
     private int top;
     [SerializeField]
@@ -15,45 +16,61 @@ public class VertexHandler : MonoBehaviour
     [SerializeField]
     private int left;
 
-    public void SetVertex(int top, int front, int left, TransformByVertexHandler handler)
+    [SerializeField]
+    private VertexHandler[] vertexList;
+
+    private Vector3 beforePosition;
+    void Start()
+    {
+        isSelected = false;
+    }
+    public void SetVertex(int top, int front, int left)
     {
         this.top = top;
         this.front = front;
         this.left = left;
-        this.handler = handler;
     }
 
+
+    private int invertValue(int val)
+    {
+        return (val == 0) ? 1 : 0;
+    }
     private void LateUpdate()
     {
-        Vector3 parentScale = transform.parent.localScale;
-        transform.localScale = new Vector3(0.05f / parentScale.x, 0.05f / parentScale.y, 0.05f / parentScale.z);
+        if (isSelected)
+        {
+            if (transform.position != beforePosition)
+            {
+                beforePosition = transform.position;
+
+                for (int i = 0; i < 2; i++)
+                {
+                    for (int j = 0; j < 2; j++)
+                    {
+                        vertexList[i * 4 + j * 2 + left].transform.position = new Vector3(
+                            transform.position.x, vertexList[i * 4 + j * 2 + left].transform.position.y,
+                            vertexList[i * 4 + j * 2 + left].transform.position.z);
+                        vertexList[top * 4 + i * 2 + j].transform.position = new Vector3(
+                            vertexList[top * 4 + i * 2 + j].transform.position.x, transform.position.y,
+                            vertexList[top * 4 + i * 2 + j].transform.position.z);
+                        vertexList[i * 4 + front * 2 + j].transform.position = new Vector3(
+                            vertexList[i * 4 + front * 2 + j].transform.position.x, vertexList[i * 4 + front * 2 + j].transform.position.y,
+                            transform.position.z);
+                    }
+                }
+
+                Vector3 point = transform.position;
+                Vector3 otherPoint = vertexList[invertValue(top) * 4 + invertValue(front) * 2 + invertValue(left)]
+                    .transform.position;
+
+                float currentWidth = Mathf.Abs(point.x - otherPoint.x);
+                float currentDepth = Mathf.Abs(point.y - otherPoint.y);
+                float currentHeight = Mathf.Abs(point.z - otherPoint.z);
+                
+                XRSelector.Instance.transformByVertexHandler.ApplyCurrentTransform(currentWidth, currentDepth, currentHeight, (point + otherPoint) / 2f);
+            }
+        }
     }
 
-    void Start()
-    {
-        handler = transform.parent.gameObject.GetComponentInChildren<TransformByVertexHandler>();
-    }
-    
-    void Reset()
-    {
-        handler = transform.parent.gameObject.GetComponentInChildren<TransformByVertexHandler>();
-    }
-    public void UpdateVertex()
-    {
-        handler.MoveVertex(left, top, front, transform.localPosition);
-    }
-    
-    void OnEnable()
-    {
-        handler = transform.parent.gameObject.GetComponentInChildren<TransformByVertexHandler>();
-    }
-    
-    
-#if UNITY_EDITOR
-    public void OnValidate()
-    {
-        if (EditorApplication.isPlaying) return;
-        handler = transform.parent.gameObject.GetComponentInChildren<TransformByVertexHandler>();
-    }
-#endif
 }

@@ -9,18 +9,17 @@ public class UtilEditor : MonoBehaviour
     
 }
 
-
-[CustomEditor(typeof(CenterChildPosition))]
-public class CenterChildPositionEditor : Editor
+[CustomEditor(typeof(CenterPositionByVertex))]
+public class CenterPositionByVertexEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
 
-        CenterChildPosition presentationObject = (CenterChildPosition)target;
-        if (GUILayout.Button("Center Child Position"))
+        CenterPositionByVertex presentationObject = (CenterPositionByVertex)target;
+        if (GUILayout.Button("Center Position"))
         {
-            presentationObject.EditorCenterChildPositions();
+            presentationObject.CenterPosition();
         }
     }
 }
@@ -32,11 +31,6 @@ public class VertexHandlerEditor : Editor
     {
         base.OnInspectorGUI();
 
-        VertexHandler presentationObject = (VertexHandler)target;
-        if (GUILayout.Button("Update Vertex"))
-        {
-            presentationObject.UpdateVertex();
-        }
         
     }
 }
@@ -49,17 +43,11 @@ public class TransformByVertexHandlerEditor : Editor
         serializedObject.Update();
         
         TransformByVertexHandler transformByVertexHandler = (TransformByVertexHandler)target;
-        /*
-        if (GUILayout.Button("Update Vertex"))
-        {
-            transformByVertexHandler.UpdateVertex();
-        }
-        */
         
         EditorGUILayout.LabelField("Vector3 Array:");
 
 
-        if (transformByVertexHandler != null)
+        if (transformByVertexHandler != null & transformByVertexHandler.corners != null)
         {
             for (int x = 0; x < transformByVertexHandler.corners.GetLength(0); x++)
             {
@@ -80,6 +68,13 @@ public class TransformByVertexHandlerEditor : Editor
         }
         
         
+        if (GUILayout.Button("Update Line"))
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                transformByVertexHandler.lineList[i].UpdateLine();
+            }
+        }
 
         if (GUI.changed)
         {
@@ -88,4 +83,3 @@ public class TransformByVertexHandlerEditor : Editor
         
     }
 }
-

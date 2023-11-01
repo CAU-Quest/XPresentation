@@ -59,7 +59,7 @@ namespace DimBoxes
 
        // private DimBoxes.DrawLines cameralines;
 
-        protected LineRenderer[] lineList;
+        public BoundBoxLine[] lineList;
 
         //private MeshFilter[] meshes;
 
@@ -82,6 +82,11 @@ namespace DimBoxes
         private Vector3 previousPosition;
         private Quaternion previousRotation;
 
+        public BoundBoxLine[] GetLineList()
+        {
+            return lineList;
+        }
+        
         public Vector3[] GetCorner()
         {
             return corners;
@@ -104,11 +109,10 @@ namespace DimBoxes
                 Debug.LogError("DimBoxes: no camera with DimBoxes.DrawLines in the scene", gameObject);
                 return;
             }*/
-
-            previousPosition = transform.parent.position;
-            previousRotation = transform.parent.rotation;
+            previousPosition = transform.position;
+            previousRotation = transform.rotation;
             startingBoundSize = bound.size;
-            startingScale = transform.parent.localScale;
+            startingScale = transform.localScale;
             previousScale = startingScale;
             startingBoundCenterLocal = transform.InverseTransformPoint(bound.center);
             Init();
@@ -130,21 +134,22 @@ namespace DimBoxes
 
         void LateUpdate()
         {
-            if (transform.parent.localScale != previousScale)
+            /*
+            if (transform.localScale != previousScale)
             {
                 SetPoints();
             }
-            if (transform.parent.position != previousPosition || transform.parent.rotation != previousRotation || transform.parent.localScale != previousScale)
+            if (transform.position != previousPosition || transform.rotation != previousRotation || transform.localScale != previousScale)
             {
                 SetLines();
-                previousRotation = transform.parent.rotation;
-                previousPosition = transform.parent.position;
-                previousScale = transform.parent.localScale;
-            }
+                previousRotation = transform.rotation;
+                previousPosition = transform.position;
+                previousScale = transform.localScale;
+            }*/
             //if(wire_renderer) cameralines.setOutlines(lines, wireColor, new Vector3[0][]);
         }
 
-        void CalculateBounds()
+        public void CalculateBounds()
         {
             quat = transform.rotation;//object axis AABB
             Vector3 locScale = transform.localScale;
@@ -248,21 +253,21 @@ namespace DimBoxes
             if (line_renderer)
             {
                 Debug.Log("BB-lr");
-                lineList = GetComponentsInChildren<LineRenderer>();
+                lineList = XRSelector.Instance.GetComponentsInChildren<BoundBoxLine>();
                 if (lineList.Length == 0)
                 {
-                    lineList = new LineRenderer[12];
+                    lineList = new BoundBoxLine[12];
                     for (int i = 0; i < 12; i++)
                     {
 #if UNITY_EDITOR
                         GameObject go = PrefabUtility.InstantiatePrefab(linePrefab) as GameObject;
-                        go.transform.SetParent(transform);
+                        go.transform.SetParent(XRSelector.Instance.transform);
                         go.transform.position = Vector3.zero;
                         go.transform.rotation = Quaternion.identity;
 #else
                         GameObject go = (GameObject)Instantiate(linePrefab, transform, false);
 #endif
-                        lineList[i] = go.GetComponent<LineRenderer>();
+                        lineList[i] = go.GetComponent<BoundBoxLine>();
                     }
                 }
                 else
@@ -281,10 +286,10 @@ namespace DimBoxes
                             {
                                 lineList[i].gameObject.SetActive(false);
                                 GameObject go = PrefabUtility.InstantiatePrefab(linePrefab) as GameObject;
-                                go.transform.SetParent(transform);
+                                go.transform.SetParent(XRSelector.Instance.transform);
                                 go.transform.position = Vector3.zero;
                                 go.transform.rotation = Quaternion.identity;
-                                lineList[i] = go.GetComponent<LineRenderer>();
+                                lineList[i] = go.GetComponent<BoundBoxLine>();
                             }
                         }
 #endif
@@ -292,15 +297,7 @@ namespace DimBoxes
                     }
                 }
 
-                for (int i = 0; i < 4; i++)
-                {
-                    //width
-                    lineList[i].SetPositions(new Vector3[] { transform.TransformPoint(corners[2 * i]), transform.TransformPoint(corners[2 * i + 1]) });
-                    //height
-                    lineList[i + 4].SetPositions(new Vector3[] { transform.TransformPoint(corners[i]), transform.TransformPoint(corners[i + 4]) });
-                    //depth
-                    lineList[i + 8].SetPositions(new Vector3[] { transform.TransformPoint(corners[2 * i]), transform.TransformPoint(corners[2 * i + 3 - 4 * (i % 2)]) });
-                }
+                XRSelector.Instance.transformByVertexHandler.Init();
             }
         }
 
@@ -308,7 +305,7 @@ namespace DimBoxes
         {
             Gradient colorGradient = new Gradient();
             colorGradient.SetKeys(new GradientColorKey[] { new GradientColorKey(lineColor, 0.0f)},  new GradientAlphaKey[] { new GradientAlphaKey(lineColor.a, 0.0f) });
-            foreach (LineRenderer lr in GetComponentsInChildren<LineRenderer>(true))
+            foreach (LineRenderer lr in XRSelector.Instance.GetComponentsInChildren<LineRenderer>(true))
             {
                 lr.startWidth = lineWidth;
                 lr.enabled = line_renderer;
@@ -321,8 +318,8 @@ namespace DimBoxes
         void OnEnable()
         {
             //cameralines = FindObjectOfType(typeof(DimBoxes.DrawLines)) as DimBoxes.DrawLines;
-            lineList = GetComponentsInChildren<LineRenderer>(true);
-            LineRenderer[] lrs = GetComponentsInChildren<LineRenderer>(true);
+            lineList = XRSelector.Instance.GetComponentsInChildren<BoundBoxLine>(true);
+            BoundBoxLine[] lrs = XRSelector.Instance.GetComponentsInChildren<BoundBoxLine>(true);
             for (int i = 0; i < lrs.Length; i++)
             {
                 if (!lrs[i].gameObject.activeSelf) DestroyImmediate(lrs[i].gameObject);
@@ -331,7 +328,7 @@ namespace DimBoxes
         }
         void OnDestroy()
         {
-            LineRenderer[] lrs = GetComponentsInChildren<LineRenderer>(true);
+            BoundBoxLine[] lrs = XRSelector.Instance.GetComponentsInChildren<BoundBoxLine>(true);
             for (int i = 0; i < lrs.Length; i++)
             {
                 DestroyImmediate(lrs[i].gameObject);
@@ -340,7 +337,7 @@ namespace DimBoxes
 
         void OnDisable()
         {
-            LineRenderer[] lrs = GetComponentsInChildren<LineRenderer>();
+            BoundBoxLine[] lrs = XRSelector.Instance.GetComponentsInChildren<BoundBoxLine>();
             for (int i = 0; i < lrs.Length; i++)
             {
                 lrs[i].enabled = false;
@@ -351,6 +348,8 @@ namespace DimBoxes
         public void OnValidate()
         {
             if (EditorApplication.isPlaying) return;
+            if (XRSelector.Instance.boundBox != this) enabled = false;
+            else enabled = true;
             Init();
         }
 
