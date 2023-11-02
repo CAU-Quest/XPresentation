@@ -41,14 +41,9 @@ public class BoundBoxLine : MonoBehaviour
 
             transform.position = (pos1 + pos2) / 2f;
         
-        
             Vector3 directionAB = pos2 - pos1;
-
-            // B에서 A 좌표로 향하는 벡터를 계산
-            Vector3 directionATarget = pos1 - pos2;
-
             // 두 벡터 사이의 각도를 계산하고 해당 각도로 Quaternion을 만듭니다.
-            Quaternion rotationToLookAtA = Quaternion.FromToRotation(directionAB, directionATarget);
+            Quaternion rotationToLookAtA = Quaternion.LookRotation(directionAB);
 
             transform.rotation = rotationToLookAtA;
         }

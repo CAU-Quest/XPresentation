@@ -13,17 +13,15 @@ public class TransformByVertexHandler : MonoBehaviour
     
     public VertexHandler[] vertexList;
 
-    public GameObject vertexPrefab;
+    private Vector3[,,] corners;
 
-    public Vector3[,,] corners;
+    private Vector3 initialCenter;
 
-    public Vector3 initialCenter;
+    private Vector3 initialScale;
 
-    public Vector3 initialScale;
-
-    public float initalWidth;
-    public float initalHeight;
-    public float initalDepth;
+    private float initalWidth;
+    private float initalHeight;
+    private float initalDepth;
 
     public BoundBoxLine[] lineList;
     
@@ -62,9 +60,6 @@ public class TransformByVertexHandler : MonoBehaviour
         corners[1, 1, 0] = vertex[4];
         corners[1, 1, 1] = vertex[7];
     }
-
-    
-
     
     public void CalculateInitialTransform()
     {
@@ -83,65 +78,38 @@ public class TransformByVertexHandler : MonoBehaviour
 
     private void SetVertex() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
     {
-        vertexList = XRSelector.Instance.GetComponentsInChildren<VertexHandler>();
-        if (vertexList.Length == 0)
-        {
-            vertexList = new VertexHandler[8];
-            for (int i = 0; i < 8; i++)
-            {
-#if UNITY_EDITOR
-                GameObject go = PrefabUtility.InstantiatePrefab(vertexPrefab) as GameObject;
-                go.transform.SetParent(XRSelector.Instance.transform);
-                go.transform.position = Vector3.zero;
-                go.transform.rotation = Quaternion.identity;
-#else
-                        GameObject go = (GameObject)Instantiate(vertexPrefab, transform, false);
-#endif
-                vertexList[i] = go.GetComponent<VertexHandler>();
-                vertexList[i].SetVertex(i / 4, (i % 4) / 2, (i % 4 % 2));
-            }
-        }
+        if (XRSelector.Instance.GetVertexList() != null)
+            vertexList = XRSelector.Instance.GetVertexList();
     }
 
     private void SetLine()
     {
         if (XRSelector.Instance.boundBox == null) return;
-        lineList = XRSelector.Instance.boundBox.GetLineList();
+        lineList = XRSelector.Instance.GetLineList();
         
         lineList[0].SetVertex(vertexList[0], vertexList[1]);
         lineList[1].SetVertex(vertexList[2], vertexList[3]);
         lineList[2].SetVertex(vertexList[4], vertexList[5]);
         lineList[3].SetVertex(vertexList[6], vertexList[7]);
 
-        lineList[0].GetComponent<CapsuleCollider>().direction = 0;
-        lineList[1].GetComponent<CapsuleCollider>().direction = 0;
-        lineList[2].GetComponent<CapsuleCollider>().direction = 0;
-        lineList[3].GetComponent<CapsuleCollider>().direction = 0;
         
         lineList[4].SetVertex(vertexList[1], vertexList[5]);
         lineList[5].SetVertex(vertexList[0], vertexList[4]);
         lineList[6].SetVertex(vertexList[2], vertexList[6]);
         lineList[7].SetVertex(vertexList[3], vertexList[7]);
         
-        lineList[4].GetComponent<CapsuleCollider>().direction = 1;
-        lineList[5].GetComponent<CapsuleCollider>().direction = 1;
-        lineList[6].GetComponent<CapsuleCollider>().direction = 1;
-        lineList[7].GetComponent<CapsuleCollider>().direction = 1;
         
         lineList[8].SetVertex(vertexList[1], vertexList[3]);
         lineList[9].SetVertex(vertexList[0], vertexList[2]);
         lineList[10].SetVertex(vertexList[5], vertexList[7]);
         lineList[11].SetVertex(vertexList[4], vertexList[6]);
         
-        lineList[8].GetComponent<CapsuleCollider>().direction = 2;
-        lineList[9].GetComponent<CapsuleCollider>().direction = 2;
-        lineList[10].GetComponent<CapsuleCollider>().direction = 2;
-        lineList[11].GetComponent<CapsuleCollider>().direction = 2;
     }
     
     private void SetInitialVertexPosition() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
     {
         int index;
+        XRSelector.Instance.transform.position = transform.position;
         
         for (int top = 0; top < 2; top++)
         {
@@ -150,12 +118,10 @@ public class TransformByVertexHandler : MonoBehaviour
                 for (int front = 0; front < 2; front++)
                 {
                     index = top * 4 + front * 2 + left;
-                    vertexList[index].transform.position = corners[left, top, front] + transform.position;
-                    Debug.Log("vertexList[" + index +"] : " + vertexList[index].transform.position);
+                    vertexList[index].transform.localPosition = corners[left, top, front];
                 }
             }
         }
-        
     }
 
     public void ApplyCurrentTransform(float currentWidth, float currentDepth, float currentHeight, Vector3 center)
@@ -170,50 +136,12 @@ public class TransformByVertexHandler : MonoBehaviour
         transform.position = center;
         transform.localScale = newScale;
 
-
-        lineList[0].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(initalWidth * newScale.x, 1f, 1f);
-        lineList[1].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(initalWidth * newScale.x, 1f, 1f);
-        lineList[2].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(initalWidth * newScale.x, 1f, 1f);
-        lineList[3].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(initalWidth * newScale.x, 1f, 1f);
-        
-        lineList[4].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, initalWidth * newScale.y, 1f);
-        lineList[5].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, initalWidth * newScale.y, 1f);
-        lineList[6].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, initalWidth * newScale.y, 1f);
-        lineList[7].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, initalWidth * newScale.y, 1f);
-        
-        lineList[8].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, 1f, initalWidth * newScale.z);
-        lineList[9].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, 1f, initalWidth * newScale.z);
-        lineList[10].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, 1f, initalWidth * newScale.z);
-        lineList[11].GetComponent<CapsuleCollider>().transform.localScale = new Vector3(1f, 1f, initalWidth * newScale.z);
     }
     
     
     void OnEnable()
     {
-        vertexList = XRSelector.Instance.GetComponentsInChildren<VertexHandler>(true);
-        VertexHandler[] lrs = XRSelector.Instance.GetComponentsInChildren<VertexHandler>(true);
-        for (int i = 0; i < lrs.Length; i++)
-        {
-            if (!lrs[i].gameObject.activeSelf) DestroyImmediate(lrs[i].gameObject);
-        }
-        Init();
-    }
-    void OnDestroy()
-    {
-        VertexHandler[] lrs = XRSelector.Instance.GetComponentsInChildren<VertexHandler>(true);
-        for (int i = 0; i < lrs.Length; i++)
-        {
-            DestroyImmediate(lrs[i].gameObject);
-        }
-    }
-
-    void OnDisable()
-    {
-        VertexHandler[] lrs = XRSelector.Instance.GetComponentsInChildren<VertexHandler>();
-        for (int i = 0; i < lrs.Length; i++)
-        {
-            lrs[i].enabled = false;
-        }
+        SetVertex();
     }
 
 #if UNITY_EDITOR
@@ -222,9 +150,7 @@ public class TransformByVertexHandler : MonoBehaviour
         if (EditorApplication.isPlaying) return;
         if (XRSelector.Instance.transformByVertexHandler != this) enabled = false;
         else enabled = true;
-        Init();
+        SetVertex();
     }
-
-
 #endif
 }

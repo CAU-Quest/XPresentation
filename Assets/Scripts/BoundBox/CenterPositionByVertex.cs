@@ -9,6 +9,13 @@ public class CenterPositionByVertex : MonoBehaviour
     public VertexHandler[] vertexList;
     private Vector3[] positions;
     
+    
+    private void SetVertex() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
+    {
+        if (XRSelector.Instance.GetVertexList() != null)
+            vertexList = XRSelector.Instance.GetVertexList();
+    }
+    
     public void CenterPosition()
     {
         int count = transform.childCount;
@@ -34,4 +41,18 @@ public class CenterPositionByVertex : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        SetVertex();
+    }
+
+#if UNITY_EDITOR
+    public void OnValidate()
+    {
+        if (EditorApplication.isPlaying) return;
+        if (XRSelector.Instance.centerPositionByVertex != this) enabled = false;
+        else enabled = true;
+        SetVertex();
+    }
+#endif
 }
