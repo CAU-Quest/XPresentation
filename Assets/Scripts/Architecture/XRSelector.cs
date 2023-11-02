@@ -115,7 +115,12 @@ public class XRSelector : MonoBehaviour
         }
     }
 
-    
+
+    private void Update()
+    {
+        transform.rotation = selectedObject.transform.rotation;
+    }
+
     private void SetLines()
     {
         

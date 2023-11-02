@@ -59,19 +59,16 @@ public class EdgeHandler : MonoBehaviour
             {
                 // X 축 회전만 적용
                 XRSelector.Instance.selectedObject.transform.rotation = Quaternion.Euler(afterRotation.eulerAngles.x, beforeRotation.eulerAngles.y, beforeRotation.eulerAngles.z);
-                XRSelector.Instance.transform.rotation = Quaternion.Euler(afterRotation.eulerAngles.x, beforeRotation.eulerAngles.y, beforeRotation.eulerAngles.z);
             }
             else if (selectedAxis == RotationAxis.Y)
             {
                 // Y 축 회전만 적용
                 XRSelector.Instance.selectedObject.transform.rotation = Quaternion.Euler(beforeRotation.eulerAngles.x, afterRotation.eulerAngles.y, beforeRotation.eulerAngles.z);
-                XRSelector.Instance.transform.rotation = Quaternion.Euler(beforeRotation.eulerAngles.x, afterRotation.eulerAngles.y, beforeRotation.eulerAngles.z);
             }
             else if (selectedAxis == RotationAxis.Z)
             {
                 // Z 축 회전만 적용
                 XRSelector.Instance.selectedObject.transform.rotation = Quaternion.Euler(beforeRotation.eulerAngles.x, beforeRotation.eulerAngles.y, afterRotation.eulerAngles.z);
-                XRSelector.Instance.transform.rotation = Quaternion.Euler(beforeRotation.eulerAngles.x, beforeRotation.eulerAngles.y, afterRotation.eulerAngles.z);
             }
         }
     }
