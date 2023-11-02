@@ -19,9 +19,9 @@ public class TransformByVertexHandler : MonoBehaviour
 
     private Vector3 initialScale;
 
-    private float initalWidth;
-    private float initalHeight;
-    private float initalDepth;
+    private float initialWidth;
+    private float initialHeight;
+    private float initialDepth;
 
     public BoundBoxLine[] lineList;
     
@@ -69,9 +69,9 @@ public class TransformByVertexHandler : MonoBehaviour
         initialCenter = (point + otherPoint) / 2f;
         
         Debug.Log("Initial Transform Pos : " + point + " / other Pos : " + otherPoint);
-        initalWidth = Mathf.Abs(point.x - otherPoint.x);
-        initalHeight = Mathf.Abs(point.z - otherPoint.z);
-        initalDepth = Mathf.Abs(point.y - otherPoint.y);
+        initialWidth = Mathf.Abs(point.x - otherPoint.x);
+        initialHeight = Mathf.Abs(point.z - otherPoint.z);
+        initialDepth = Mathf.Abs(point.y - otherPoint.y);
 
         initialScale = transform.localScale;
     }
@@ -126,7 +126,7 @@ public class TransformByVertexHandler : MonoBehaviour
 
     public void ApplyCurrentTransform(float currentWidth, float currentDepth, float currentHeight, Vector3 center)
     {
-        Vector3 newScale = new Vector3(initialScale.x * currentWidth / initalWidth, initialScale.y * currentDepth / initalDepth, initialScale.z * currentHeight / initalHeight);
+        Vector3 newScale = new Vector3(initialScale.x * currentWidth / initialWidth, initialScale.y * currentDepth / initialDepth, initialScale.z * currentHeight / initialHeight);
 
         Vector3 centerDiff = Vector3.Scale(new Vector3(currentWidth, currentDepth, currentHeight) / 2f + initialCenter,
             newScale - initialScale);
