@@ -24,6 +24,7 @@ using UnityEngine.Assertions;
 using Oculus.Interaction.Throw;
 using System;
 using Oculus.Interaction.Grab;
+using UnityEngine.Events;
 
 namespace Oculus.Interaction
 {
@@ -53,6 +54,9 @@ namespace Oculus.Interaction
         private GrabInteractable _selectedInteractableOverride;
         private bool _isSelectionOverriden = false;
 
+        [HideInInspector] public bool isGrabbing;
+        [HideInInspector] public Action onSelect, onUnselect;
+        
         protected override void Awake()
         {
             base.Awake();
@@ -128,6 +132,9 @@ namespace Oculus.Interaction
 
         public void ForceSelect(GrabInteractable interactable)
         {
+            isGrabbing = true;
+            onSelect?.Invoke();
+            
             _isSelectionOverriden = true;
             _selectedInteractableOverride = interactable;
             SetComputeCandidateOverride(() => interactable);
@@ -137,6 +144,9 @@ namespace Oculus.Interaction
 
         public void ForceRelease()
         {
+            isGrabbing = false;
+            onUnselect?.Invoke();
+            
             _isSelectionOverriden = false;
             _selectedInteractableOverride = null;
             ClearComputeCandidateOverride();
@@ -158,6 +168,9 @@ namespace Oculus.Interaction
                 && (SelectedInteractable == _selectedInteractableOverride
                     || SelectedInteractable == null))
             {
+                isGrabbing = false;
+                onUnselect?.Invoke();
+                
                 _isSelectionOverriden = false;
                 _selectedInteractableOverride = null;
                 ClearComputeShouldUnselectOverride();
@@ -167,9 +180,11 @@ namespace Oculus.Interaction
 
         protected override void InteractableSelected(GrabInteractable interactable)
         {
+            isGrabbing = true;
+            onSelect?.Invoke();
+            
             Pose target = _grabTarget.GetPose();
-            Pose source = _interactable.GetGrabSourceForTarget(target);
-
+            Pose source = _interactable.GetGrabSourceForTarget(target);            
             _tween.StopAndSetPose(source);
             base.InteractableSelected(interactable);
 
@@ -178,6 +193,9 @@ namespace Oculus.Interaction
 
         protected override void InteractableUnselected(GrabInteractable interactable)
         {
+            isGrabbing = false;
+            onUnselect?.Invoke();
+            
             base.InteractableUnselected(interactable);
 
             ReleaseVelocityInformation throwVelocity = VelocityCalculator != null ?
