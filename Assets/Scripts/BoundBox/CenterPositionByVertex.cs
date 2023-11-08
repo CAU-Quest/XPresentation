@@ -50,8 +50,12 @@ public class CenterPositionByVertex : MonoBehaviour
     public void OnValidate()
     {
         if (EditorApplication.isPlaying) return;
-        if (XRSelector.Instance.centerPositionByVertex != this) enabled = false;
-        else enabled = true;
+        if (XRSelector.Instance && XRSelector.Instance.centerPositionByVertex && XRSelector.Instance.centerPositionByVertex == this) enabled = true;
+        else
+        {
+            enabled = false;
+            return;
+        }
         SetVertex();
     }
 #endif

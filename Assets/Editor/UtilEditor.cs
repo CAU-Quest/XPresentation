@@ -85,3 +85,24 @@ public class TransformByVertexHandlerEditor : Editor
         
     }
 }
+
+
+
+
+[CustomEditor(typeof(PreviewRenderTexture))]
+public class PreviewRenderTextureEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        PreviewRenderTexture renderTexture = (PreviewRenderTexture)target;
+        
+        
+        if (GUILayout.Button("Render"))
+        {
+            renderTexture.RenderRequiredTexture();
+        }
+
+    }
+}

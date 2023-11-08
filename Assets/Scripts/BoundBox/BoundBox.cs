@@ -162,8 +162,12 @@ namespace DimBoxes
         public void OnValidate()
         {
             if (EditorApplication.isPlaying) return;
-            if (XRSelector.Instance.boundBox != this) enabled = false;
-            else enabled = true;
+            if (XRSelector.Instance &&XRSelector.Instance.boundBox && XRSelector.Instance.boundBox == this) enabled = true;
+            else
+            {
+                enabled = false;
+                return;
+            }
             Init();
         }
 

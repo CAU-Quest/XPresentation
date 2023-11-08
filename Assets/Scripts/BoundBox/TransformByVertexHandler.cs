@@ -148,8 +148,12 @@ public class TransformByVertexHandler : MonoBehaviour
     public void OnValidate()
     {
         if (EditorApplication.isPlaying) return;
-        if (XRSelector.Instance.transformByVertexHandler != this) enabled = false;
-        else enabled = true;
+        if (XRSelector.Instance &&XRSelector.Instance.transformByVertexHandler && XRSelector.Instance.transformByVertexHandler == this) enabled = true;
+        else
+        {
+            enabled = false;
+            return;
+        }
         SetVertex();
     }
 #endif

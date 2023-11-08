@@ -145,6 +145,17 @@ public class MainSystem : MonoBehaviour, ISubject
         }
     }
 
+    public void GoToSlideByIndex(int index)
+    {
+        if (index >= 0 && index < slideCount)
+        {
+            currentSlideNum = index;
+            slideInterval = 0;
+            isPlayingAnimation = false;
+            NotifyObservers();
+        }
+    }
+
     public void ChangeMode(int mode)
     {
         if (this.mode != mode)
