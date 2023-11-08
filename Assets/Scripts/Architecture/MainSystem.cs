@@ -19,6 +19,11 @@ public class MainSystem : MonoBehaviour, ISubject
     [SerializeField]
     public float slideInterval;
     public bool isPlayingAnimation = true;
+
+
+    public int moved;
+    public int count;
+    public int into;
     
     void Awake()
     {
@@ -35,6 +40,11 @@ public class MainSystem : MonoBehaviour, ISubject
         }
     }
 
+    public void MoveSlide()
+    {
+        MoveSlidesTo(moved, count, into);
+    }
+    
     public void RegisterObserver(ISystemObserver observer)
     {
         this.observers.Add(observer);
@@ -59,6 +69,16 @@ public class MainSystem : MonoBehaviour, ISubject
         }
     }
 
+    public void NotifyObserversMoveSlides(int moved, int count, int into)
+    {
+        for (int i = 0; i < observers.Count; i++)
+        {
+            observers[i].ObserverMoveSlides(moved, count, into);
+        }
+    }
+    
+    
+    
     public void AddSlide()
     {
         slideCount += 1;
@@ -76,6 +96,26 @@ public class MainSystem : MonoBehaviour, ISubject
         {
             observers[i].ObserverRemoveSlide(currentSlideNum);
         }
+    }
+
+    public void MoveSlideTo(int moved, int into) // moved 위치에 있는 slide를 into 위치로 옮김
+    {
+        Slide element = slideList[moved];
+        slideList.RemoveAt(moved);
+        
+        slideList.Insert(into, element);
+        NotifyObserversMoveSlides(moved, 1, into);
+    }
+
+    public void MoveSlidesTo(int moved, int count, int into) // moved 위치에 있는 count 갯수 만큼의 slide를 into 위치로 옮김
+    {
+        List<Slide> elements = slideList.GetRange(moved, count);
+        slideList.RemoveRange(moved, count);
+
+        if(into < moved) slideList.InsertRange(into, elements);
+        else slideList.InsertRange(into - count + 1, elements);
+        
+        NotifyObserversMoveSlides(moved, count, into);
     }
 
     public ISlide GetSlideByIndex(int index)

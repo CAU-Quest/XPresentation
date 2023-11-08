@@ -7,5 +7,5 @@ public interface IPresentationObject
     public void SetTransform(Vector3 position, Quaternion rotation, Vector3 scale);
     public Vector3 GetPosition();
     public Quaternion GetRotation();
-    public int GetID();
+    public uint GetID();
 }

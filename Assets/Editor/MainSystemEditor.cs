@@ -47,5 +47,10 @@ public class MainSystemEditor : Editor
         {
             mainSystem.RemoveSlide();
         }
+        if (GUILayout.Button("Move Slide"))
+        {
+            mainSystem.MoveSlide();
+        }
+        
     }
 }

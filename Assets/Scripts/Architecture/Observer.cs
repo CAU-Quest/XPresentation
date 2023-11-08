@@ -8,6 +8,8 @@ public interface ISystemObserver
     void ObserverUpdateSlide(int slide);
     void ObserverRemoveSlide(int index);
     void ObserverAddSlide();
+    void ObserverMoveSlides(int moved, int count, int into);
+
 }
 
 public interface ISubject

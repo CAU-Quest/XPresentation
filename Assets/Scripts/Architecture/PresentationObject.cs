@@ -17,7 +17,8 @@ public struct TransformData
 
 public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObserver
 {
-    private int id = 1;
+    private static uint idCount = 1;
+    public uint id = 1;
 
     public List<XRAnimation> animationList = new List<XRAnimation>();
     public List<TransformData> slideData = new List<TransformData>();
@@ -113,15 +114,22 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
             anim.SetPreviousTransform(beforeTransform);
             anim.SetNextTransform(beforeTransform);
             
-            slides[i].AddAnimation(this.GetInstanceID(), anim);
-            slides[i].AddObjectData(this.GetInstanceID(), beforeTransform);
+            slides[i].AddAnimation(id, anim);
+            slides[i].AddObjectData(id, beforeTransform);
             animationList.Add(anim);
             slideData.Add(beforeTransform);
         }
     }
 
+    public void GetTransformDataFromSlide(int index)
+    {
+        slideData[index] = MainSystem.Instance.slideList[index].GetObjectData(id);
+    }
+    
+
     public void Start()
     {
+        this.id = idCount++;
         meshRenderer = GetComponent<MeshRenderer>();
         MainSystem.Instance.RegisterObserver(this);
         List<Slide> slides = MainSystem.Instance.slideList;
@@ -160,18 +168,31 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
             anim.SetPreviousTransform(transformData);
             anim.SetNextTransform(nextTransformData);
             
-            slides[i].AddAnimation(this.GetInstanceID(), anim);
-            slides[i].AddObjectData(this.GetInstanceID(), transformData);
+            slides[i].AddAnimation(id, anim);
+            slides[i].AddObjectData(id, transformData);
             animationList.Add(anim);
             slideData.Add(transformData);
         }
         
         
         ghostObject = Instantiate(gameObject, transform);
+        if (meshRenderer == null)
+        {
+            Debug.LogError("meshRenderer is null.");
+        }
+
+        if (ghostObject == null)
+        {
+            Debug.LogError("ghostObject is null.");
+        }
         ghostObject.GetComponent<MeshRenderer>().material = afterSlideMaterial;
         Destroy(ghostObject.GetComponent<PresentationObject>());
         ghost = ghostObject.AddComponent<PresentationGhostObject>();
 
+        if (ghost == null)
+        {
+            Debug.LogError("ghost is null.");
+        }
         ghost.parentObject = this;
         ghost.SetID(id);
 
@@ -191,6 +212,87 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         }
     }
 
+    public XRAnimation CreateDefaultAnimation(int index)
+    {
+        XRAnimation element = new XRAnimation();
+        if (index + 1 < slideData.Count)
+        {
+            element.SetParentObject(this);
+            element.SetPreviousTransform(slideData[index]);
+            element.SetNextTransform(slideData[index + 1]);
+        }
+        
+        return element;
+    }
+    
+    public void ObserverMoveSlides(int moved, int count, int into)
+    {
+        Debug.Log("Move Slides(" + moved + ", " + count + ", " + into + ")");
+        if (count == 1)
+        {
+            TransformData transformElement = slideData[moved];
+            slideData.RemoveAt(moved);
+
+            slideData.Insert(into, transformElement);
+
+            if (into < moved)
+            {
+                animationList.RemoveAt(moved);
+                if(moved - 1 >= 0) animationList.RemoveAt(moved - 1);
+                if (into - 1 >= 0)
+                {
+                    animationList.RemoveAt(into - 1);
+                    animationList.Insert(into - 1, CreateDefaultAnimation(into - 1));
+                }
+                animationList.Insert(into, CreateDefaultAnimation(into));
+                if(moved - 1 >= 0) animationList.Insert(moved, CreateDefaultAnimation(moved));
+            } 
+            else
+            {
+                if (into - 1 >= 0) animationList.RemoveAt(into);
+                animationList.RemoveAt(moved);
+                if(moved - 1 >= 0) animationList.RemoveAt(moved - 1);
+                if(moved - 1 >= 0) animationList.Insert(moved - 1, CreateDefaultAnimation(moved - 1));
+                if (into - 1 >= 0) animationList.Insert(into - 1, CreateDefaultAnimation(into - 1));
+                animationList.Insert(into, CreateDefaultAnimation(into));   
+            }
+        }
+        else
+        {
+            List<TransformData> transformDatas = slideData.GetRange(moved, count);
+            slideData.RemoveRange(moved, count);
+            
+            if (into < moved) slideData.InsertRange(into, transformDatas);
+            else slideData.InsertRange(into - count + 1, transformDatas);
+
+            List<XRAnimation> animationElements = animationList.GetRange(moved, count);
+                
+
+            if (into < moved)
+            {
+                animationList.RemoveRange(moved, count);
+                if(moved - 1 >= 0) animationList.RemoveAt(moved - 1);
+                if (into - 1 >= 0) animationList.RemoveAt(into - 1);
+                if (into - 1 >= 0) animationList.Insert(into - 1, CreateDefaultAnimation(into - 1));
+                animationList.InsertRange(into, animationElements);
+                animationList.RemoveAt(into + count - 1);
+                animationList.Insert(into + count - 1, CreateDefaultAnimation(into + count - 1));
+                if(moved - 1 >= 0) animationList.Insert(moved + count - 1, CreateDefaultAnimation(moved + count - 1));
+            }
+            else
+            {
+                animationList.RemoveAt(into);
+                animationList.RemoveRange(moved, count);
+                if(moved - 1 >= 0) animationList.RemoveAt(moved - 1);
+                if(moved - 1 >= 0) animationList.Insert(moved - 1, CreateDefaultAnimation(moved - 1));
+                animationList.Insert(into - count, CreateDefaultAnimation(into - count));
+                animationList.InsertRange(into - count + 1, animationElements);
+                animationList.RemoveAt(into);
+                animationList.Insert(into, CreateDefaultAnimation(into));
+            }
+        }
+    }
+
     public void SaveTransformToSlide()
     {
         TransformData transformData = new TransformData();
@@ -204,7 +306,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
             this.animationList[this.currentSlide - 1].SetNextTransform(transformData);
     }
 
-    public int GetID()
+    public uint GetID()
     {
         return id;
     }

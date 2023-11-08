@@ -8,7 +8,7 @@ using UnityEngine.EventSystems;
 
 public class PresentationGhostObject : MonoBehaviour
 {
-    private int id = 1;
+    private uint id = 1;
 
     public PresentationObject parentObject;
 
@@ -20,7 +20,7 @@ public class PresentationGhostObject : MonoBehaviour
 
     public void applyTransform()
     {
-        if(parentObject.GetCurrentSlide() + 1 < MainSystem.Instance.GetSlideCount())
+        if(parentObject && parentObject.GetCurrentSlide() + 1 < MainSystem.Instance.GetSlideCount())
             SetTransform(parentObject.slideData[parentObject.GetCurrentSlide() + 1].position, parentObject.slideData[parentObject.GetCurrentSlide() + 1].rotation, parentObject.slideData[parentObject.GetCurrentSlide() + 1].scale);
     }
     public void OnEnable()
@@ -43,11 +43,11 @@ public class PresentationGhostObject : MonoBehaviour
         Debug.Log("Ghost Save Complete");
     }
 
-    public int GetID()
+    public uint GetID()
     {
         return id;
     }
-    public void SetID(int id)
+    public void SetID(uint id)
     {
         this.id = id;
     }

@@ -6,22 +6,13 @@ using UnityEngine;
 [System.Serializable]
 public class XRAnimation : XRIAnimation
 {
-    private ISlide previousSlide;
-    private ISlide nextSlide;
-
     public PresentationObject presentationObject;
-    private int id;
+    private uint id;
 
     public TransformData previousTransform;
     public TransformData nextTransform;
     public AnimationCurve lerpFunction = AnimationCurve.Linear(0, 0, 1, 1);
     
-    
-    public void CollectTransformFromSlide()
-    {
-        previousTransform = previousSlide.GetObjectData(id);
-        nextTransform = nextSlide.GetObjectData(id);
-    }
     
     public void Play()
     {
@@ -48,12 +39,6 @@ public class XRAnimation : XRIAnimation
     {
         this.nextTransform = transformData;
     }
-    public void SetSlide(ISlide beforeSlide, ISlide afterSlide)
-    {
-        this.previousSlide = beforeSlide;
-        this.nextSlide = afterSlide;
-    }
-
     public TransformData GetPreviousTransformData()
     {
         return previousTransform;

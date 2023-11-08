@@ -50,6 +50,11 @@ public class HandCanvasText : MonoBehaviour, ISystemObserver
         
     }
 
+    public void ObserverMoveSlides(int moved, int count, int into)
+    {
+        
+    }
+
     public void Start()
     {
         MainSystem.Instance.RegisterObserver(this);
