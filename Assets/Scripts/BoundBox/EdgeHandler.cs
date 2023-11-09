@@ -40,7 +40,16 @@ public class EdgeHandler : MonoBehaviour
         cursor.transform.position = transform.position;
         initialLocalPosition = transform.localPosition;
         initialRotation = (cursor.transform.position - XRSelector.Instance.transform.position).normalized;
-        isSelected = !isSelected;
+        isSelected = true;
+    }
+    public void Unselect()
+    {
+        beforeRotation = XRSelector.Instance.selectedObject.transform.rotation;
+        cursor = XRSelector.Instance.Cursor;
+        cursor.transform.position = transform.position;
+        initialLocalPosition = transform.localPosition;
+        initialRotation = (cursor.transform.position - XRSelector.Instance.transform.position).normalized;
+        isSelected = false;
     }
 
     private void Update()
