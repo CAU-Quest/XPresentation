@@ -64,7 +64,8 @@ public class XRSelector : MonoBehaviour
         
         SetVertex();
         SetLines();
-        
+        SetLineVertex();
+
     }
 
     private void SetVertex() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
@@ -173,6 +174,26 @@ public class XRSelector : MonoBehaviour
     }
 
 
+    public void SetLineVertex()
+    {
+        lineList[0].SetVertex(vertexList[0], vertexList[1]);
+        lineList[1].SetVertex(vertexList[2], vertexList[3]);
+        lineList[2].SetVertex(vertexList[4], vertexList[5]);
+        lineList[3].SetVertex(vertexList[6], vertexList[7]);
+
+        
+        lineList[4].SetVertex(vertexList[1], vertexList[5]);
+        lineList[5].SetVertex(vertexList[0], vertexList[4]);
+        lineList[6].SetVertex(vertexList[2], vertexList[6]);
+        lineList[7].SetVertex(vertexList[3], vertexList[7]);
+        
+        
+        lineList[8].SetVertex(vertexList[1], vertexList[3]);
+        lineList[9].SetVertex(vertexList[0], vertexList[2]);
+        lineList[10].SetVertex(vertexList[5], vertexList[7]);
+        lineList[11].SetVertex(vertexList[4], vertexList[6]);
+    }
+
     private void SetLineRenderers()
     {
         Gradient colorGradient = new Gradient();
@@ -261,6 +282,7 @@ public class XRSelector : MonoBehaviour
         SetVertex();
         SetLines();
         SetLineRenderers();
+        SetLineVertex();
     }
 #endif
     
@@ -285,6 +307,7 @@ public class XRSelector : MonoBehaviour
         SetVertex();
         SetLines();
         SetLineRenderers();
+        SetLineVertex();
     }
     void OnDestroy()
     {

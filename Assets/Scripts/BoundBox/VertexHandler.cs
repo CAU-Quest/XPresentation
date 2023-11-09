@@ -31,6 +31,16 @@ public class VertexHandler : MonoBehaviour
         this.left = left;
     }
 
+    public void SelectVertex()
+    {
+        isSelected = true;
+    }
+
+    public void UnselectVertex()
+    {
+        isSelected = false;
+    }
+
 
     private int invertValue(int val)
     {
