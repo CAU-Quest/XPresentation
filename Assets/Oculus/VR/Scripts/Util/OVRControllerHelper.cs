@@ -196,7 +196,8 @@ public class OVRControllerHelper : MonoBehaviour
                 activeControllerType = ControllerType.QuestAndRiftS;
                 break;
         }
-
+        activeControllerType = ControllerType.TouchPro;
+        
         Debug.LogFormat("OVRControllerHelp: Active controller type: {0} for product {1} (headset {2}, hand {3})",
             activeControllerType, OVRPlugin.productName, headset, controllerHand);
 
