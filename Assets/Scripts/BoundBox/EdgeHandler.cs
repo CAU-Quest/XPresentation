@@ -36,13 +36,13 @@ public class EdgeHandler : MonoBehaviour
         GetComponent<Grabbable>().InjectOptionalTargetTransform(cursor.transform);
         initialLocalPosition = transform.localPosition;
         initialRotation = (transform.position - XRSelector.Instance.transform.position).normalized;
-        beforeRotation = XRSelector.Instance.selectedObject.transform.rotation;
+        beforeRotation = XRSelector.Instance.selectedObject.transform.localRotation;
         afterRotation = Quaternion.identity;
     }
 
     public void Select()
     {
-        beforeRotation = XRSelector.Instance.selectedObject.transform.rotation;
+        beforeRotation = XRSelector.Instance.selectedObject.transform.localRotation;
         cursor = XRSelector.Instance.Cursor;
         cursor.transform.position = transform.position;
         initialLocalPosition = transform.localPosition;
@@ -51,7 +51,7 @@ public class EdgeHandler : MonoBehaviour
     }
     public void Unselect()
     {
-        beforeRotation = XRSelector.Instance.selectedObject.transform.rotation;
+        beforeRotation = XRSelector.Instance.selectedObject.transform.localRotation;
         cursor = XRSelector.Instance.Cursor;
         cursor.transform.position = transform.position;
         initialLocalPosition = transform.localPosition;
@@ -65,27 +65,29 @@ public class EdgeHandler : MonoBehaviour
         {
             // 현재 위치에서 중심까지의 방향을 계산
             Vector3 directionToCenter = (cursor.transform.position - XRSelector.Instance.transform.position).normalized;
-
-            // 회전값 계산
+            
             Quaternion rotation = Quaternion.FromToRotation(initialRotation, directionToCenter);
+            
+            // 회전값 계산
 
             afterRotation = rotation * beforeRotation;  // 누적 회전값 업데이트
 
             if (selectedAxis == RotationAxis.X)
             {
                 // X 축 회전만 적용
-                XRSelector.Instance.selectedObject.transform.rotation = Quaternion.Euler(afterRotation.eulerAngles.x, beforeRotation.eulerAngles.y, beforeRotation.eulerAngles.z);
+                XRSelector.Instance.selectedObject.transform.localRotation = Quaternion.Euler(afterRotation.eulerAngles.x, beforeRotation.eulerAngles.y, beforeRotation.eulerAngles.z);
             }
             else if (selectedAxis == RotationAxis.Y)
             {
                 // Y 축 회전만 적용
-                XRSelector.Instance.selectedObject.transform.rotation = Quaternion.Euler(beforeRotation.eulerAngles.x, afterRotation.eulerAngles.y, beforeRotation.eulerAngles.z);
+                XRSelector.Instance.selectedObject.transform.localRotation = Quaternion.Euler(beforeRotation.eulerAngles.x, afterRotation.eulerAngles.y, beforeRotation.eulerAngles.z);
             }
             else if (selectedAxis == RotationAxis.Z)
             {
                 // Z 축 회전만 적용
-                XRSelector.Instance.selectedObject.transform.rotation = Quaternion.Euler(beforeRotation.eulerAngles.x, beforeRotation.eulerAngles.y, afterRotation.eulerAngles.z);
+                XRSelector.Instance.selectedObject.transform.localRotation = Quaternion.Euler(beforeRotation.eulerAngles.x, beforeRotation.eulerAngles.y, afterRotation.eulerAngles.z);
             }
+
         }
     }
 }
