@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface ISystemObserver
 {
-    void ObserverUpdateMode(int mode);
+    void ObserverUpdateMode(MainSystem.Mode mode);
     void ObserverUpdateSlide(int slide);
     void ObserverRemoveSlide(int index);
     void ObserverAddSlide();

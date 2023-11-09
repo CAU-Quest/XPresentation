@@ -24,7 +24,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     public List<TransformData> slideData = new List<TransformData>();
 
     private int currentSlide;
-    private int mode;
+    private MainSystem.Mode mode;
 
     public Material beforeSlideMaterial;
     public Material afterSlideMaterial;
@@ -38,10 +38,10 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
 
     private MeshRenderer meshRenderer;
 
-    public void ObserverUpdateMode(int mode)
+    public void ObserverUpdateMode(MainSystem.Mode mode)
     {
         this.mode = mode;
-        if (mode == 3)
+        if (mode == MainSystem.Mode.ANIMATION)
         {
             meshRenderer.material = beforeSlideMaterial;
             if (currentSlide + 1 < MainSystem.Instance.GetSlideCount())
@@ -69,7 +69,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
 
         SetTransform(slideData[slide].position, slideData[slide].rotation, slideData[slide].scale);
         ghost.applyTransform();
-        if (mode == 3)
+        if (mode == MainSystem.Mode.ANIMATION)
         {
             if (currentSlide + 1 < MainSystem.Instance.GetSlideCount())
             {

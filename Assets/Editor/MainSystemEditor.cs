@@ -23,21 +23,21 @@ public class MainSystemEditor : Editor
         {
             mainSystem.AnimationToggle();
         }
-        if (GUILayout.Button("Edit Mode"))
+        if (GUILayout.Button("Main Mode"))
         {
-            mainSystem.ChangeMode(0);
+            mainSystem.ChangeMode(MainSystem.Mode.MAIN);
         }
         if (GUILayout.Button("Deploy Mode"))
         {
-            mainSystem.ChangeMode(1);
+            mainSystem.ChangeMode(MainSystem.Mode.DEPLOY);
         }
-        if (GUILayout.Button("Slide Mode"))
+        if (GUILayout.Button("Preview Mode"))
         {
-            mainSystem.ChangeMode(2);
+            mainSystem.ChangeMode(MainSystem.Mode.PREVIEW);
         }
         if (GUILayout.Button("Animation Mode"))
         {
-            mainSystem.ChangeMode(3);
+            mainSystem.ChangeMode(MainSystem.Mode.ANIMATION);
         }
         if (GUILayout.Button("Add Slide"))
         {

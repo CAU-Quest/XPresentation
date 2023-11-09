@@ -1,14 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+// 0 - Edit Mode, 1 - Deploy Mode, 2 - Slide Mode, 3 - Animation Mode
 public class MainSystem : MonoBehaviour, ISubject
 {
     public static MainSystem Instance = null;
 
     private List<ISystemObserver> observers = new List<ISystemObserver>();
-    
-    private int mode; // 0 - Edit Mode, 1 - Deploy Mode, 2 - Slide Mode, 3 - Animation Mode
+
+    public enum Mode
+    {
+        MAIN, DEPLOY, PREVIEW, ANIMATION
+    }
+
+    public Mode mode; 
 
     public List<Slide> slideList = new List<Slide>();
 
@@ -156,7 +161,7 @@ public class MainSystem : MonoBehaviour, ISubject
         }
     }
 
-    public void ChangeMode(int mode)
+    public void ChangeMode(Mode mode)
     {
         if (this.mode != mode)
         {
@@ -168,7 +173,7 @@ public class MainSystem : MonoBehaviour, ISubject
     public void ToggleMode()
     {
         this.mode++;
-        this.mode %= 4;
+        //this.mode %= 4;
         NotifyObservers();
     }
 
