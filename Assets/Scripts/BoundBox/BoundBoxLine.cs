@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Oculus.Interaction;
 using UnityEditor;
 using UnityEngine;
 
@@ -10,18 +11,21 @@ public class BoundBoxLine : MonoBehaviour
 
     private LineRenderer lineRenderer;
 
-    public void SetPositions(Vector3[] points)
-    {
-        vertex1.transform.position = points[0];
-        vertex2.transform.position = points[1];
-    }
-    
-    
+    public EdgeHandler edgeHandler;
     // Start is called before the first frame update
+    
     void Start()
     {
         lineRenderer = GetComponent<LineRenderer>();
+        edgeHandler = GetComponentInChildren<EdgeHandler>();
     }
+
+
+    public void SetAxisToEdgeHandler(EdgeHandler.RotationAxis rotationAxis)
+    {
+        edgeHandler.ChangeRotationAxis(rotationAxis);
+    }
+    
 
     // Update is called once per frame
     void LateUpdate()
