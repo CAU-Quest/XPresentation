@@ -181,17 +181,31 @@ public class XRSelector : MonoBehaviour
         lineList[2].SetVertex(vertexList[4], vertexList[5]);
         lineList[3].SetVertex(vertexList[6], vertexList[7]);
 
+        lineList[0].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.X);
+        lineList[1].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.X);
+        lineList[2].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.X);
+        lineList[3].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.X);
         
         lineList[4].SetVertex(vertexList[1], vertexList[5]);
         lineList[5].SetVertex(vertexList[0], vertexList[4]);
         lineList[6].SetVertex(vertexList[2], vertexList[6]);
         lineList[7].SetVertex(vertexList[3], vertexList[7]);
         
+        lineList[4].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Y);
+        lineList[5].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Y);
+        lineList[6].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Y);
+        lineList[7].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Y);
         
         lineList[8].SetVertex(vertexList[1], vertexList[3]);
         lineList[9].SetVertex(vertexList[0], vertexList[2]);
         lineList[10].SetVertex(vertexList[5], vertexList[7]);
         lineList[11].SetVertex(vertexList[4], vertexList[6]);
+        
+        
+        lineList[8].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Z);
+        lineList[9].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Z);
+        lineList[10].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Z);
+        lineList[11].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Z);
     }
 
     private void SetLineRenderers()

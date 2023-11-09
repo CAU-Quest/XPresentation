@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Oculus.Interaction;
 using UnityEngine;
 
 public class EdgeHandler : MonoBehaviour
@@ -24,9 +25,15 @@ public class EdgeHandler : MonoBehaviour
 
     public RotationAxis selectedAxis = RotationAxis.X; // 기본적으로 X 축을 선택
 
+    public void ChangeRotationAxis(RotationAxis rotationAxis)
+    {
+        selectedAxis = rotationAxis;
+    }
+    
     private void Start()
     {
         cursor = XRSelector.Instance.Cursor;
+        GetComponent<Grabbable>().InjectOptionalTargetTransform(cursor.transform);
         initialLocalPosition = transform.localPosition;
         initialRotation = (transform.position - XRSelector.Instance.transform.position).normalized;
         beforeRotation = XRSelector.Instance.selectedObject.transform.rotation;
