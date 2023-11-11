@@ -47,6 +47,11 @@ namespace Oculus.Interaction
 
         public Axis RotationAxis => _rotationAxis;
 
+        public void SetRotationAxis(Axis axis)
+        {
+            _rotationAxis = axis;
+        }
+        
         [Serializable]
         public class OneGrabRotateConstraints
         {

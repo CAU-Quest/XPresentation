@@ -27,6 +27,8 @@ public class SelectObject : MonoBehaviour
         XRSelector.Instance.selectedObject = gameObject;
         XRSelector.Instance.SetComponent();
         
+        XRSelector.Instance.transform.rotation = transform.rotation;
+        
         int lineLength = XRSelector.Instance.lineList.Length;
         int vertexLength = XRSelector.Instance.vertexList.Length;
 
