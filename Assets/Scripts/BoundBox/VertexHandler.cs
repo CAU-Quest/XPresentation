@@ -19,6 +19,10 @@ public class VertexHandler : MonoBehaviour
     [SerializeField]
     private VertexHandler[] vertexList;
 
+    private float currentWidth;
+    private float currentHeight;
+    private float currentDepth;
+
     private Vector3 beforePosition;
     void Start()
     {
@@ -50,23 +54,23 @@ public class VertexHandler : MonoBehaviour
     {
         if (isSelected)
         {
-            if (transform.position != beforePosition)
+            if (transform.localPosition != beforePosition)
             {
-                beforePosition = transform.position;
+                beforePosition = transform.localPosition;
 
                 for (int i = 0; i < 2; i++)
                 {
                     for (int j = 0; j < 2; j++)
                     {
-                        vertexList[i * 4 + j * 2 + left].transform.position = new Vector3(
-                            transform.position.x, vertexList[i * 4 + j * 2 + left].transform.position.y,
-                            vertexList[i * 4 + j * 2 + left].transform.position.z);
-                        vertexList[top * 4 + i * 2 + j].transform.position = new Vector3(
-                            vertexList[top * 4 + i * 2 + j].transform.position.x, transform.position.y,
-                            vertexList[top * 4 + i * 2 + j].transform.position.z);
-                        vertexList[i * 4 + front * 2 + j].transform.position = new Vector3(
-                            vertexList[i * 4 + front * 2 + j].transform.position.x, vertexList[i * 4 + front * 2 + j].transform.position.y,
-                            transform.position.z);
+                        vertexList[i * 4 + j * 2 + left].transform.localPosition = new Vector3(
+                            transform.localPosition.x, vertexList[i * 4 + j * 2 + left].transform.localPosition.y,
+                            vertexList[i * 4 + j * 2 + left].transform.localPosition.z);
+                        vertexList[top * 4 + i * 2 + j].transform.localPosition = new Vector3(
+                            vertexList[top * 4 + i * 2 + j].transform.localPosition.x, transform.localPosition.y,
+                            vertexList[top * 4 + i * 2 + j].transform.localPosition.z);
+                        vertexList[i * 4 + front * 2 + j].transform.localPosition = new Vector3(
+                            vertexList[i * 4 + front * 2 + j].transform.localPosition.x, vertexList[i * 4 + front * 2 + j].transform.localPosition.y,
+                            transform.localPosition.z);
                     }
                 }
 
@@ -74,9 +78,12 @@ public class VertexHandler : MonoBehaviour
                 Vector3 otherPoint = vertexList[invertValue(top) * 4 + invertValue(front) * 2 + invertValue(left)]
                     .transform.position;
 
-                float currentWidth = Mathf.Abs(point.x - otherPoint.x);
-                float currentDepth = Mathf.Abs(point.y - otherPoint.y);
-                float currentHeight = Mathf.Abs(point.z - otherPoint.z);
+                currentWidth = Vector3.Distance(transform.localPosition,
+                    vertexList[top * 4 + front * 2 + invertValue(left)].transform.localPosition);
+                currentDepth = Vector3.Distance(transform.localPosition,
+                    vertexList[invertValue(top) * 4 + front * 2 + left].transform.localPosition);
+                currentHeight = Vector3.Distance(transform.localPosition,
+                    vertexList[top * 4 + invertValue(front) * 2 + left].transform.localPosition);
                 
                 XRSelector.Instance.transformByVertexHandler.ApplyCurrentTransform(currentWidth, currentDepth, currentHeight, (point + otherPoint) / 2f);
             }

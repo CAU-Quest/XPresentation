@@ -19,12 +19,6 @@ public class BoundBoxLine : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
         edgeHandler = GetComponentInChildren<EdgeHandler>();
     }
-
-
-    public void SetAxisToEdgeHandler(EdgeHandler.RotationAxis rotationAxis)
-    {
-        edgeHandler.ChangeRotationAxis(rotationAxis);
-    }
     
 
     // Update is called once per frame

@@ -52,10 +52,6 @@ public class EdgeHandlerEditor : Editor
         EdgeHandler edgeHandler = (EdgeHandler)target;
         
         
-        if (GUILayout.Button("Select"))
-        {
-            edgeHandler.Select();
-        }
 
     }
 }

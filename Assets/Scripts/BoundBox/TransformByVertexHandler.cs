@@ -68,10 +68,9 @@ public class TransformByVertexHandler : MonoBehaviour
         
         initialCenter = (point + otherPoint) / 2f;
         
-        Debug.Log("Initial Transform Pos : " + point + " / other Pos : " + otherPoint);
-        initialWidth = Mathf.Abs(point.x - otherPoint.x);
-        initialHeight = Mathf.Abs(point.z - otherPoint.z);
-        initialDepth = Mathf.Abs(point.y - otherPoint.y);
+        initialWidth = Vector3.Distance(corners[0, 0, 0], corners[1, 0, 0]);
+        initialHeight = Vector3.Distance(corners[0, 0, 0], corners[0, 0, 1]);
+        initialDepth = Vector3.Distance(corners[0, 0, 0], corners[0, 1, 0]);
 
         initialScale = transform.localScale;
     }
@@ -113,11 +112,9 @@ public class TransformByVertexHandler : MonoBehaviour
         Vector3 centerDiff = Vector3.Scale(new Vector3(currentWidth, currentDepth, currentHeight) / 2f + initialCenter,
             newScale - initialScale);
         
-        Debug.Log("New Scale : " + newScale + " / Center Diff : " + centerDiff);
         
         transform.position = center;
         transform.localScale = newScale;
-
     }
     
     

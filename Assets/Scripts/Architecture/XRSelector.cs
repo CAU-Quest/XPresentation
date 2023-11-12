@@ -2,8 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DimBoxes;
+using Oculus.Interaction;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Animations;
 using Object = UnityEngine.Object;
 
 public class XRSelector : MonoBehaviour
@@ -37,7 +39,7 @@ public class XRSelector : MonoBehaviour
 
     public GameObject Cursor;
 
-
+    public bool edgeSelected = false;
 
     void Awake()
     {
@@ -119,7 +121,8 @@ public class XRSelector : MonoBehaviour
 
     private void Update()
     {
-        transform.rotation = selectedObject.transform.rotation;
+        if(edgeSelected) selectedObject.transform.rotation = transform.rotation;
+        else transform.rotation = selectedObject.transform.rotation;
     }
 
     private void SetLines()
@@ -181,20 +184,20 @@ public class XRSelector : MonoBehaviour
         lineList[2].SetVertex(vertexList[4], vertexList[5]);
         lineList[3].SetVertex(vertexList[6], vertexList[7]);
 
-        lineList[0].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.X);
-        lineList[1].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.X);
-        lineList[2].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.X);
-        lineList[3].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.X);
+        lineList[0].edgeHandler.Init(OneGrabRotateTransformer.Axis.Right, transform);
+        lineList[1].edgeHandler.Init(OneGrabRotateTransformer.Axis.Right, transform);
+        lineList[2].edgeHandler.Init(OneGrabRotateTransformer.Axis.Right, transform);
+        lineList[3].edgeHandler.Init(OneGrabRotateTransformer.Axis.Right, transform);
         
         lineList[4].SetVertex(vertexList[1], vertexList[5]);
         lineList[5].SetVertex(vertexList[0], vertexList[4]);
         lineList[6].SetVertex(vertexList[2], vertexList[6]);
         lineList[7].SetVertex(vertexList[3], vertexList[7]);
         
-        lineList[4].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Y);
-        lineList[5].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Y);
-        lineList[6].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Y);
-        lineList[7].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Y);
+        lineList[4].edgeHandler.Init(OneGrabRotateTransformer.Axis.Up, transform);
+        lineList[5].edgeHandler.Init(OneGrabRotateTransformer.Axis.Up, transform);
+        lineList[6].edgeHandler.Init(OneGrabRotateTransformer.Axis.Up, transform);
+        lineList[7].edgeHandler.Init(OneGrabRotateTransformer.Axis.Up, transform);
         
         lineList[8].SetVertex(vertexList[1], vertexList[3]);
         lineList[9].SetVertex(vertexList[0], vertexList[2]);
@@ -202,10 +205,11 @@ public class XRSelector : MonoBehaviour
         lineList[11].SetVertex(vertexList[4], vertexList[6]);
         
         
-        lineList[8].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Z);
-        lineList[9].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Z);
-        lineList[10].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Z);
-        lineList[11].SetAxisToEdgeHandler(EdgeHandler.RotationAxis.Z);
+        lineList[8].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
+        lineList[9].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
+        lineList[10].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
+        lineList[11].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
+        
     }
 
     private void SetLineRenderers()
