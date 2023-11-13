@@ -24,6 +24,47 @@ public class CenterPositionByVertexEditor : Editor
     }
 }
 
+[CustomEditor(typeof(ChangeColorWithColorPicker))]
+public class ChangeColorWithColorPickerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        ChangeColorWithColorPicker SelectObject = (ChangeColorWithColorPicker)target;
+        
+        
+        if (GUILayout.Button("Select"))
+        {
+            SelectObject.OpenColorPicker();
+        }
+
+    }
+    
+}
+[CustomEditor(typeof(StageSetter))]
+public class StageSetterEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        StageSetter SelectObject = (StageSetter)target;
+        
+        
+        if (GUILayout.Button("Set Stage"))
+        {
+            SelectObject.GoToStage();
+        }
+        if (GUILayout.Button("Set Audience"))
+        {
+            SelectObject.GoToAudience();
+        }
+
+    }
+}
+
+
 [CustomEditor(typeof(SelectObject))]
 public class SelectObjectEditor : Editor
 {

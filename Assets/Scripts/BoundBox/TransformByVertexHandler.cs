@@ -9,6 +9,9 @@ using UnityEngine;
 
 public class TransformByVertexHandler : MonoBehaviour
 {
+    [SerializeField]
+    private BoundObjectType BoundObjectType = BoundObjectType.ThreeDimension;
+    
     private BoundBox boundBox;
     
     public VertexHandler[] vertexList;
@@ -24,6 +27,8 @@ public class TransformByVertexHandler : MonoBehaviour
     private float initialDepth;
 
     public BoundBoxLine[] lineList;
+
+    private Canvas canvas;
     
     void Reset()
     {
@@ -39,13 +44,20 @@ public class TransformByVertexHandler : MonoBehaviour
     {
         if (XRSelector.Instance.transformByVertexHandler != this) enabled = false;
         else enabled = true;
-        //XRSelector.Instance.centerPositionByVertex.CenterPosition();
-        //XRSelector.Instance.boundBox.CalculateBounds();
-        SetCorner(XRSelector.Instance.boundBox.GetCorner());
-        SetVertex();
-        SetInitialVertexPosition();
-        SetLine();
-        CalculateInitialTransform();
+        if (BoundObjectType == BoundObjectType.ThreeDimension)
+        {
+            SetCorner(XRSelector.Instance.boundBox.GetCorner());
+            SetVertex();
+            SetInitialVertexPosition();
+            SetLine();
+            CalculateInitialTransform();
+        } else if (BoundObjectType == BoundObjectType.TwoDimension)
+        {
+            SetVertex();
+            SetInitialVertexPosition();
+            SetLine();
+            CalculateInitialTransform();
+        }
     }
 
     private void SetCorner(Vector3[] vertex) // { topFrontRight, topFrontLeft, topBackLeft, topBackRight, bottomFrontRight, bottomFrontLeft, bottomBackLeft, bottomBackRight };
@@ -63,16 +75,30 @@ public class TransformByVertexHandler : MonoBehaviour
     
     public void CalculateInitialTransform()
     {
-        Vector3 point = corners[0, 0, 0];
-        Vector3 otherPoint = corners[1, 1, 1];
+        if (BoundObjectType == BoundObjectType.ThreeDimension)
+        {
+            Vector3 point = corners[0, 0, 0];
+            Vector3 otherPoint = corners[1, 1, 1];
         
-        initialCenter = (point + otherPoint) / 2f;
+            initialCenter = (point + otherPoint) / 2f;
         
-        initialWidth = Vector3.Distance(corners[0, 0, 0], corners[1, 0, 0]);
-        initialHeight = Vector3.Distance(corners[0, 0, 0], corners[0, 0, 1]);
-        initialDepth = Vector3.Distance(corners[0, 0, 0], corners[0, 1, 0]);
+            initialWidth = Vector3.Distance(corners[0, 0, 0], corners[1, 0, 0]);
+            initialHeight = Vector3.Distance(corners[0, 0, 0], corners[0, 0, 1]);
+            initialDepth = Vector3.Distance(corners[0, 0, 0], corners[0, 1, 0]);
 
-        initialScale = transform.localScale;
+            initialScale = transform.localScale;
+        } else if (BoundObjectType == BoundObjectType.TwoDimension)
+        {
+            Vector3 point = vertexList[0].transform.position;
+            Vector3 otherPoint = vertexList[5].transform.position;
+        
+            initialCenter = (point + otherPoint) / 2f;
+        
+            initialWidth = Vector3.Distance(vertexList[0].transform.position, vertexList[1].transform.position);
+            initialHeight = Vector3.Distance(vertexList[0].transform.position, vertexList[2].transform.position);
+
+            initialScale = transform.localScale;
+        }
     }
 
     private void SetVertex() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
@@ -89,37 +115,65 @@ public class TransformByVertexHandler : MonoBehaviour
     
     private void SetInitialVertexPosition() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
     {
-        int index;
-        XRSelector.Instance.transform.position = transform.position;
-        
-        for (int top = 0; top < 2; top++)
+        if (BoundObjectType == BoundObjectType.ThreeDimension)
         {
-            for (int left = 0; left < 2; left++)
+            int index;
+            XRSelector.Instance.transform.position = transform.position;
+        
+            for (int top = 0; top < 2; top++)
             {
-                for (int front = 0; front < 2; front++)
+                for (int left = 0; left < 2; left++)
                 {
-                    index = top * 4 + front * 2 + left;
-                    vertexList[index].transform.localPosition = corners[left, top, front];
+                    for (int front = 0; front < 2; front++)
+                    {
+                        index = top * 4 + front * 2 + left;
+                        vertexList[index].transform.localPosition = corners[left, top, front];
+                    }
                 }
             }
-        }
+        } else if (BoundObjectType == BoundObjectType.TwoDimension)
+        {
+            XRSelector.Instance.transform.position = transform.position;
+
+            if (canvas)
+            {
+                RectTransform canvasRect = canvas.GetComponent<RectTransform>();
+
+                // Canvas의 각 꼭짓점 좌표 가져오기
+                Vector3[] canvasCorners = new Vector3[4];
+                canvasRect.GetWorldCorners(canvasCorners);
+
+                vertexList[0].transform.position = canvasCorners[0];
+                vertexList[1].transform.position = canvasCorners[1];
+                vertexList[4].transform.position = canvasCorners[2];
+                vertexList[5].transform.position = canvasCorners[3];
+            }
+        } 
     }
 
     public void ApplyCurrentTransform(float currentWidth, float currentDepth, float currentHeight, Vector3 center)
     {
-        Vector3 newScale = new Vector3(initialScale.x * currentWidth / initialWidth, initialScale.y * currentDepth / initialDepth, initialScale.z * currentHeight / initialHeight);
+        if (BoundObjectType == BoundObjectType.ThreeDimension)
+        {
+            Vector3 newScale = new Vector3(initialScale.x * currentWidth / initialWidth, initialScale.y * currentDepth / initialDepth, initialScale.z * currentHeight / initialHeight);
 
-        Vector3 centerDiff = Vector3.Scale(new Vector3(currentWidth, currentDepth, currentHeight) / 2f + initialCenter,
-            newScale - initialScale);
-        
-        
-        transform.position = center;
-        transform.localScale = newScale;
+            transform.position = center;
+            transform.localScale = newScale;
+        } else if (BoundObjectType == BoundObjectType.TwoDimension)
+        {
+            Vector3 newScale = new Vector3(initialScale.x * currentWidth / initialWidth, initialScale.y * currentDepth / initialDepth, 1f);
+
+            transform.position = center;
+            transform.localScale = newScale;
+        }
     }
     
     
     void OnEnable()
     {
+        BoundObjectType = GetComponent<SelectObject>().GetBoundObjectType();
+        if (BoundObjectType == BoundObjectType.TwoDimension) canvas = GetComponentInChildren<Canvas>();
+        
         SetVertex();
         SetLine();
     }
@@ -134,6 +188,8 @@ public class TransformByVertexHandler : MonoBehaviour
             enabled = false;
             return;
         }
+        BoundObjectType = GetComponent<SelectObject>().GetBoundObjectType();
+        if (BoundObjectType == BoundObjectType.TwoDimension) canvas = GetComponentInChildren<Canvas>();
         SetVertex();
         SetLine();
     }

@@ -8,11 +8,6 @@ public class ShowKeyboard : MonoBehaviour
 {
     private TMP_InputField inputField;
 
-    public float distance = 0.5f;
-    public float verticalOffset = -0.5f;
-
-    public Transform positionSource;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -25,11 +20,12 @@ public class ShowKeyboard : MonoBehaviour
         NonNativeKeyboard.Instance.InputField = inputField;
         NonNativeKeyboard.Instance.PresentKeyboard(inputField.text);
 
-        Vector3 direction = positionSource.forward;
+        Vector3 direction = XRUIManager.Instance.positionSource.forward;
         direction.y = 0;
         direction.Normalize();
 
-        Vector3 targetPosition = positionSource.position + direction * distance + Vector3.up * verticalOffset;
+        Vector3 targetPosition = XRUIManager.Instance.positionSource.position + direction * XRUIManager.Instance.distance 
+                                                                              + Vector3.up * XRUIManager.Instance.verticalOffset;
         
         NonNativeKeyboard.Instance.RepositionKeyboard(targetPosition);
         
