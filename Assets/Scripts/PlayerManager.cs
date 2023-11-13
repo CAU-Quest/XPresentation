@@ -7,8 +7,7 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance;
     
-    public Transform player;
-    public Transform leftHandAnchor, rightHandAnchor;
+    public Transform player, eye, leftHandAnchor, rightHandAnchor, leftTip, rightTip;
 
     private void Awake()
     {
@@ -16,5 +15,11 @@ public class PlayerManager : MonoBehaviour
         else Destroy(this);
     }
     
-    
+    public IEnumerator VibrateController(float waitTime, float frequency, float amplitude, OVRInput.Controller controller)
+    {
+        OVRInput.SetControllerVibration(frequency, amplitude, controller);
+        yield return new WaitForSeconds(waitTime);
+        OVRInput.SetControllerVibration(0, 0, controller);
+
+    }
 }

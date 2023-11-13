@@ -25,19 +25,15 @@ public class MainSystemEditor : Editor
         }
         if (GUILayout.Button("Main Mode"))
         {
-            mainSystem.ChangeMode(MainSystem.Mode.MAIN);
-        }
-        if (GUILayout.Button("Deploy Mode"))
-        {
-            mainSystem.ChangeMode(MainSystem.Mode.DEPLOY);
+            mainSystem.ChangeMode(MainSystem.Mode.Edit);
         }
         if (GUILayout.Button("Preview Mode"))
         {
-            mainSystem.ChangeMode(MainSystem.Mode.PREVIEW);
+            mainSystem.ChangeMode(MainSystem.Mode.Preview);
         }
         if (GUILayout.Button("Animation Mode"))
         {
-            mainSystem.ChangeMode(MainSystem.Mode.ANIMATION);
+            mainSystem.ChangeMode(MainSystem.Mode.Animation);
         }
         if (GUILayout.Button("Add Slide"))
         {

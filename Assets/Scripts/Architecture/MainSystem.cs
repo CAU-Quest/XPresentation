@@ -10,7 +10,7 @@ public class MainSystem : MonoBehaviour, ISubject
 
     public enum Mode
     {
-        MAIN, DEPLOY, PREVIEW, ANIMATION
+        None, Edit, Animation, Preview
     }
 
     public Mode mode; 

@@ -16,16 +16,13 @@ public class HandCanvasText : MonoBehaviour, ISystemObserver
         tmpMode.text = "";
         switch (mode)
         {
-            case MainSystem.Mode.MAIN:
+            case MainSystem.Mode.Edit:
                 tmpMode.text += "Main Mode";
                 break;
-            case MainSystem.Mode.DEPLOY:
-                tmpMode.text += "Deploy Mode";
-                break;
-            case MainSystem.Mode.PREVIEW:
+            case MainSystem.Mode.Preview:
                 tmpMode.text += "PREVIEW Mode";
                 break;
-            case MainSystem.Mode.ANIMATION:
+            case MainSystem.Mode.Animation:
                 tmpMode.text += "Animation Mode";
                 break;
         }
