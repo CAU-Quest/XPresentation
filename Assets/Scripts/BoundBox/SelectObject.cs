@@ -72,8 +72,8 @@ public class SelectObject : MonoBehaviour
             
             XRSelector.Instance.lineList[0].gameObject.SetActive(true);
             XRSelector.Instance.lineList[2].gameObject.SetActive(true);
-            XRSelector.Instance.lineList[3].gameObject.SetActive(true);
             XRSelector.Instance.lineList[4].gameObject.SetActive(true);
+            XRSelector.Instance.lineList[5].gameObject.SetActive(true);
             
             
             XRSelector.Instance.vertexList[0].gameObject.SetActive(true);

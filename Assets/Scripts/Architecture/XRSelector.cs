@@ -73,7 +73,7 @@ public class XRSelector : MonoBehaviour
 
     private void SetVertex() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
     {
-        vertexList = GetComponentsInChildren<VertexHandler>();
+        vertexList = GetComponentsInChildren<VertexHandler>(true);
         if (vertexList.Length == 0)
         {
             vertexList = new VertexHandler[8];
@@ -117,7 +117,6 @@ public class XRSelector : MonoBehaviour
                 vertexList[i].enabled = true;
             }
         }
-
         if (BoundObjectType == BoundObjectType.TwoDimension)
         {
             vertexList[2].gameObject.SetActive(false);
@@ -138,7 +137,7 @@ public class XRSelector : MonoBehaviour
     {
         
         Debug.Log("Start Set Lines");
-        lineList = GetComponentsInChildren<BoundBoxLine>();
+        lineList = GetComponentsInChildren<BoundBoxLine>(true);
         if (lineList.Length == 0)
         {
             Debug.Log("Create Line List");
@@ -188,36 +187,39 @@ public class XRSelector : MonoBehaviour
 
     public void SetLineVertex()
     {
-        lineList[0].SetVertex(vertexList[0], vertexList[1]);
-        lineList[1].SetVertex(vertexList[2], vertexList[3]);
-        lineList[2].SetVertex(vertexList[4], vertexList[5]);
-        lineList[3].SetVertex(vertexList[6], vertexList[7]);
+        if (BoundObjectType == BoundObjectType.ThreeDimension)
+        {
+            lineList[0].SetVertex(vertexList[0], vertexList[1]);
+            lineList[1].SetVertex(vertexList[2], vertexList[3]);
+            lineList[2].SetVertex(vertexList[4], vertexList[5]);
+            lineList[3].SetVertex(vertexList[6], vertexList[7]);
 
-        lineList[0].edgeHandler.Init(OneGrabRotateTransformer.Axis.Right, transform);
-        lineList[1].edgeHandler.Init(OneGrabRotateTransformer.Axis.Right, transform);
-        lineList[2].edgeHandler.Init(OneGrabRotateTransformer.Axis.Right, transform);
-        lineList[3].edgeHandler.Init(OneGrabRotateTransformer.Axis.Right, transform);
+            lineList[0].edgeHandler.Init(OneGrabRotateTransformer.Axis.Right, transform);
+            lineList[1].edgeHandler.Init(OneGrabRotateTransformer.Axis.Right, transform);
+            lineList[2].edgeHandler.Init(OneGrabRotateTransformer.Axis.Right, transform);
+            lineList[3].edgeHandler.Init(OneGrabRotateTransformer.Axis.Right, transform);
         
-        lineList[4].SetVertex(vertexList[1], vertexList[5]);
-        lineList[5].SetVertex(vertexList[0], vertexList[4]);
-        lineList[6].SetVertex(vertexList[2], vertexList[6]);
-        lineList[7].SetVertex(vertexList[3], vertexList[7]);
+            lineList[4].SetVertex(vertexList[1], vertexList[5]);
+            lineList[5].SetVertex(vertexList[0], vertexList[4]);
+            lineList[6].SetVertex(vertexList[2], vertexList[6]);
+            lineList[7].SetVertex(vertexList[3], vertexList[7]);
         
-        lineList[4].edgeHandler.Init(OneGrabRotateTransformer.Axis.Up, transform);
-        lineList[5].edgeHandler.Init(OneGrabRotateTransformer.Axis.Up, transform);
-        lineList[6].edgeHandler.Init(OneGrabRotateTransformer.Axis.Up, transform);
-        lineList[7].edgeHandler.Init(OneGrabRotateTransformer.Axis.Up, transform);
+            lineList[4].edgeHandler.Init(OneGrabRotateTransformer.Axis.Up, transform);
+            lineList[5].edgeHandler.Init(OneGrabRotateTransformer.Axis.Up, transform);
+            lineList[6].edgeHandler.Init(OneGrabRotateTransformer.Axis.Up, transform);
+            lineList[7].edgeHandler.Init(OneGrabRotateTransformer.Axis.Up, transform);
         
-        lineList[8].SetVertex(vertexList[1], vertexList[3]);
-        lineList[9].SetVertex(vertexList[0], vertexList[2]);
-        lineList[10].SetVertex(vertexList[5], vertexList[7]);
-        lineList[11].SetVertex(vertexList[4], vertexList[6]);
+            lineList[8].SetVertex(vertexList[1], vertexList[3]);
+            lineList[9].SetVertex(vertexList[0], vertexList[2]);
+            lineList[10].SetVertex(vertexList[5], vertexList[7]);
+            lineList[11].SetVertex(vertexList[4], vertexList[6]);
         
         
-        lineList[8].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
-        lineList[9].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
-        lineList[10].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
-        lineList[11].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
+            lineList[8].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
+            lineList[9].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
+            lineList[10].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
+            lineList[11].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
+        }
 
 
         if (BoundObjectType == BoundObjectType.TwoDimension)
@@ -228,8 +230,8 @@ public class XRSelector : MonoBehaviour
             }
             lineList[0].gameObject.SetActive(true);
             lineList[2].gameObject.SetActive(true);
-            lineList[3].gameObject.SetActive(true);
             lineList[4].gameObject.SetActive(true);
+            lineList[5].gameObject.SetActive(true);
         }
     }
 
@@ -247,6 +249,10 @@ public class XRSelector : MonoBehaviour
         }
     }
 
+    public BoundObjectType GetBoundObjectType()
+    {
+        return BoundObjectType;
+    }
 
     public VertexHandler[] GetVertexList()
     {
@@ -320,8 +326,8 @@ public class XRSelector : MonoBehaviour
 #if UNITY_EDITOR
             lineList[0].UpdateLine();
             lineList[2].UpdateLine();
-            lineList[3].UpdateLine();
             lineList[4].UpdateLine();
+            lineList[5].UpdateLine();
 #endif
         }
         BoundObjectType = boundObjectType;

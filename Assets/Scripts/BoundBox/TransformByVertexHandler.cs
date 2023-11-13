@@ -20,10 +20,14 @@ public class TransformByVertexHandler : MonoBehaviour
 
     private Vector3 initialCenter;
 
+    [SerializeField]
     private Vector3 initialScale;
 
+    [SerializeField]
     private float initialWidth;
+    [SerializeField]
     private float initialHeight;
+    [SerializeField]
     private float initialDepth;
 
     public BoundBoxLine[] lineList;
@@ -95,7 +99,7 @@ public class TransformByVertexHandler : MonoBehaviour
             initialCenter = (point + otherPoint) / 2f;
         
             initialWidth = Vector3.Distance(vertexList[0].transform.position, vertexList[1].transform.position);
-            initialHeight = Vector3.Distance(vertexList[0].transform.position, vertexList[2].transform.position);
+            initialDepth = Vector3.Distance(vertexList[0].transform.position, vertexList[4].transform.position);
 
             initialScale = transform.localScale;
         }
@@ -143,9 +147,9 @@ public class TransformByVertexHandler : MonoBehaviour
                 Vector3[] canvasCorners = new Vector3[4];
                 canvasRect.GetWorldCorners(canvasCorners);
 
-                vertexList[0].transform.position = canvasCorners[0];
-                vertexList[1].transform.position = canvasCorners[1];
-                vertexList[4].transform.position = canvasCorners[2];
+                vertexList[0].transform.position = canvasCorners[1];
+                vertexList[1].transform.position = canvasCorners[2];
+                vertexList[4].transform.position = canvasCorners[0];
                 vertexList[5].transform.position = canvasCorners[3];
             }
         } 

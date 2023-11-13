@@ -39,5 +39,7 @@ public class XRUIManager : MonoBehaviour
 
         colorPicker.transform.position = targetPosition;
         colorPicker.ShowColorPicker();
+        
+        colorPicker.gameObject.SetActive(true);
     }
 }
