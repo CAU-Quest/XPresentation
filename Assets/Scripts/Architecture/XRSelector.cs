@@ -20,6 +20,7 @@ public class XRSelector : MonoBehaviour
     public Object linePrefab;
     public GameObject vertexPrefab;
 
+    private BoundObjectType BoundObjectType = BoundObjectType.ThreeDimension;
 
     public CenterPositionByVertex centerPositionByVertex;
     public BoundBox boundBox;
@@ -116,6 +117,14 @@ public class XRSelector : MonoBehaviour
                 vertexList[i].enabled = true;
             }
         }
+
+        if (BoundObjectType == BoundObjectType.TwoDimension)
+        {
+            vertexList[2].gameObject.SetActive(false);
+            vertexList[3].gameObject.SetActive(false);
+            vertexList[6].gameObject.SetActive(false);
+            vertexList[7].gameObject.SetActive(false);
+        }
     }
 
 
@@ -209,7 +218,19 @@ public class XRSelector : MonoBehaviour
         lineList[9].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
         lineList[10].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
         lineList[11].edgeHandler.Init(OneGrabRotateTransformer.Axis.Forward, transform);
-        
+
+
+        if (BoundObjectType == BoundObjectType.TwoDimension)
+        {
+            for (int i = 0; i < 12; i++)
+            {
+                lineList[i].gameObject.SetActive(false);
+            }
+            lineList[0].gameObject.SetActive(true);
+            lineList[2].gameObject.SetActive(true);
+            lineList[3].gameObject.SetActive(true);
+            lineList[4].gameObject.SetActive(true);
+        }
     }
 
     private void SetLineRenderers()
@@ -240,40 +261,70 @@ public class XRSelector : MonoBehaviour
         return null;
     }
         
-    public void SetComponent()
+    public void SetComponent(BoundObjectType boundObjectType)
     {
         if (selectedObject == null)
         {
             Debug.Log("There is no selected Object");
             return;
         }
-        
-        transform.rotation = selectedObject.transform.rotation;
-        
-        centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
-        boundBox = selectedObject.GetComponent<BoundBox>();
-        transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
 
-        centerPositionByVertex.enabled = true;
-        boundBox.enabled = true;
-        transformByVertexHandler.enabled = true;
-        
-        if (boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null)
+        if (boundObjectType == BoundObjectType.ThreeDimension)
         {
-            Debug.Log("Selected Object doesn't have correct components");
-            return;
-        }
+            transform.rotation = selectedObject.transform.rotation;
         
-        boundBox.UpdateBounds();
-        centerPositionByVertex.CenterPosition();
-        boundBox.UpdateBounds();
+            centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
+            boundBox = selectedObject.GetComponent<BoundBox>();
+            transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
+
+            centerPositionByVertex.enabled = true;
+            boundBox.enabled = true;
+            transformByVertexHandler.enabled = true;
+        
+            if (boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null)
+            {
+                Debug.Log("Selected Object doesn't have correct components");
+                return;
+            }
+        
+            boundBox.UpdateBounds();
+            centerPositionByVertex.CenterPosition();
+            boundBox.UpdateBounds();
         
 #if UNITY_EDITOR
-        for (int i = 0; i < 12; i++)
-        {
-            transformByVertexHandler.lineList[i].UpdateLine();
-        }
+            for (int i = 0; i < 12; i++)
+            {
+                lineList[i].UpdateLine();
+            }
 #endif
+        }
+        else if(boundObjectType == BoundObjectType.TwoDimension)
+        {
+            transform.rotation = selectedObject.transform.rotation;
+            
+            //centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
+            //boundBox = selectedObject.GetComponent<BoundBox>();
+            transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
+
+            //centerPositionByVertex.enabled = true;
+            //boundBox.enabled = true;
+            transformByVertexHandler.enabled = true;
+            
+            if (transformByVertexHandler == null)
+            {
+                Debug.Log("Selected Object doesn't have correct components");
+                return;
+            }
+            XRSelector.Instance.transformByVertexHandler.Init();
+            
+#if UNITY_EDITOR
+            lineList[0].UpdateLine();
+            lineList[2].UpdateLine();
+            lineList[3].UpdateLine();
+            lineList[4].UpdateLine();
+#endif
+        }
+        BoundObjectType = boundObjectType;
     }
     
 #if UNITY_EDITOR
@@ -290,17 +341,31 @@ public class XRSelector : MonoBehaviour
             Debug.Log("There is no selected Object");
             return;
         }
-        centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
-        boundBox = selectedObject.GetComponent<BoundBox>();
-        transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
-        if(boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null)
-            Debug.Log("Selected Object doesn't have correct components");
+
+        if (BoundObjectType == BoundObjectType.ThreeDimension)
+        {
+            centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
+            boundBox = selectedObject.GetComponent<BoundBox>();
+            transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
+            if(boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null)
+                Debug.Log("Selected Object doesn't have correct components");
         
         
-        SetVertex();
-        SetLines();
-        SetLineRenderers();
-        SetLineVertex();
+            SetVertex();
+            SetLines();
+            SetLineRenderers();
+            SetLineVertex();
+        } else if (BoundObjectType == BoundObjectType.TwoDimension)
+        {
+            transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
+            if(transformByVertexHandler == null)
+                Debug.Log("Selected Object doesn't have correct components");
+            
+            SetVertex();
+            SetLines();
+            SetLineRenderers();
+            SetLineVertex();
+        }
     }
 #endif
     
