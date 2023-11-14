@@ -25,6 +25,7 @@ public class XRSelector : MonoBehaviour
     public CenterPositionByVertex centerPositionByVertex;
     public BoundBox boundBox;
     public TransformByVertexHandler transformByVertexHandler;
+    public SelectObject selectObject;
     
     [Header("Line Properties")]
     
@@ -278,7 +279,7 @@ public class XRSelector : MonoBehaviour
         return null;
     }
         
-    public void SetComponent(BoundObjectType boundObjectType)
+    public void SetComponent(SelectObject selectObject, BoundObjectType boundObjectType)
     {
         if (selectedObject == null)
         {
@@ -293,6 +294,7 @@ public class XRSelector : MonoBehaviour
             centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
             boundBox = selectedObject.GetComponent<BoundBox>();
             transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
+            this.selectObject = selectObject;
 
             centerPositionByVertex.enabled = true;
             boundBox.enabled = true;
@@ -322,6 +324,7 @@ public class XRSelector : MonoBehaviour
             //centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
             //boundBox = selectedObject.GetComponent<BoundBox>();
             transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
+            this.selectObject = selectObject;
 
             //centerPositionByVertex.enabled = true;
             //boundBox.enabled = true;

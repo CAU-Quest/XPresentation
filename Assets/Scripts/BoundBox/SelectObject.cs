@@ -38,7 +38,7 @@ public class SelectObject : MonoBehaviour
         if(XRSelector.Instance.centerPositionByVertex) XRSelector.Instance.centerPositionByVertex.enabled = false;
         if(XRSelector.Instance.boundBox) XRSelector.Instance.boundBox.enabled = false;
         XRSelector.Instance.selectedObject = gameObject;
-        XRSelector.Instance.SetComponent(BoundObjectType);
+        XRSelector.Instance.SetComponent(this, BoundObjectType);
         
         XRSelector.Instance.transform.rotation = transform.rotation;
 

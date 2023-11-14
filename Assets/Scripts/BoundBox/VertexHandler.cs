@@ -43,6 +43,7 @@ public class VertexHandler : MonoBehaviour
     public void UnselectVertex()
     {
         isSelected = false;
+        XRSelector.Instance.selectObject.Select();
     }
 
 
@@ -50,7 +51,7 @@ public class VertexHandler : MonoBehaviour
     {
         return (val == 0) ? 1 : 0;
     }
-    private void LateUpdate()
+    private void Update()
     {
         if (isSelected)
         {
@@ -87,8 +88,11 @@ public class VertexHandler : MonoBehaviour
                         vertexList[top * 4 + invertValue(front) * 2 + left].transform.localPosition);
                 
                     XRSelector.Instance.transformByVertexHandler.ApplyCurrentTransform(currentWidth, currentDepth, currentHeight, (point + otherPoint) / 2f);
-                } else if (XRSelector.Instance.GetBoundObjectType() == BoundObjectType.TwoDimension)
-                {
+                } else if (XRSelector.Instance.GetBoundObjectType() == BoundObjectType.TwoDimension){
+                
+                    
+                    transform.localPosition = new Vector3(transform.localPosition.x, transform.localPosition.y,
+                        vertexList[invertValue(top) * 4 + left].transform.localPosition.z);
                     for (int i = 0; i < 2; i++)
                     {
                             vertexList[i * 4 + left].transform.localPosition = new Vector3(
