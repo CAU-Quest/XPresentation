@@ -131,6 +131,14 @@ public class ColorPicker : MonoBehaviour
     //used by EventTrigger to calculate the chosen value in color box
     public void SetChooser()
     {
+        Vector3 leftRayCursor = XRUIManager.Instance.leftRayInteractor.End;
+        Vector3 rightRayCursor = XRUIManager.Instance.leftRayInteractor.End;
+
+        Vector3 leftRayLocalCursor = positionIndicator.parent.InverseTransformPoint(leftRayCursor);
+        Vector3 rightRayLocalCursor = positionIndicator.parent.InverseTransformPoint(rightRayCursor);
+        
+        Debug.Log(leftRayLocalCursor);
+        
         RectTransformUtility.ScreenPointToLocalPointInRectangle(positionIndicator.parent as RectTransform, Input.mousePosition, GetComponentInParent<Canvas>().worldCamera, out Vector2 localpoint);
         localpoint = Rect.PointToNormalized((positionIndicator.parent as RectTransform).rect, localpoint);
         if (positionIndicator.anchorMin != localpoint)

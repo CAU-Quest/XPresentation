@@ -5,6 +5,7 @@ using UnityEngine;
 public class ColorPickerCanvas : MonoBehaviour
 {
     //private Canvas canvas;
+    [SerializeField]
     private Renderer renderer;
 
     void Start()

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Oculus.Interaction;
 using UnityEngine;
 
 public class XRUIManager : MonoBehaviour
@@ -11,6 +12,9 @@ public class XRUIManager : MonoBehaviour
 
     public float distance = 0.5f;
     public float verticalOffset = -0.5f;
+
+    [SerializeField] public RayInteractor leftRayInteractor;
+    [SerializeField] public RayInteractor rightRayInteractor;
     
     
     public Transform positionSource;
@@ -42,4 +46,5 @@ public class XRUIManager : MonoBehaviour
         
         colorPicker.gameObject.SetActive(true);
     }
+
 }
