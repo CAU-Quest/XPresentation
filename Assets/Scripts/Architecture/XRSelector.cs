@@ -126,6 +126,17 @@ public class XRSelector : MonoBehaviour
         }
     }
 
+    public void Start()
+    {
+        vertexList = GetComponentsInChildren<VertexHandler>(true);
+        lineList = GetComponentsInChildren<BoundBoxLine>(true);
+        
+        for(int i = 0; i < vertexList.Length; i++)
+            vertexList[i].gameObject.SetActive(true);
+        for(int i = 0; i < lineList.Length; i++)
+            lineList[i].gameObject.SetActive(true);
+    }
+
 
     private void Update()
     {

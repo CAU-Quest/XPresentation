@@ -34,9 +34,8 @@ public class PreviewRenderTexture : MonoBehaviour
             
             Debug.Log("Render Texture : " + i);
             previewCamera.enabled = true;
-            previewCamera.targetTexture = renderTextures[i];
             MainSystem.Instance.GoToSlideByIndex(currentSlide - 3 + i);
-            previewCamera.Render();
+            previewCamera.RenderToCubemap(renderTextures[i]);
             previewCamera.enabled = false;
         }
 
