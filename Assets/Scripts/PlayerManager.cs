@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Oculus.Interaction;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -8,6 +9,7 @@ public class PlayerManager : MonoBehaviour
     public static PlayerManager Instance;
     
     public Transform player, eye, leftHandAnchor, rightHandAnchor, leftTip, rightTip;
+    public GrabInteractor leftGrabInteractor, rightGrabInteractor;
 
     private void Awake()
     {

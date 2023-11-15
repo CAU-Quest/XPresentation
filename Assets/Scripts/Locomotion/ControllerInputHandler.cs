@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Oculus.Interaction;
@@ -5,20 +6,26 @@ using UnityEngine;
 
 public class ControllerInputHandler : MonoBehaviour
 {
-    [SerializeField] private GrabInteractor leftGrabInteractor, rightGrabInteractor;
     private ControllerMovement _movement;
     private ControllerTurn _turn;
     private bool _lastActiveL, _lastActiveR;
+    private GrabInteractor _leftGrabInteractor, _rightGrabInteractor;
     private void Awake()
     {
         _movement = GetComponent<ControllerMovement>();
         _turn = GetComponent<ControllerTurn>();
     }
 
+    private void Start()
+    {
+        _leftGrabInteractor = PlayerManager.Instance.leftGrabInteractor;
+        _rightGrabInteractor = PlayerManager.Instance.rightGrabInteractor;
+    }
+
     private void Update()
     {
-        var isActiveL = OVRInput.Get(OVRInput.RawButton.LHandTrigger) && !leftGrabInteractor.isGrabbing;
-        var isActiveR = OVRInput.Get(OVRInput.RawButton.RHandTrigger) && !rightGrabInteractor.isGrabbing;
+        var isActiveL = OVRInput.Get(OVRInput.RawButton.LHandTrigger) && !_leftGrabInteractor.isGrabbing;
+        var isActiveR = OVRInput.Get(OVRInput.RawButton.RHandTrigger) && !_rightGrabInteractor.isGrabbing;
         
         if(_lastActiveL && _lastActiveR && !(isActiveL && isActiveR)) _turn.ResetProperty();
         if(!_lastActiveL && isActiveL) _movement.SetPropertyL();

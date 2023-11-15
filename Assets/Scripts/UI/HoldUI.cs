@@ -9,6 +9,9 @@ using UnityEngine.UI;
 
 public abstract class HoldUI : MonoBehaviour
 {
+    private enum Controller { Left, Right }
+
+    [SerializeField] private Controller handness;
     [SerializeField] private OVRInput.Button triggerButton;
     [SerializeField] private float rotationAngle;
     [SerializeField] private bool allowAllSwitchOff;
@@ -50,7 +53,7 @@ public abstract class HoldUI : MonoBehaviour
     {
         if (!_isUIOpened && OVRInput.GetDown(triggerButton))
         {
-            transform.position = PlayerManager.Instance.leftTip.position;
+            transform.position = (handness == Controller.Left)? PlayerManager.Instance.leftTip.position  :PlayerManager.Instance.rightTip.position;
             transform.LookAt(transform.position * 2 - (PlayerManager.Instance.eye.position - new Vector3(0f, 0.1f, 0f)));
             progressCanvas.gameObject.SetActive(true);
             StartCoroutine(PlayerManager.Instance.VibrateController(0.2f, 1f, 1f, OVRInput.Controller.LTouch));

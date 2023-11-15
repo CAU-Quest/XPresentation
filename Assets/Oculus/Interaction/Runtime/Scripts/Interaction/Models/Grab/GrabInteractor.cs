@@ -54,7 +54,7 @@ namespace Oculus.Interaction
         private GrabInteractable _selectedInteractableOverride;
         private bool _isSelectionOverriden = false;
 
-        [HideInInspector] public bool isGrabbing;
+        public bool isGrabbing;
         [HideInInspector] public Action onSelect, onUnselect;
         
         protected override void Awake()
