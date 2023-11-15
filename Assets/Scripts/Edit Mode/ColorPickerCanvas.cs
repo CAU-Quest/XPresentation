@@ -5,6 +5,7 @@ using UnityEngine;
 public class ColorPickerCanvas : MonoBehaviour
 {
     //private Canvas canvas;
+    [SerializeField]
     private Renderer renderer;
 
     void Start()
@@ -30,5 +31,6 @@ public class ColorPickerCanvas : MonoBehaviour
     private void ColorFinished(Color finishedColor)
     {
         Debug.Log("You chose the color " + ColorUtility.ToHtmlStringRGBA(finishedColor));
+        gameObject.SetActive(false);
     }
 }

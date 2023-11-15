@@ -38,7 +38,7 @@ public class SelectObject : MonoBehaviour
         if(XRSelector.Instance.centerPositionByVertex) XRSelector.Instance.centerPositionByVertex.enabled = false;
         if(XRSelector.Instance.boundBox) XRSelector.Instance.boundBox.enabled = false;
         XRSelector.Instance.selectedObject = gameObject;
-        XRSelector.Instance.SetComponent(BoundObjectType);
+        XRSelector.Instance.SetComponent(this, BoundObjectType);
         
         XRSelector.Instance.transform.rotation = transform.rotation;
 
@@ -72,8 +72,8 @@ public class SelectObject : MonoBehaviour
             
             XRSelector.Instance.lineList[0].gameObject.SetActive(true);
             XRSelector.Instance.lineList[2].gameObject.SetActive(true);
-            XRSelector.Instance.lineList[3].gameObject.SetActive(true);
             XRSelector.Instance.lineList[4].gameObject.SetActive(true);
+            XRSelector.Instance.lineList[5].gameObject.SetActive(true);
             
             
             XRSelector.Instance.vertexList[0].gameObject.SetActive(true);
