@@ -7,10 +7,11 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public abstract class HoldingUI : MonoBehaviour
+public abstract class HoldUI : MonoBehaviour
 {
     [SerializeField] private OVRInput.Button triggerButton;
     [SerializeField] private float rotationAngle;
+    [SerializeField] private bool allowAllSwitchOff;
 
     [SerializeField] private Transform uiCanvas, progressCanvas;
     [SerializeField] protected Transform sector;
@@ -24,18 +25,24 @@ public abstract class HoldingUI : MonoBehaviour
     [SerializeField] protected Color selectedColor;
     
     private float _holdTime;
-    [SerializeField] private bool _isUIOpened, _isStartToOpen;
-    private Image _closeButtonImage;
+    private bool _isUIOpened, _isStartToOpen;
+    private Image _closeButtonImage, _sectorImage;
     private WaitForSeconds _waitForSeconds;
     
     protected int selectionIndex;
     
     private void Awake()
     {
-        _waitForSeconds = new WaitForSeconds(0.3f);
+        _sectorImage = sector.GetComponentInChildren<Image>();
         _closeButtonImage = closeButton.GetComponent<Image>();
+    }
+
+    protected virtual void Start()
+    {
+        _waitForSeconds = new WaitForSeconds(0.3f);
         _holdTime = 0f;
-        
+        selectionIndex = -1;
+
         StartCoroutine(CloseUI());
     }
 
@@ -44,7 +51,7 @@ public abstract class HoldingUI : MonoBehaviour
         if (!_isUIOpened && OVRInput.GetDown(triggerButton))
         {
             transform.position = PlayerManager.Instance.leftTip.position;
-            transform.LookAt(transform.position * 2 - PlayerManager.Instance.eye.position);
+            transform.LookAt(transform.position * 2 - (PlayerManager.Instance.eye.position - new Vector3(0f, 0.1f, 0f)));
             progressCanvas.gameObject.SetActive(true);
             StartCoroutine(PlayerManager.Instance.VibrateController(0.2f, 1f, 1f, OVRInput.Controller.LTouch));
             _isStartToOpen = true;
@@ -72,10 +79,11 @@ public abstract class HoldingUI : MonoBehaviour
             }
             _holdTime = 0f;
             slider.value = 0f;
+            progressCanvas.gameObject.SetActive(false);
         }
     }
 
-    protected virtual void OpenUI()
+    private void OpenUI()
     {
         uiCanvas.DOKill();
         uiCanvas.localScale = new Vector3();
@@ -88,7 +96,6 @@ public abstract class HoldingUI : MonoBehaviour
     
     private IEnumerator CloseUI()
     {
-        selectionIndex = 0;
         uiCanvas.DOKill();
         uiCanvas.DOScale(0f, 0.3f).SetEase(Ease.InCirc);
         
@@ -130,13 +137,27 @@ public abstract class HoldingUI : MonoBehaviour
     
     protected void SelectSector(int index, bool isTrue)
     {
-        if(isTrue) sector.DOLocalRotate(new Vector3(0f, 0f,  -rotationAngle * (index - 1)), 0.3f).SetEase(Ease.OutBack);
+        var duration = 0.3f;
+        if (allowAllSwitchOff)
+        {
+            if (isTrue && _sectorImage.color.a == 0f)
+            {
+                _sectorImage.DOFade(1f, duration);
+                duration = 0f;
+            }
+            else if (!isTrue && selectionIndex == 0 && _sectorImage.color.a > 0f)
+            {
+                _sectorImage.DOFade(0f, duration);
+            }
+        }
+        if(isTrue) sector.DOLocalRotate(new Vector3(0f, 0f,  -rotationAngle * (index - 1)), duration).SetEase(Ease.OutBack);
         sectorButtons[index - 1].DOScale(isTrue ? 1.1f : 0.9f, 0.3f);
         sectorButtonTexts[index - 1].DOFade(isTrue ? 1f : 0f, 0.3f);
     }
 
     protected virtual void SelectButton(bool isTrue) //true = select, false = unselect
     {
+        if(allowAllSwitchOff && isTrue) UnselectExcept(0);
         _closeButtonImage.DOColor(isTrue ? selectedColor : defaultColor, 0.1f);
     }
 }

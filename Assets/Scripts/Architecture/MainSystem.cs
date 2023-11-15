@@ -25,7 +25,6 @@ public class MainSystem : MonoBehaviour, ISubject
     public float slideInterval;
     public bool isPlayingAnimation = true;
 
-
     public int moved;
     public int count;
     public int into;

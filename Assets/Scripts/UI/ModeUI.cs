@@ -7,13 +7,13 @@ using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 using Image = UnityEngine.UI.Image;
 
-public class ModeUI : HoldingUI
+public class ModeUI : HoldUI
 {
     private enum SelectableAction { Close, Edit, Animation, Preview }
 
-    protected override void OpenUI()
+    protected override void Start()
     {
-        base.OpenUI();
+        base.Start();
         Select((int)MainSystem.Instance.mode);
     }
 
