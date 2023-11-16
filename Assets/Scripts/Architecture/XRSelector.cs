@@ -31,16 +31,11 @@ public class XRSelector : MonoBehaviour
     
     public Material lineMaterial;
     
-    [HideInInspector]
     [Range(0.005f, 0.25f)] public float lineWidth = 0.03f;
-    [HideInInspector]
     public Color lineColor = Color.white;
-    [HideInInspector]
     public int numCapVertices = 0;
 
-
-    public GameObject Cursor;
-
+    [HideInInspector]
     public bool edgeSelected = false;
 
     void Awake()

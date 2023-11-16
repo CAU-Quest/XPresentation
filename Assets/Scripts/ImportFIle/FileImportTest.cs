@@ -11,7 +11,7 @@ public class FileImportTest : MonoBehaviour
 	// Warning: FileBrowser can only show 1 dialog at a time
 
 	
-	public RawImage _rawImage;
+	public GameObject loadedObject;
 	
 	public void LoadObjFile()
 	{
@@ -56,7 +56,7 @@ public class FileImportTest : MonoBehaviour
 		//						   FileBrowser.PickMode.Folders, false, null, null, "Select Folder", "Select" );
 
 		// Coroutine example
-		StartCoroutine( ShowLoadDialogCoroutine() );
+		StartCoroutine( ShowLoadObjDialogCoroutine() );
 	}
 	
 	public void LoadImageFile()
@@ -102,10 +102,10 @@ public class FileImportTest : MonoBehaviour
 		//						   FileBrowser.PickMode.Folders, false, null, null, "Select Folder", "Select" );
 
 		// Coroutine example
-		StartCoroutine( ShowLoadDialogCoroutine() );
+		StartCoroutine( ShowLoadImageDialogCoroutine() );
 	}
 
-	IEnumerator ShowLoadDialogCoroutine()
+	IEnumerator ShowLoadObjDialogCoroutine()
 	{
 		// Show a load file dialog and wait for a response from user
 		// Load file/folder: both, Allow multiple selection: true
@@ -143,7 +143,45 @@ public class FileImportTest : MonoBehaviour
 			*/
 			
 			var textStream = new MemoryStream(bytes);
-			var loadedObj = new OBJLoader().Load(textStream);
+			loadedObject = new OBJLoader().Load(textStream);
+		}
+	}
+	
+	
+	IEnumerator ShowLoadImageDialogCoroutine()
+	{
+		// Show a load file dialog and wait for a response from user
+		// Load file/folder: both, Allow multiple selection: true
+		// Initial path: default (Documents), Initial filename: empty
+		// Title: "Load File", Submit button text: "Load"
+		yield return FileBrowser.WaitForLoadDialog( FileBrowser.PickMode.FilesAndFolders, true, null, null, "Load Files and Folders", "Load" );
+
+		// Dialog is closed
+		// Print whether the user has selected some files/folders or cancelled the operation (FileBrowser.Success)
+		Debug.Log( FileBrowser.Success );
+
+		if( FileBrowser.Success )
+		{
+			// Print paths of the selected files (FileBrowser.Result) (null, if FileBrowser.Success is false)
+			for( int i = 0; i < FileBrowser.Result.Length; i++ )
+				Debug.Log( FileBrowser.Result[i] );
+
+			// Read the bytes of the first file via FileBrowserHelpers
+			// Contrary to File.ReadAllBytes, this function works on Android 10+, as well
+			byte[] bytes = FileBrowserHelpers.ReadBytesFromFile( FileBrowser.Result[0] );
+
+			// Or, copy the first file to persistentDataPath
+			string destinationPath = Path.Combine( Application.persistentDataPath, FileBrowserHelpers.GetFilename( FileBrowser.Result[0] ) );
+			FileBrowserHelpers.CopyFile( FileBrowser.Result[0], destinationPath );
+
+			Texture2D loadedTexture = new Texture2D(1, 1);
+			loadedTexture.LoadImage(bytes);
+
+
+			//Rect imageSize = new Rect(0, 0, loadedTexture.width, loadedTexture.height);
+
+
+			loadedObject.GetComponentInChildren<MeshRenderer>().sharedMaterial.mainTexture = loadedTexture;
 		}
 	}
 }
