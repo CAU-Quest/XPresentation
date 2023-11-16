@@ -9,18 +9,52 @@ using UnityEngine.UI;
 
 public class SliderButton : MonoBehaviour
 {
-    [SerializeField] private GrabInteractable handle;
-    [SerializeField] private Image graduationImage, valuePanelImage, handleValuePanelImage;
+    [SerializeField] private Transform handle;
+    [SerializeField] private Image graduationImage, graduationShadowImage, valuePanelImage, handleValuePanelImage;
     [SerializeField] private TextMeshProUGUI valueText, handleValueText;
 
-    [SerializeField] private GrabInteractor _activeHandGrabInteractor;
-
-    private bool _turnOff, _isGrabbing;
+    private Transform _activeTipTransform;
+    private bool _turnOff, _isSelectingHandle;
+    private Vector3 _handleInitialLocalPos;
+    private const float SwipeLength = 0.2f;
     
     private void Start()
     {
-        ReleaseHandle();
+        _handleInitialLocalPos = handle.localPosition;
+        UnselectHandle();
         TurnOffHandle();
+    }
+
+    private void Update()
+    {
+        if (!_isSelectingHandle) return;
+
+        var value = UpdateHandleTransform();
+        UpdateValue(value);
+    }
+
+    private float UpdateHandleTransform()
+    {
+        var tipPosX = _activeTipTransform.position.x;
+        var initialHandlePos = transform.TransformPoint(_handleInitialLocalPos);
+        if (tipPosX - initialHandlePos.x > SwipeLength)
+        {
+            handle.position = new Vector3(initialHandlePos.x + SwipeLength, initialHandlePos.y, initialHandlePos.z);
+        }
+        else if(tipPosX - initialHandlePos.x < -SwipeLength)
+        {
+            handle.position = new Vector3(initialHandlePos.x - SwipeLength, initialHandlePos.y, initialHandlePos.z);
+        }
+        else
+        {
+            handle.position = new Vector3(tipPosX, initialHandlePos.y, initialHandlePos.z);
+        }
+        return handle.localPosition.x;
+    }
+
+    private void UpdateValue(float value)
+    {
+        
     }
 
     public void TurnOnHandle() //onHover
@@ -30,20 +64,18 @@ public class SliderButton : MonoBehaviour
     
     public void TurnOffHandle() //onUnhover
     {
-        if (_isGrabbing) _turnOff = true;
+        if (_isSelectingHandle) _turnOff = true;
         else handle.gameObject.SetActive(false);
     }
     
-    public void GrabHandle() //onSelect
+    public void SelectHandle() //Handle_onSelect
     {
-        SetActiveGrabInteractor();
-        //if (_activeHandGrabInteractor == null) return; 
-        
-        _activeHandGrabInteractor.ForceSelect(handle);
-        _isGrabbing = true;
+        SetActiveTipTransform();
+        _isSelectingHandle = true;
         
         DOKill();
         graduationImage.DOFade(1f, 0.2f).SetEase(Ease.OutCirc);
+        graduationShadowImage.DOFade(1f, 0.2f).SetEase(Ease.OutCirc);
         handleValuePanelImage.DOFade(1f, 0.2f).SetEase(Ease.OutCirc);
         handleValueText.DOFade(1f, 0.2f).SetEase(Ease.OutCirc);
         
@@ -51,34 +83,24 @@ public class SliderButton : MonoBehaviour
         valueText.DOFade(0f, 0.2f).SetEase(Ease.InCirc);
     }
 
-    public void ReleaseHandle() //onUnselect
+    public void UnselectHandle() //Handle_onUnselect
     {
-        if(_activeHandGrabInteractor != null) _activeHandGrabInteractor.ForceRelease();
-            
-        _activeHandGrabInteractor = null;
-        _isGrabbing = false;
+        _isSelectingHandle = false;
+        _activeTipTransform = null;
         if(_turnOff) handle.gameObject.SetActive(false);
-        handle.transform.localPosition = new Vector3(0f, 0f, handle.transform.localPosition.z);
+        handle.transform.localPosition = _handleInitialLocalPos;
         
         DOKill();
         graduationImage.DOFade(0f, 0.2f).SetEase(Ease.InCirc);
+        graduationShadowImage.DOFade(0f, 0.2f).SetEase(Ease.InCirc);
         handleValuePanelImage.DOFade(0f, 0.2f).SetEase(Ease.InCirc);
         handleValueText.DOFade(0f, 0.2f).SetEase(Ease.InCirc);
         
         valuePanelImage.DOFade(1f, 0.2f).SetEase(Ease.OutCirc);
         valueText.DOFade(1f, 0.2f).SetEase(Ease.OutCirc);
     }
-
-    private void DOKill()
-    {
-        graduationImage.DOKill();
-        handleValuePanelImage.DOKill();
-        handleValueText.DOKill();
-        valuePanelImage.DOKill();
-        valueText.DOKill();
-    }
-
-    private void SetActiveGrabInteractor()
+    
+    private void SetActiveTipTransform()
     {
         var left = OVRInput.Get(OVRInput.RawButton.LIndexTrigger);
         var right = OVRInput.Get(OVRInput.RawButton.RIndexTrigger);
@@ -87,15 +109,25 @@ public class SliderButton : MonoBehaviour
             var handlePos = handle.transform.position;
             var distanceL = Vector3.Distance(handlePos, PlayerManager.Instance.leftTip.position);
             var distanceR = Vector3.Distance(handlePos, PlayerManager.Instance.rightTip.position);
-            _activeHandGrabInteractor = (distanceL < distanceR)? PlayerManager.Instance.leftGrabInteractor : PlayerManager.Instance.rightGrabInteractor;
+            _activeTipTransform = (distanceL < distanceR)? PlayerManager.Instance.leftTip : PlayerManager.Instance.rightTip;
         }
         else if (left)
         {
-            _activeHandGrabInteractor = PlayerManager.Instance.leftGrabInteractor;
+            _activeTipTransform = PlayerManager.Instance.leftTip;
         }
         else if (right)
         {
-            _activeHandGrabInteractor = PlayerManager.Instance.rightGrabInteractor;
+            _activeTipTransform = PlayerManager.Instance.rightTip;
         }
+    }
+
+    private void DOKill()
+    {
+        graduationImage.DOKill();
+        graduationShadowImage.DOKill();
+        handleValuePanelImage.DOKill();
+        handleValueText.DOKill();
+        valuePanelImage.DOKill();
+        valueText.DOKill();
     }
 }

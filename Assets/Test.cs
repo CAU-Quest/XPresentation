@@ -6,15 +6,20 @@ using UnityEngine;
 public class Test : MonoBehaviour
 {
     public GrabInteractable a;
-    // Start is called before the first frame update
-    void Start()
+
+    public void Select()
     {
-        
+        PlayerManager.Instance.leftGrabInteractor.ForceSelect(a);
+    }
+    
+    public void Release()
+    {
+        PlayerManager.Instance.leftGrabInteractor.ForceRelease();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.Space)) PlayerManager.Instance.leftGrabInteractor.ForceSelect(a);
+        if (Input.GetKey(KeyCode.Space)) ;
     }
 }
