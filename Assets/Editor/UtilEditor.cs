@@ -38,10 +38,9 @@ public class ChangeColorWithColorPickerEditor : Editor
         {
             SelectObject.OpenColorPicker();
         }
-
     }
-    
 }
+
 [CustomEditor(typeof(StageSetter))]
 public class StageSetterEditor : Editor
 {

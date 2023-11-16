@@ -6,35 +6,28 @@ using UnityEngine;
 
 public class SnapListConroller : MonoBehaviour
 {
+    [SerializeField]
     private SlideListSnapPoseDelegate listSnapPoseDelegate;
 
     private SnapInteractable snapInteractable;
 
     public GameObject previewCube;
 
-    public PreviewCube[] previewCubeList;
+    public List<PreviewCube> previewCubeList = new List<PreviewCube>();
     
     // Start is called before the first frame update
     void Start()
     {
-        listSnapPoseDelegate = GetComponentInChildren<SlideListSnapPoseDelegate>();
+        //listSnapPoseDelegate = GetComponentInChildren<SlideListSnapPoseDelegate>();
         snapInteractable = GetComponentInChildren<SnapInteractable>();
-
-        for (int i = 0; i < 7; i++)
-        {
-            GameObject go = PrefabUtility.InstantiatePrefab(previewCube) as GameObject;
-            go.transform.SetParent(transform.parent);
-            go.transform.position = Vector3.zero;
-            go.transform.rotation = Quaternion.identity;
-
-            PreviewCube cube = go.GetComponent<PreviewCube>();
-            listSnapPoseDelegate.TrackElement(cube.snapInteractor.Identifier, new Pose(Vector3.zero, Quaternion.identity));
-            
-        }
     }
 
-    // Update is called once per frame
     void Update()
     {
+        previewCubeList.Sort((PreviewCube p1, PreviewCube p2) => p1.transform.localPosition.x.CompareTo(p2.transform.localPosition.x));
+        for (int i = 0; i < 7; i++)
+        {
+            previewCubeList[i].SetNumber(i + 1);
+        }
     }
 }
