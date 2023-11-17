@@ -2039,8 +2039,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c143faa4210e274899c52f5c1a3f7cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftGrabInteractor: {fileID: 4812585653185715719}
-  rightGrabInteractor: {fileID: 1640231777954582473}
 --- !u!114 &981441567895297104
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2086,6 +2084,8 @@ MonoBehaviour:
   rightTip: {fileID: 6959591623107599679}
   leftGrabInteractor: {fileID: 4812585653185715719}
   rightGrabInteractor: {fileID: 1640231777954582473}
+  leftRayInteractor: {fileID: 7752576565266787318}
+  rightRayInteractor: {fileID: 6373080181017225241}
 --- !u!1 &3098834705587222631
 GameObject:
   m_ObjectHideFlags: 0
@@ -6800,6 +6800,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7956160891979918893, guid: 44cf50d1a2e68b64791a3e3143ccda19,
+        type: 3}
+      propertyPath: _hideWhenNoInteractable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7983261105550752962, guid: 44cf50d1a2e68b64791a3e3143ccda19,
         type: 3}
       propertyPath: _controller
@@ -6808,7 +6813,7 @@ PrefabInstance:
     - target: {fileID: 8105528931859149806, guid: 44cf50d1a2e68b64791a3e3143ccda19,
         type: 3}
       propertyPath: _maxRayLength
-      value: 0.1
+      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6911,6 +6916,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7956160891979918893, guid: 44cf50d1a2e68b64791a3e3143ccda19,
+        type: 3}
+      propertyPath: _hideWhenNoInteractable
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7983261105550752962, guid: 44cf50d1a2e68b64791a3e3143ccda19,
         type: 3}
       propertyPath: _controller
@@ -6919,7 +6929,7 @@ PrefabInstance:
     - target: {fileID: 8105528931859149806, guid: 44cf50d1a2e68b64791a3e3143ccda19,
         type: 3}
       propertyPath: _maxRayLength
-      value: 0.1
+      value: 0.3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

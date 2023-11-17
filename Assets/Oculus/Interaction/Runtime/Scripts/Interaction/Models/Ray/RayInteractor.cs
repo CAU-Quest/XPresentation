@@ -18,6 +18,7 @@
  * limitations under the License.
  */
 
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -67,6 +68,9 @@ namespace Oculus.Interaction
         public SurfaceHit? CollisionInfo { get; protected set; }
         public Ray Ray { get; protected set; }
 
+        [HideInInspector] public Action<RayInteractable> onSelect;
+        [HideInInspector] public Action onUnselect;
+        
         protected override void Awake()
         {
             base.Awake();
@@ -150,6 +154,8 @@ namespace Oculus.Interaction
         {
             if (interactable != null)
             {
+                onSelect?.Invoke(interactable);
+                
                 _movedHit = CollisionInfo.Value;
                 Pose hitPose = new Pose(_movedHit.Point, Quaternion.LookRotation(_movedHit.Normal));
                 Pose backHitPose = new Pose(_movedHit.Point, Quaternion.LookRotation(-_movedHit.Normal));
@@ -166,6 +172,8 @@ namespace Oculus.Interaction
         {
             if (_movement != null)
             {
+                onUnselect?.Invoke();
+                
                 _movement.StopAndSetPose(_movement.Pose);
             }
             base.InteractableUnselected(interactable);

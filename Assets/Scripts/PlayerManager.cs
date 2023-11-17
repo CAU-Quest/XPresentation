@@ -10,6 +10,7 @@ public class PlayerManager : MonoBehaviour
     
     public Transform player, eye, leftHandAnchor, rightHandAnchor, leftTip, rightTip;
     public GrabInteractor leftGrabInteractor, rightGrabInteractor;
+    public RayInteractor leftRayInteractor, rightRayInteractor;
 
     private void Awake()
     {

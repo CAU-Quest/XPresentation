@@ -55,7 +55,8 @@ namespace Oculus.Interaction
         private bool _isSelectionOverriden = false;
 
         public bool isGrabbing;
-        [HideInInspector] public Action onSelect, onUnselect;
+        [HideInInspector] public Action<GrabInteractable> onSelect;
+        [HideInInspector] public Action onUnselect;
         
         protected override void Awake()
         {
@@ -133,7 +134,7 @@ namespace Oculus.Interaction
         public void ForceSelect(GrabInteractable interactable)
         {
             isGrabbing = true;
-            onSelect?.Invoke();
+            onSelect?.Invoke(interactable);
             
             _isSelectionOverriden = true;
             _selectedInteractableOverride = interactable;
@@ -181,7 +182,7 @@ namespace Oculus.Interaction
         protected override void InteractableSelected(GrabInteractable interactable)
         {
             isGrabbing = true;
-            onSelect?.Invoke();
+            onSelect?.Invoke(interactable);
             
             Pose target = _grabTarget.GetPose();
             Pose source = _interactable.GetGrabSourceForTarget(target);            

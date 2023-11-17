@@ -5,22 +5,56 @@ using DG.Tweening;
 using Oculus.Interaction;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class SliderButton : MonoBehaviour
 {
+    private enum Mode { Transform, Color }
+    
+    private enum Usage
+    {
+        PositionX, PositionY, PositionZ, RotationX, RotationY, RotationZ, ScaleX, ScaleY, ScaleZ,
+        ColorR, ColorG, ColorB, ColorA
+    };
+    
+    [SerializeField] private Mode mode;
+    [SerializeField] private Usage usage;
+
+    
     [SerializeField] private Transform handle;
     [SerializeField] private Image graduationImage, graduationShadowImage, valuePanelImage, handleValuePanelImage;
     [SerializeField] private TextMeshProUGUI valueText, handleValueText;
 
+    private const float SwipeLength = 0.2f;
+    private const float MaxTransformOffset = 1f;
+    
+    private SelectUI _selectUI;
+    private Transform _selectedTransform;
+    private Material _selectedMaterial;
+    
     private Transform _activeTipTransform;
     private bool _turnOff, _isSelectingHandle;
-    private Vector3 _handleInitialLocalPos;
-    private const float SwipeLength = 0.2f;
     
+    private Vector3 _initialHandleLocalPos;
+    private float _initialValue;
+    
+    private void Awake()
+    {
+        _selectUI = GetComponentInParent<SelectUI>();
+        _selectUI.initUI += InitProperty;
+        InitProperty(); //debug
+    }
+
+    private void InitProperty()
+    {
+        if(mode == Mode.Transform) _selectedTransform = _selectUI.selectedProperty.Transform;
+        else _selectedMaterial = _selectUI.selectedProperty.Material;
+    }
+
     private void Start()
     {
-        _handleInitialLocalPos = handle.localPosition;
+        _initialHandleLocalPos = handle.localPosition;
         UnselectHandle();
         TurnOffHandle();
     }
@@ -36,7 +70,7 @@ public class SliderButton : MonoBehaviour
     private float UpdateHandleTransform()
     {
         var tipPosX = _activeTipTransform.position.x;
-        var initialHandlePos = transform.TransformPoint(_handleInitialLocalPos);
+        var initialHandlePos = transform.TransformPoint(_initialHandleLocalPos);
         if (tipPosX - initialHandlePos.x > SwipeLength)
         {
             handle.position = new Vector3(initialHandlePos.x + SwipeLength, initialHandlePos.y, initialHandlePos.z);
@@ -52,9 +86,72 @@ public class SliderButton : MonoBehaviour
         return handle.localPosition.x;
     }
 
-    private void UpdateValue(float value)
+    private void UpdateValue(float value) //value = -500 ~ 500
     {
+        Vector3 position = new Vector3(), scale  = new Vector3();
+        Quaternion rotation = new Quaternion();
+        Color color = new Color();
         
+        value /= 500f; //-1 ~ 1
+        if (mode == Mode.Transform)
+        {
+            value *= MaxTransformOffset;
+            value += _initialValue;
+            
+            position = _selectedTransform.position;
+            rotation = _selectedTransform.rotation;
+            scale = _selectedTransform.localScale;
+        }
+        else if (mode == Mode.Color)
+        {
+            color = _selectedMaterial.color;
+        }
+        
+        switch (usage)
+        {
+            case Usage.PositionX:
+                _selectedTransform.position = new Vector3(value, position.y ,position.z);
+                break;
+            case Usage.PositionY:
+                _selectedTransform.position = new Vector3(position.x, value, position.z);
+                break;
+            case Usage.PositionZ:
+                _selectedTransform.position = new Vector3(position.x, position.y, value);
+                break;
+            case Usage.RotationX:
+                _selectedTransform.rotation = Quaternion.Euler(value, rotation.y ,rotation.z);
+                break;
+            case Usage.RotationY:
+                _selectedTransform.rotation = Quaternion.Euler(rotation.x, value, rotation.z);
+                break;
+            case Usage.RotationZ:
+                _selectedTransform.rotation = Quaternion.Euler(rotation.x, rotation.y, value);
+                break;
+            case Usage.ScaleX:
+                _selectedTransform.localScale = new Vector3(value, scale.y ,scale.z);
+                break;
+            case Usage.ScaleY:
+                _selectedTransform.localScale = new Vector3(scale.x, value, scale.z);
+                break;
+            case Usage.ScaleZ:
+                _selectedTransform.localScale = new Vector3(scale.x, scale.y, value);
+                break;
+            case Usage.ColorR:
+                _selectedMaterial.color = new Color(value, color.g, color.b, color.a);
+                break;
+            case Usage.ColorG:
+                _selectedMaterial.color = new Color(color.r, value, color.b, color.a);
+                break;
+            case Usage.ColorB:
+                _selectedMaterial.color = new Color(color.r, color.g, value, color.a);
+                break;
+            case Usage.ColorA:
+                _selectedMaterial.color = new Color(color.r, color.g, color.b, value);
+                break;
+        }
+
+        valueText.text = value.ToString("0.0");
+        handleValueText.text = value.ToString("0.0");
     }
 
     public void TurnOnHandle() //onHover
@@ -71,6 +168,7 @@ public class SliderButton : MonoBehaviour
     public void SelectHandle() //Handle_onSelect
     {
         SetActiveTipTransform();
+        SetInitialValue();
         _isSelectingHandle = true;
         
         DOKill();
@@ -85,10 +183,10 @@ public class SliderButton : MonoBehaviour
 
     public void UnselectHandle() //Handle_onUnselect
     {
+        ResetHandlePosition();
         _isSelectingHandle = false;
         _activeTipTransform = null;
-        if(_turnOff) handle.gameObject.SetActive(false);
-        handle.transform.localPosition = _handleInitialLocalPos;
+        if (_turnOff) handle.gameObject.SetActive(false);
         
         DOKill();
         graduationImage.DOFade(0f, 0.2f).SetEase(Ease.InCirc);
@@ -120,6 +218,52 @@ public class SliderButton : MonoBehaviour
             _activeTipTransform = PlayerManager.Instance.rightTip;
         }
     }
+    
+    private void SetInitialValue()
+    {
+        switch (usage)
+        {
+            case Usage.PositionX:
+                _initialValue = _selectedTransform.position.x;
+                break;
+            case Usage.PositionY:
+                _initialValue = _selectedTransform.position.y;
+                break;
+            case Usage.PositionZ:
+                _initialValue = _selectedTransform.position.z;
+                break;
+            case Usage.RotationX:
+                _initialValue = _selectedTransform.rotation.x;
+                break;
+            case Usage.RotationY:
+                _initialValue = _selectedTransform.rotation.y;
+                break;
+            case Usage.RotationZ:
+                _initialValue = _selectedTransform.rotation.z;
+                break;
+            case Usage.ScaleX:
+                _initialValue = _selectedTransform.localScale.x;
+                break;
+            case Usage.ScaleY:
+                _initialValue = _selectedTransform.localScale.y;
+                break;
+            case Usage.ScaleZ:
+                _initialValue = _selectedTransform.localScale.z;
+                break;
+            case Usage.ColorR:
+                _initialValue = _selectedMaterial.color.r;
+                break;
+            case Usage.ColorG:
+                _initialValue = _selectedMaterial.color.g;
+                break;
+            case Usage.ColorB:
+                _initialValue = _selectedMaterial.color.b;
+                break;
+            case Usage.ColorA:
+                _initialValue = _selectedMaterial.color.a;
+                break;
+        }
+    }
 
     private void DOKill()
     {
@@ -130,4 +274,11 @@ public class SliderButton : MonoBehaviour
         valuePanelImage.DOKill();
         valueText.DOKill();
     }
+    
+    private void ResetHandlePosition()
+    {
+        if(mode == Mode.Transform) handle.transform.localPosition = _initialHandleLocalPos;
+        else if (mode == Mode.Color) handle.transform.localPosition = new Vector3(_initialValue * 500f, _initialHandleLocalPos.y, _initialHandleLocalPos.z);
+    }
+
 }
