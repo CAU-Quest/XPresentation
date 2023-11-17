@@ -20,14 +20,14 @@ public class SliderButton : MonoBehaviour
     
     [SerializeField] private Mode mode;
     [SerializeField] private Usage usage;
-
+    [SerializeField]private float maxOffset = 1f;
     
     [SerializeField] private Transform handle;
-    [SerializeField] private Image graduationImage, graduationShadowImage, valuePanelImage, handleValuePanelImage;
+    [SerializeField] private Image buttonImage, handleImage, graduationImage, graduationShadowImage, valuePanelImage, handleValuePanelImage;
     [SerializeField] private TextMeshProUGUI valueText, handleValueText;
+    [SerializeField] private Color handleDefaultColor, defaultColor, hoverColor, selectColor;
 
     private const float SwipeLength = 0.2f;
-    private const float MaxTransformOffset = 1f;
     
     private SelectUI _selectUI;
     private Transform _selectedTransform;
@@ -88,18 +88,17 @@ public class SliderButton : MonoBehaviour
 
     private void UpdateValue(float value) //value = -500 ~ 500
     {
-        Vector3 position = new Vector3(), scale  = new Vector3();
-        Quaternion rotation = new Quaternion();
+        Vector3 position = new Vector3(), scale  = new Vector3(), rotation = new Vector3();
         Color color = new Color();
         
         value /= 500f; //-1 ~ 1
         if (mode == Mode.Transform)
         {
-            value *= MaxTransformOffset;
+            value *= maxOffset;
             value += _initialValue;
             
             position = _selectedTransform.position;
-            rotation = _selectedTransform.rotation;
+            rotation = _selectedTransform.rotation.eulerAngles;
             scale = _selectedTransform.localScale;
         }
         else if (mode == Mode.Color)
@@ -167,6 +166,7 @@ public class SliderButton : MonoBehaviour
     
     public void SelectHandle() //Handle_onSelect
     {
+        transform.SetAsLastSibling();
         SetActiveTipTransform();
         SetInitialValue();
         _isSelectingHandle = true;
@@ -281,4 +281,20 @@ public class SliderButton : MonoBehaviour
         else if (mode == Mode.Color) handle.transform.localPosition = new Vector3(_initialValue * 500f, _initialHandleLocalPos.y, _initialHandleLocalPos.z);
     }
 
+    public void SetHoverColor()
+    {
+        buttonImage.DOColor(hoverColor, 0.2f);
+    }
+
+    public void SetSelectColor()
+    {
+        buttonImage.DOColor(selectColor, 0.2f);
+        handleImage.DOColor(hoverColor, 0.2f);
+    }
+
+    public void SetDefaultColor()
+    {
+        buttonImage.DOColor(defaultColor, 0.2f);
+        handleImage.DOColor(handleDefaultColor, 0f);
+    }
 }
