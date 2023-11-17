@@ -20,6 +20,13 @@ public class SnapListConroller : MonoBehaviour
     {
         //listSnapPoseDelegate = GetComponentInChildren<SlideListSnapPoseDelegate>();
         snapInteractable = GetComponentInChildren<SnapInteractable>();
+        
+        previewCubeList.Sort((PreviewCube p1, PreviewCube p2) => p1.transform.localPosition.x.CompareTo(p2.transform.localPosition.x));
+        for (int i = 0; i < 7; i++)
+        {
+            previewCubeList[i].SetNumber(i + 1);
+            previewCubeList[i].SetPreviousNumber(i + 1);
+        }
     }
 
     void Update()
@@ -30,4 +37,15 @@ public class SnapListConroller : MonoBehaviour
             previewCubeList[i].SetNumber(i + 1);
         }
     }
+
+    void ChangeSlideBySnappedPosition()
+    {
+        
+    }
+
+    public void CheckMessage()
+    {
+        Debug.Log("hello");
+    }
+    
 }

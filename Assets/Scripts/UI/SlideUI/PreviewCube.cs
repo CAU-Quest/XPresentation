@@ -10,8 +10,19 @@ public class PreviewCube : MonoBehaviour
 
     public TextMeshProUGUI textNumber;
 
+    private int previousNumber;
+
     public void SetNumber(int number)
     {
         textNumber.SetText(number.ToString());
+    }
+
+    public void SetPreviousNumber(int number)
+    {
+        previousNumber = number;
+    }
+    public int GetPreviousNumber()
+    {
+        return previousNumber;
     }
 }
