@@ -41,6 +41,37 @@ public class ChangeColorWithColorPickerEditor : Editor
     }
 }
 
+
+[CustomEditor(typeof(SnapListController))]
+public class SnapListControllerEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        SnapListController SelectObject = (SnapListController)target;
+        
+        
+        if (GUILayout.Button("Set Number"))
+        {
+            SelectObject.SetInitialNumber();
+        }
+        if (GUILayout.Button("Render Camera"))
+        {
+            SelectObject.RenderAllTexture();
+        }
+        if (GUILayout.Button("Swipe To Left"))
+        {
+            SelectObject.SwipeToLeft();
+        }
+        if (GUILayout.Button("Swipe To Right"))
+        {
+            SelectObject.SwipeToRight();
+        }
+    }
+}
+
+
 [CustomEditor(typeof(StageSetter))]
 public class StageSetterEditor : Editor
 {

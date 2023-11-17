@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Oculus.Interaction;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,93 +15,196 @@ public class SnapListController : MonoBehaviour
     public GameObject previewCube;
 
     public List<PreviewCube> previewCubeList = new List<PreviewCube>();
-    public List<RenderTexture> renderTextureList = new List<RenderTexture>();
+    public List<PreviewCube> SortedList = new List<PreviewCube>();
 
-    public int currentSlideNumber = 0;
-    private int beforeSlideNumber;
+    public PreviewCube selectingPreviewCube;
+    
+    public List<RenderTexture> renderTextureList = new List<RenderTexture>();
+    [SerializeField] public int currentSlideNumber = 0;
+    [SerializeField] private int beforeSlideNumber;
 
     public Camera previewRenderCamera;
+
+    private bool isInitialized = false;
     
     // Start is called before the first frame update
+    
     void Start()
     {
         //listSnapPoseDelegate = GetComponentInChildren<SlideListSnapPoseDelegate>();
         snapInteractable = GetComponentInChildren<SnapInteractable>();
         beforeSlideNumber = currentSlideNumber;
-        previewCubeList.Sort((PreviewCube p1, PreviewCube p2) => p1.transform.localPosition.x.CompareTo(p2.transform.localPosition.x));
-        for (int i = 0; i < 7; i++)
+        //SetTextureToPreviewCube();
+        SetNumberToPreviewCube();
+        RenderAllTexture();
+    }
+    
+    public void SetInitialNumber()
+    {
+        int count = 0;
+
+        
+        if (currentSlideNumber < 2) count += 2 - currentSlideNumber;
+        SortedList.Sort((PreviewCube p1, PreviewCube p2) => p1.transform.localPosition.x.CompareTo(p2.transform.localPosition.x));
+        for (int i = 0; i < SortedList.Count; i++)
         {
-            previewCubeList[i].SetNumber(i + 1);
-            previewCubeList[i].SetPreviousNumber(i + 1);
-            if (currentSlideNumber - 3 + i < 0 || currentSlideNumber - 3 + i >= MainSystem.Instance.GetSlideCount())
+            if (currentSlideNumber - 3 + i < 0)
             {
-                previewCubeList[i].SetInvisible();
+                SortedList[i].SetNumber(0);
+                SortedList[i].previousNumber = 0;
+                SortedList[i].SetInvisible();
+            }
+            else if (currentSlideNumber - 3 + i >= MainSystem.Instance.GetSlideCount())
+            {
+                SortedList[i].SetNumber(MainSystem.Instance.GetSlideCount() - 1);
+                SortedList[i].previousNumber = MainSystem.Instance.GetSlideCount() - 1;
+                SortedList[i].SetInvisible();
             }
             else
             {
-                previewCubeList[i].Setvisible();
+                SortedList[i].Setvisible();
+            }
+
+            if (SortedList[i].isVisible)
+            {
+                SortedList[i].SetNumber(currentSlideNumber + count - 2);
+                SortedList[i].previousNumber = currentSlideNumber + count++ - 2;
             }
         }
-        RenderAllTexture();
-        SetTextureToPreviewCube();
     }
 
-    void Update()
+    void LateUpdate()
     {
-        
-        int count = 0;
-        if (currentSlideNumber < 2) count += 2 - currentSlideNumber;
-        previewCubeList.Sort((PreviewCube p1, PreviewCube p2) => p1.transform.localPosition.x.CompareTo(p2.transform.localPosition.x));
-        for (int i = 0; i < 7; i++)
+        if (!isInitialized)
         {
-            if (currentSlideNumber - 3 + i < 0 || currentSlideNumber - 3 + i >= MainSystem.Instance.GetSlideCount())
-            {
-                previewCubeList[i].SetInvisible();
-            }
-            else
-            {
-                previewCubeList[i].Setvisible();
-            }
-
-            if(previewCubeList[i].isVisible)
-                previewCubeList[i].SetNumber(currentSlideNumber + count++ - 2);
-        }
+            Debug.Log("Init");
+            SetInitialNumber();
+            RenderAllTexture();
+            isInitialized = true;
+        }/*
         if (currentSlideNumber != beforeSlideNumber)
         {
             beforeSlideNumber = currentSlideNumber;
             RenderAllTexture();
         }
-        SetTextureToPreviewCube();
+        SetTextureToPreviewCube();*/
+    }
+
+    public void SetPreviousNumberToPreviewCube()
+    {
+        for (int i = 0; i < previewCubeList.Count; i++)
+        {
+            previewCubeList[i].SetCurrentNumberToPreviousNumber();
+        }
+    }
+
+    public void SetNumberToPreviewCube()
+    {
+        int count = 0;
+        if (currentSlideNumber < 2) count += 2 - currentSlideNumber;
+        SortedList.Sort((PreviewCube p1, PreviewCube p2) => p1.transform.localPosition.x.CompareTo(p2.transform.localPosition.x));
+        for (int i = 0; i < 7; i++)
+        {
+            if (currentSlideNumber - 3 + i < 0)
+            {
+                SortedList[i].SetNumber(0);
+                SortedList[i].previousNumber = 0;
+                SortedList[i].SetInvisible();
+            }
+            else if (currentSlideNumber - 3 + i >= MainSystem.Instance.GetSlideCount())
+            {
+                SortedList[i].SetNumber(MainSystem.Instance.GetSlideCount() - 1);
+                SortedList[i].previousNumber = MainSystem.Instance.GetSlideCount() - 1;
+                SortedList[i].SetInvisible();
+            }
+            else
+            {
+                SortedList[i].Setvisible();
+            }
+
+            if(SortedList[i].isVisible)
+                SortedList[i].SetNumber(currentSlideNumber + count++ - 2);
+        }
     }
 
     public void SetTextureToPreviewCube()
     {
-        for (int i = 0; i < 7; i++)
+        for (int i = 0; i < previewCubeList.Count; i++)
         {
-            if (currentSlideNumber - 3 + i < 0 || currentSlideNumber - 3 + i >= MainSystem.Instance.GetSlideCount()) continue;
-            if(previewCubeList[i].isVisible) previewCubeList[i].SetRenderTexture(renderTextureList[i]);
+            previewCubeList[i].SetRenderTexture(renderTextureList[i]);
         }
     }
-
+    
     public void RenderAllTexture()
     {
-        
         for (int i = 0; i < renderTextureList.Count; i++)
         {
-            if (currentSlideNumber - 3 + i < 0 || currentSlideNumber - 3 + i >= MainSystem.Instance.GetSlideCount()) continue;
-            
             previewRenderCamera.enabled = true;
-            MainSystem.Instance.GoToSlideByIndex(currentSlideNumber - 3 + i);
+            MainSystem.Instance.GoToSlideByIndex(previewCubeList[i].currentNumber);
             previewRenderCamera.RenderToCubemap(renderTextureList[i]);
             previewRenderCamera.enabled = false;
         }
         MainSystem.Instance.GoToSlideByIndex(currentSlideNumber);
-
     }
 
-    public void CheckMessage()
+    public void SwipeToLeft()
     {
-        Debug.Log("hello");
+        if (currentSlideNumber > 0)
+        {
+            PreviewCube element = SortedList[SortedList.Count - 1];
+            SortedList.Remove(element);
+            listSnapPoseDelegate.UntrackElement(element.snapInteractor.Identifier);
+            listSnapPoseDelegate.TrackElement(element.snapInteractor.Identifier, 
+                new Pose(transform.position + new Vector3(-0.24f, 0, 0), Quaternion.identity));
+
+            int newIndex = SortedList[0].currentNumber - 1;
+            element.SetNumber(newIndex);
+            element.previousNumber = newIndex;
+            if (newIndex >= 0 && newIndex != selectingPreviewCube.currentNumber)
+            {
+                element.Setvisible();
+            }
+            else
+            {
+                element.SetInvisible();
+            }
+        
+        
+            SortedList.Insert(0, element);
+            currentSlideNumber--;
+            RenderAllTexture();
+        }
     }
-    
+
+    public void SetSelectingPreviewCube(PreviewCube cube)
+    {
+        selectingPreviewCube = cube;
+    }
+
+    public void SwipeToRight()
+    {
+        if (currentSlideNumber < MainSystem.Instance.GetSlideCount())
+        {
+            PreviewCube element = SortedList[0];
+            SortedList.Remove(element);
+            listSnapPoseDelegate.UntrackElement(element.snapInteractor.Identifier);
+            listSnapPoseDelegate.TrackElement(element.snapInteractor.Identifier,
+                new Pose(transform.position + new Vector3(0.24f, 0, 0), Quaternion.identity));
+        
+            int newIndex = SortedList[SortedList.Count - 1].currentNumber + 1;
+            element.SetNumber(newIndex);
+            element.previousNumber = newIndex;
+            if (newIndex < MainSystem.Instance.GetSlideCount() && newIndex != selectingPreviewCube.currentNumber)
+            {
+                element.Setvisible();
+            }
+            else
+            {
+                element.SetInvisible();
+            }
+            SortedList.Add(element);
+            currentSlideNumber++;
+            RenderAllTexture();
+        }
+    }
 }
