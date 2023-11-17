@@ -12,6 +12,9 @@ Shader "Unlit/InverseCullCubeMapShader"
             Tags { "DisableBatching" = "True" }
 
             Cull Front
+            
+            ZTest Less
+            Zwrite On
 
             CGPROGRAM
             #pragma vertex vert
