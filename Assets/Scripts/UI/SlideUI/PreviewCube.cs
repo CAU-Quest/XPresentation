@@ -89,7 +89,7 @@ public class PreviewCube : MonoBehaviour
             snapListController.SetPreviousNumberToPreviewCube();
         }
         snapListController.RenderAllTexture();
-        if (currentNumber >= 0 && currentNumber < MainSystem.Instance.GetSlideCount())
-            MainSystem.Instance.GoToSlideByIndex(currentNumber);
+        //if (currentNumber >= 0 && currentNumber < MainSystem.Instance.GetSlideCount())
+         //   MainSystem.Instance.GoToSlideByIndex(currentNumber);
     }
 }

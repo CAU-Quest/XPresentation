@@ -67,8 +67,8 @@ public class SnapListController : MonoBehaviour
 
             if (SortedList[i].isVisible)
             {
-                SortedList[i].SetNumber(currentSlideNumber + count - 2);
-                SortedList[i].previousNumber = currentSlideNumber + count++ - 2;
+                SortedList[i].SetNumber(currentSlideNumber - 3 + i);
+                SortedList[i].previousNumber = currentSlideNumber - 3 + i;
             }
         }
     }
@@ -123,7 +123,7 @@ public class SnapListController : MonoBehaviour
             }
 
             if(SortedList[i].isVisible)
-                SortedList[i].SetNumber(currentSlideNumber + count++ - 2);
+                SortedList[i].SetNumber(currentSlideNumber - 3 + i);
         }
     }
 
@@ -158,8 +158,10 @@ public class SnapListController : MonoBehaviour
                 new Pose(transform.position + new Vector3(-0.24f, 0, 0), Quaternion.identity));
 
             int newIndex = SortedList[0].currentNumber - 1;
+            int temp = element.previousNumber;
             element.SetNumber(newIndex);
-            element.previousNumber = newIndex;
+            SetPreviousNumberToPreviewCube();
+            element.previousNumber = temp;
             if (newIndex >= 0 && newIndex != selectingPreviewCube.currentNumber)
             {
                 element.Setvisible();
@@ -192,8 +194,10 @@ public class SnapListController : MonoBehaviour
                 new Pose(transform.position + new Vector3(0.24f, 0, 0), Quaternion.identity));
         
             int newIndex = SortedList[SortedList.Count - 1].currentNumber + 1;
+            int temp = element.previousNumber;
             element.SetNumber(newIndex);
-            element.previousNumber = newIndex;
+            SetPreviousNumberToPreviewCube();
+            element.previousNumber = temp;
             if (newIndex < MainSystem.Instance.GetSlideCount() && newIndex != selectingPreviewCube.currentNumber)
             {
                 element.Setvisible();
