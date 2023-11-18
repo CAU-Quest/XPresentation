@@ -43,13 +43,16 @@ public class SliderButton : MonoBehaviour
     {
         _selectUI = GetComponentInParent<SelectUI>();
         _selectUI.initUI += InitProperty;
-        InitProperty(); //debug
     }
 
     private void InitProperty()
     {
         if(mode == Mode.Transform) _selectedTransform = _selectUI.selectedProperty.Transform;
         else _selectedMaterial = _selectUI.selectedProperty.Material;
+        
+        SetInitialValue();
+        valueText.text = _initialValue.ToString("0.0");
+        handleValueText.text = _initialValue.ToString("0.0");
     }
 
     private void Start()
