@@ -16,7 +16,6 @@ public class SelectUI : MonoBehaviour
     [SerializeField] private Image[] buttons;
     [SerializeField] private Image[] labelPanels;
     [SerializeField] private TextMeshProUGUI[] labelTexts;
-    [SerializeField] private Color defaultColor, selectColor;
         
     public ObjectSelectionProperty selectedProperty;
     public Action initUI;
@@ -66,6 +65,28 @@ public class SelectUI : MonoBehaviour
         selectedProperty = null;
     }
 
+    public void OnHover(int index)
+    {
+        if(index == (int)_mode) return;
+        
+        index--;
+        buttons[index].DOColor(ColorManager.Hover, 0.3f);
+        labelPanels[index].DOColor(ColorManager.Hover, 0.3f);
+        labelPanels[index].DOFade(1f, 0.3f);
+        labelTexts[index].DOFade(1f, 0.3f);
+    }
+
+    public void OnUnhover(int index)
+    {
+        if(index == (int)_mode) return;
+        
+        index--;
+        buttons[index].DOColor(ColorManager.Default, 0.3f);
+        labelPanels[index].DOColor(ColorManager.Default, 0.3f);
+        labelPanels[index].DOFade(0f, 0.3f);
+        labelTexts[index].DOFade(0f, 0.3f);
+    }
+
     public void ChangeMode(int index)
     {
         Select((Mode)index);
@@ -79,7 +100,8 @@ public class SelectUI : MonoBehaviour
         {
             canvases[i + 1].SetActive(i == modeIndex);
             buttons[i].transform.DOScale((i == modeIndex) ? 1f : 0.8f, 0.3f);
-            buttons[i].DOColor((i == modeIndex) ? selectColor : defaultColor, 0.3f);
+            buttons[i].DOColor((i == modeIndex) ? ColorManager.Select : ColorManager.Default, 0.3f);
+            labelPanels[i].DOColor((i == modeIndex) ? ColorManager.Select : ColorManager.Default, 0.3f);
             labelPanels[i].DOFade((i == modeIndex) ? 1f : 0f, 0.3f);
             labelTexts[i].DOFade((i == modeIndex) ? 1f : 0f, 0.3f);
         }

@@ -24,8 +24,6 @@ public abstract class HoldUI : MonoBehaviour
     [SerializeField] protected TextMeshProUGUI[] sectorButtonTexts;
     
     [SerializeField] private Slider slider;
-    [SerializeField] protected Color defaultColor;
-    [SerializeField] protected Color selectedColor;
     
     private float _holdTime;
     private bool _isUIOpened, _isStartToOpen;
@@ -161,6 +159,6 @@ public abstract class HoldUI : MonoBehaviour
     protected virtual void SelectButton(bool isTrue) //true = select, false = unselect
     {
         if(allowAllSwitchOff && isTrue) UnselectExcept(0);
-        _closeButtonImage.DOColor(isTrue ? selectedColor : defaultColor, 0.1f);
+        _closeButtonImage.DOColor(isTrue ? ColorManager.Select : ColorManager.Default, 0.1f);
     }
 }

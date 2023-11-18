@@ -25,7 +25,6 @@ public class SliderButton : MonoBehaviour
     [SerializeField] private Transform handle;
     [SerializeField] private Image buttonImage, handleImage, graduationImage, graduationShadowImage, valuePanelImage, handleValuePanelImage;
     [SerializeField] private TextMeshProUGUI valueText, handleValueText;
-    [SerializeField] private Color handleDefaultColor, defaultColor, hoverColor, selectColor;
 
     private const float SwipeLength = 0.2f;
     
@@ -286,18 +285,18 @@ public class SliderButton : MonoBehaviour
 
     public void SetHoverColor()
     {
-        buttonImage.DOColor(hoverColor, 0.2f);
+        buttonImage.DOColor(ColorManager.SliderHover, 0.2f);
     }
 
     public void SetSelectColor()
     {
-        buttonImage.DOColor(selectColor, 0.2f);
-        handleImage.DOColor(hoverColor, 0.2f);
+        buttonImage.DOColor(ColorManager.SliderSelect, 0.2f);
+        handleImage.DOColor(ColorManager.Select, 0.2f);
     }
 
     public void SetDefaultColor()
     {
-        buttonImage.DOColor(defaultColor, 0.2f);
-        handleImage.DOColor(handleDefaultColor, 0f);
+        buttonImage.DOColor(ColorManager.SliderDefault, 0.2f);
+        handleImage.DOColor(ColorManager.Default, 0f);
     }
 }

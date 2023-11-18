@@ -5,21 +5,17 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    public GrabInteractable a;
+    public Color Default = ColorManager.Default;
+    public Color Hover = ColorManager.Hover;
+    public Color Select = ColorManager.Select;
 
-    public void Select()
-    {
-        PlayerManager.Instance.leftGrabInteractor.ForceSelect(a);
-    }
+    public Color SliderDefault = ColorManager.SliderDefault;
+    public Color SliderHover = ColorManager.SliderHover;
+    public Color SliderSelect = ColorManager.SliderSelect;
     
-    public void Release()
-    {
-        PlayerManager.Instance.leftGrabInteractor.ForceRelease();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKey(KeyCode.Space)) ;
-    }
+    public Color ToggleUnselected = ColorManager.ToggleUnselected;
+    public Color ToggleSelected = ColorManager.ToggleSelected;
+    public Color ToggleUnselectedHover = ColorManager.ToggleUnselectedHover;
+    public Color ToggleSelectedHover = ColorManager.ToggleSelectedHover;
+    public Color ToggleSelect = ColorManager.ToggleSelect;
 }
