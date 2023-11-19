@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Oculus.Interaction;
 using TMPro;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class PreviewCube : MonoBehaviour
     public TextMeshProUGUI textNumber;
 
     public GameObject visual;
+    public Transform cube;
 
     public int previousNumber;
     public int currentNumber;
@@ -24,9 +26,11 @@ public class PreviewCube : MonoBehaviour
     
     public Transform indexSupport;
     [HideInInspector] public MeshRenderer indexRenderer;
+    private WaitForSeconds _waitForSeconds;
 
     void Awake()
     {
+        _waitForSeconds = new WaitForSeconds(0.2f);
         indexRenderer = indexSupport.GetComponent<MeshRenderer>();
         material = GetComponentInChildren<MeshRenderer>(true).material;
         grabInteractable = GetComponentInChildren<GrabInteractable>(true);
@@ -46,17 +50,29 @@ public class PreviewCube : MonoBehaviour
     {
         previousNumber = currentNumber;
     }
-    public void SetInvisible()
+    public IEnumerator SetInvisible(float time = 0.2f)
     {
         isVisible = false;
+        if (time > 0f)
+        {
+            cube.transform.localScale = Vector3.one;
+            cube.DOScale(0f, 0.2f).SetEase(Ease.OutCirc);
+            yield return _waitForSeconds;
+        }
         visual.SetActive(false);
         grabInteractable.MaxInteractors = 0;
     }
     
-    public void SetVisible()
+    public IEnumerator SetVisible(float time = 0.2f)
     {
         isVisible = true;
         visual.SetActive(true);
+        if (time > 0f)
+        {
+            cube.transform.localScale = new Vector3();
+            cube.DOScale(1f, 0.2f).SetEase(Ease.InCirc);
+            yield return _waitForSeconds;
+        }
         grabInteractable.enabled = true;
         grabInteractable.MaxInteractors = -1;
     }
@@ -65,9 +81,9 @@ public class PreviewCube : MonoBehaviour
     {
         if (!isVisible)
         {
-            SetVisible();
+            StartCoroutine(SetVisible(0f));
             material.SetTexture("_CubeMap", renderTexture);
-            SetInvisible();
+            StartCoroutine(SetInvisible(0f));
         }
         else
         {

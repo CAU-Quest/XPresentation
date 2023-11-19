@@ -10,6 +10,7 @@ public class SlideUICollider : MonoBehaviour
     public float cooldown = 0f;
     private void OnTriggerStay(Collider other)
     {
+        if(!snapListController.selectingPreviewCube) return;
         if (other.gameObject.name == "PreviewCube")
         {
             cooldown += Time.deltaTime;
@@ -18,12 +19,10 @@ public class SlideUICollider : MonoBehaviour
                 cooldown = 0f;
                 if (isLeft)
                 {
-                    Debug.Log("Left");
                     snapListController.SwipeToLeft();
                 }
                 else
                 {
-                    Debug.Log("Right");
                     snapListController.SwipeToRight();
                 }
 

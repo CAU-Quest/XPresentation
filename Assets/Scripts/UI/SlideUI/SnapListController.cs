@@ -60,17 +60,17 @@ public class SnapListController : MonoBehaviour
             {
                 SortedList[i].SetNumber(0);
                 SortedList[i].previousNumber = 0;
-                SortedList[i].SetInvisible();
+                StartCoroutine(SortedList[i].SetInvisible());
             }
             else if (currentSlideNumber - 3 + i >= MainSystem.Instance.GetSlideCount())
             {
                 SortedList[i].SetNumber(MainSystem.Instance.GetSlideCount() - 1);
                 SortedList[i].previousNumber = MainSystem.Instance.GetSlideCount() - 1;
-                SortedList[i].SetInvisible();
+                StartCoroutine(SortedList[i].SetInvisible());
             }
             else
             {
-                SortedList[i].SetVisible();
+                StartCoroutine(SortedList[i].SetVisible());
             }
 
             if (SortedList[i].isVisible)
@@ -117,20 +117,20 @@ public class SnapListController : MonoBehaviour
             {
                 SortedList[i].SetNumber(0);
                 SortedList[i].previousNumber = 0;
-                SortedList[i].SetInvisible();
+                StartCoroutine(SortedList[i].SetInvisible(0f));
             }
             else if (currentSlideNumber - 3 + i >= MainSystem.Instance.GetSlideCount())
             {
                 SortedList[i].SetNumber(MainSystem.Instance.GetSlideCount() - 1);
                 SortedList[i].previousNumber = MainSystem.Instance.GetSlideCount() - 1;
-                SortedList[i].SetInvisible();
+                StartCoroutine(SortedList[i].SetInvisible(0f));
             }
             else
             {
-                SortedList[i].SetVisible();
+                StartCoroutine(SortedList[i].SetVisible(0f));
             }
-
-            if(SortedList[i].isVisible)
+            
+            if(SortedList[i].isVisible)                 
                 SortedList[i].SetNumber(currentSlideNumber - 3 + i);
         }
     }
@@ -157,9 +157,30 @@ public class SnapListController : MonoBehaviour
 
     public void GoToSlideByIndex(int index)
     {
-        currentSlideNumber = index;
-        SetNumberToPreviewCube();
-        RenderAllTexture();
+        StartCoroutine(Swipe(index));
+    }
+
+    private IEnumerator Swipe(int index)
+    {
+        var waitForSeconds = new WaitForSeconds(0.1f);
+
+        Debug.Log("START");
+        while (currentSlideNumber != index)
+        {
+            Debug.Log(currentSlideNumber +","+index);
+            if (currentSlideNumber > index)
+            {
+                SwipeToLeft();
+            }
+            else
+            {
+                SwipeToRight();
+            }
+            SetNumberToPreviewCube();
+            RenderAllTexture();
+            yield return waitForSeconds;
+        }
+        Debug.Log(currentSlideNumber +","+index+"FIN");
     }
 
     public void SwipeToLeft()
@@ -177,29 +198,29 @@ public class SnapListController : MonoBehaviour
             element.SetNumber(newIndex);
             SetPreviousNumberToPreviewCube();
             element.previousNumber = temp;
-            if (selectingPreviewCube && newIndex != selectingPreviewCube.currentNumber)
+
+            if (selectingPreviewCube)
             {
-                if (newIndex >= 0)
+                if (newIndex >= 0 /*&& newIndex != selectingPreviewCube.currentNumber*/)
                 {
-                    element.SetVisible();
+                    StartCoroutine(element.SetVisible());
                 }
                 else
                 {
-                    element.SetInvisible();
+                    StartCoroutine(element.SetInvisible(0f));
                 }
             }
             else
             {
                 if (newIndex >= 0)
                 {
-                    element.SetVisible();
+                    StartCoroutine(element.SetVisible());
                 }
                 else
                 {
-                    element.SetInvisible();
+                    StartCoroutine(element.SetInvisible(0f));
                 }
             }
-        
         
             SortedList.Insert(0, element);
             currentSlideNumber--;
@@ -229,26 +250,27 @@ public class SnapListController : MonoBehaviour
             element.SetNumber(newIndex);
             SetPreviousNumberToPreviewCube();
             element.previousNumber = temp;
-            if (selectingPreviewCube && newIndex != selectingPreviewCube.currentNumber)
+
+            if (selectingPreviewCube)
             {
-                if (newIndex < MainSystem.Instance.GetSlideCount())
+                if (newIndex < MainSystem.Instance.GetSlideCount()/* && newIndex != selectingPreviewCube.currentNumber*/)
                 {
-                    element.SetVisible();
+                    StartCoroutine(element.SetVisible());
                 }
                 else
                 {
-                    element.SetInvisible();
+                    StartCoroutine(element.SetInvisible(0f));
                 }
             }
             else
             {
                 if (newIndex < MainSystem.Instance.GetSlideCount())
                 {
-                    element.SetVisible();
+                    StartCoroutine(element.SetVisible());
                 }
                 else
                 {
-                    element.SetInvisible();
+                    StartCoroutine(element.SetInvisible(0f));
                 }
             }
 
@@ -267,6 +289,7 @@ public class SnapListController : MonoBehaviour
         _lastHighlightedCube.indexRenderer.material.DOColor(ColorManager.Default, 0.2f);
         
         if (!isTrue) return;
+        totalCount.DOKill();
         totalCount.DOFade(1f, 0.2f);
         SortedList[3].indexSupport.DOScale(0.023f, 0.2f);
         SortedList[3].indexRenderer.material.DOColor(ColorManager.Select, 0.2f);
