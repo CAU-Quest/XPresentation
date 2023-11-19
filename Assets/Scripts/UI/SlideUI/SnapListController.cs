@@ -147,6 +147,13 @@ public class SnapListController : MonoBehaviour
         MainSystem.Instance.GoToSlideByIndex(currentSlideNumber);
     }
 
+    public void GoToSlideByIndex(int index)
+    {
+        currentSlideNumber = index;
+        SetNumberToPreviewCube();
+        RenderAllTexture();
+    }
+
     public void SwipeToLeft()
     {
         if (currentSlideNumber > 0)

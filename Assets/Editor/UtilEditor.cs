@@ -68,6 +68,10 @@ public class SnapListControllerEditor : Editor
         {
             SelectObject.SwipeToRight();
         }
+        if (GUILayout.Button("Go To slide 4"))
+        {
+            SelectObject.GoToSlideByIndex(4);
+        }
     }
 }
 
