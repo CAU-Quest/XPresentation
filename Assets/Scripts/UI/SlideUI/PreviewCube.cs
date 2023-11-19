@@ -33,6 +33,10 @@ public class PreviewCube : MonoBehaviour
         textNumber.SetText(number.ToString());
     }
 
+    public void GoToCurrentNumberSlide()
+    {
+        snapListController.GoToSlideByIndex(currentNumber);
+    }
 
     public void SetCurrentNumberToPreviousNumber()
     {
