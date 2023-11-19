@@ -132,14 +132,34 @@ public class ColorPicker : MonoBehaviour
     public void SetChooser()
     {
         Vector3 leftRayCursor = XRUIManager.Instance.leftRayInteractor.End;
-        Vector3 rightRayCursor = XRUIManager.Instance.leftRayInteractor.End;
+        Vector3 rightRayCursor = XRUIManager.Instance.rightRayInteractor.End;
 
         Vector3 leftRayLocalCursor = positionIndicator.parent.InverseTransformPoint(leftRayCursor);
         Vector3 rightRayLocalCursor = positionIndicator.parent.InverseTransformPoint(rightRayCursor);
+
+        Vector2 localpoint = Vector2.zero;
+        bool isFound = false;
         
-        Debug.Log(leftRayLocalCursor);
+        if (XRUIManager.Instance.leftRayInteractor.isActiveAndEnabled)
+        {
+            if (leftRayLocalCursor.z == 0)
+            {
+                localpoint = new Vector2(leftRayLocalCursor.x, leftRayLocalCursor.y);
+                isFound = true;
+            }
+        }
         
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(positionIndicator.parent as RectTransform, Input.mousePosition, GetComponentInParent<Canvas>().worldCamera, out Vector2 localpoint);
+        if (XRUIManager.Instance.rightRayInteractor.isActiveAndEnabled)
+        {
+            if (rightRayLocalCursor.z == 0)
+            {
+                localpoint = new Vector2(rightRayLocalCursor.x, rightRayLocalCursor.y);
+                isFound = true;
+            }
+        }
+
+        if (!isFound) return;
+        
         localpoint = Rect.PointToNormalized((positionIndicator.parent as RectTransform).rect, localpoint);
         if (positionIndicator.anchorMin != localpoint)
         {

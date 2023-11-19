@@ -24,10 +24,13 @@ public class ModeUI : HoldUI
             case SelectableAction.Close:
                 break;
             case SelectableAction.Edit:
+                MainSystem.Instance.ChangeMode(MainSystem.Mode.Edit);
                 break;
             case SelectableAction.Preview:
+                MainSystem.Instance.ChangeMode(MainSystem.Mode.Preview);
                 break;
             case SelectableAction.Animation:
+                MainSystem.Instance.ChangeMode(MainSystem.Mode.Animation);
                 break;
         }
     }

@@ -17,6 +17,7 @@ public class SelectNewObjectUI : HoldUI
         switch ((SelectableAction)selectionIndex)
         {
             case SelectableAction.Close:
+                
                 break;
             case SelectableAction.Sphere:
                 break;
