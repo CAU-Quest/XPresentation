@@ -658,8 +658,43 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5274124452769595248, guid: c042b5042e1113c4abb2bee485b6713b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1336650168}
   m_SourcePrefab: {fileID: 100100000, guid: c042b5042e1113c4abb2bee485b6713b, type: 3}
+--- !u!1 &1336650167 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5274124452769595248, guid: c042b5042e1113c4abb2bee485b6713b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1336650166}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1336650168
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1336650167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aaa840e4ba68f343b11bae7b1ca0e92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Default: {r: 0.92156863, g: 0.92156863, b: 1, a: 1}
+  Hover: {r: 0.58431375, g: 0.5803922, b: 0.85882354, a: 1}
+  Select: {r: 0.41960785, g: 0.40784314, b: 1, a: 1}
+  SliderDefault: {r: 0.58431375, g: 0.5803922, b: 0.85882354, a: 1}
+  SliderHover: {r: 0.41960785, g: 0.40784314, b: 1, a: 1}
+  SliderSelect: {r: 0.20784314, g: 0.20392157, b: 0.50980395, a: 1}
+  ToggleUnselected: {r: 0.7411765, g: 0.7411765, b: 0.85882354, a: 1}
+  ToggleSelected: {r: 0.41960785, g: 0.40784314, b: 1, a: 1}
+  ToggleUnselectedHover: {r: 0.58431375, g: 0.5803922, b: 0.85882354, a: 1}
+  ToggleSelectedHover: {r: 0.3137255, g: 0.3019608, b: 0.7921569, a: 1}
+  ToggleSelect: {r: 0.20784314, g: 0.20392157, b: 0.50980395, a: 1}
+  previewRenderCamera: {fileID: 0}
+  renderTexture: {fileID: 0}
 --- !u!1 &1628787016
 GameObject:
   m_ObjectHideFlags: 0

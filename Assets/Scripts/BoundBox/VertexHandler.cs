@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEditor;
 using UnityEngine;
 
@@ -24,6 +25,14 @@ public class VertexHandler : MonoBehaviour
     private float currentDepth;
 
     private Vector3 beforePosition;
+    
+    private MeshRenderer _renderer;
+
+    private void Awake()
+    {
+        _renderer = GetComponent<MeshRenderer>();
+    }
+    
     void Start()
     {
         isSelected = false;
@@ -35,15 +44,32 @@ public class VertexHandler : MonoBehaviour
         this.left = left;
     }
 
-    public void SelectVertex()
+    public void OnHover()
     {
-        isSelected = true;
+        _renderer.material.DOKill();
+        _renderer.material.DOColor(ColorManager.BoundBoxVertexHover, 0.2f);
     }
 
-    public void UnselectVertex()
+    public void OnUnhover()
+    {
+        _renderer.material.DOKill();
+        _renderer.material.DOColor(ColorManager.BoundBoxVertexDefault, 0.2f);
+    }
+
+    
+    public void OnSelect()
+    {
+        isSelected = true;
+        _renderer.material.DOKill();
+        _renderer.material.DOColor(ColorManager.BoundBoxVertexSelect, 0.2f);
+    }
+
+    public void OnUnselect()
     {
         isSelected = false;
         XRSelector.Instance.selectObject.Select();
+        _renderer.material.DOKill();
+        _renderer.material.DOColor(ColorManager.BoundBoxVertexHover, 0.2f);
     }
 
 

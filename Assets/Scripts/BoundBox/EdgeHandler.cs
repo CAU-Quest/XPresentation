@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Oculus.Interaction;
 using UnityEngine;
 
@@ -10,6 +11,13 @@ public class EdgeHandler : MonoBehaviour
     private Grabbable grabbable;
     [SerializeField]
     private OneGrabRotateTransformer oneGrabRotateTransformer;
+
+    private MeshRenderer _renderer;
+
+    private void Awake()
+    {
+        _renderer = GetComponent<MeshRenderer>();
+    }
 
     private void OnEnable()
     {
@@ -33,12 +41,29 @@ public class EdgeHandler : MonoBehaviour
         oneGrabRotateTransformer.SetRotationAxis(axis);
     }
 
-    public void EdgeSelect()
+    public void OnHover()
+    {
+        _renderer.material.DOKill();
+        _renderer.material.DOColor(ColorManager.BoundBoxEdgeHover, 0.2f);
+    }
+
+    public void OnUnhover()
+    {
+        _renderer.material.DOKill();
+        _renderer.material.DOColor(ColorManager.BoundBoxEdgeDefault, 0.2f);
+    }
+
+    public void OnSelect()
     {
         XRSelector.Instance.edgeSelected = true;
+        _renderer.material.DOKill();
+        _renderer.material.DOColor(ColorManager.BoundBoxEdgeSelect, 0.2f);
     }
-    public void EdgeUnselect()
+    public void OnUnselect()
     {
+        Debug.Log("HI");
         XRSelector.Instance.edgeSelected = false;
+        _renderer.material.DOKill();
+        _renderer.material.DOColor(ColorManager.BoundBoxEdgeHover, 0.2f);
     }
 }

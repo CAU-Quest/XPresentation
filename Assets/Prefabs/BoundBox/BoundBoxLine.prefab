@@ -34,8 +34,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.013, y: 0.013, z: 0.013}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 0.013, y: 0.017, z: 0.013}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8767256490873068582}
   m_Father: {fileID: 6114124538352634559}
@@ -109,8 +109,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.50000024
-  m_Height: 2.000001
+  m_Radius: 1.2
+  m_Height: 3
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: -0.00000011920935}
 --- !u!114 &8276524445317411613
@@ -213,14 +213,14 @@ MonoBehaviour:
   _whenHover:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 113328666292739477}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: set_layer
-        m_Mode: 3
+      - m_Target: {fileID: 4520509503797260533}
+        m_TargetAssemblyTypeName: EdgeHandler, Assembly-CSharp
+        m_MethodName: OnHover
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 7
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -228,14 +228,14 @@ MonoBehaviour:
   _whenUnhover:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 113328666292739477}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: set_layer
-        m_Mode: 3
+      - m_Target: {fileID: 4520509503797260533}
+        m_TargetAssemblyTypeName: EdgeHandler, Assembly-CSharp
+        m_MethodName: OnUnhover
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 5
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -245,7 +245,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4520509503797260533}
         m_TargetAssemblyTypeName: EdgeHandler, Assembly-CSharp
-        m_MethodName: EdgeSelect
+        m_MethodName: OnSelect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -260,7 +260,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 4520509503797260533}
         m_TargetAssemblyTypeName: EdgeHandler, Assembly-CSharp
-        m_MethodName: EdgeUnselect
+        m_MethodName: OnUnselect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
