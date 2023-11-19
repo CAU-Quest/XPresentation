@@ -162,13 +162,27 @@ public class SnapListController : MonoBehaviour
             element.SetNumber(newIndex);
             SetPreviousNumberToPreviewCube();
             element.previousNumber = temp;
-            if (newIndex >= 0 && newIndex != selectingPreviewCube.currentNumber)
+            if (selectingPreviewCube && newIndex != selectingPreviewCube.currentNumber)
             {
-                element.Setvisible();
+                if (newIndex >= 0)
+                {
+                    element.Setvisible();
+                }
+                else
+                {
+                    element.SetInvisible();
+                }
             }
             else
             {
-                element.SetInvisible();
+                if (newIndex >= 0)
+                {
+                    element.Setvisible();
+                }
+                else
+                {
+                    element.SetInvisible();
+                }
             }
         
         
@@ -185,7 +199,7 @@ public class SnapListController : MonoBehaviour
 
     public void SwipeToRight()
     {
-        if (currentSlideNumber < MainSystem.Instance.GetSlideCount())
+        if (currentSlideNumber < MainSystem.Instance.GetSlideCount() - 1)
         {
             PreviewCube element = SortedList[0];
             SortedList.Remove(element);
@@ -198,14 +212,29 @@ public class SnapListController : MonoBehaviour
             element.SetNumber(newIndex);
             SetPreviousNumberToPreviewCube();
             element.previousNumber = temp;
-            if (newIndex < MainSystem.Instance.GetSlideCount() && newIndex != selectingPreviewCube.currentNumber)
+            if (selectingPreviewCube && newIndex != selectingPreviewCube.currentNumber)
             {
-                element.Setvisible();
+                if (newIndex < MainSystem.Instance.GetSlideCount())
+                {
+                    element.Setvisible();
+                }
+                else
+                {
+                    element.SetInvisible();
+                }
             }
             else
             {
-                element.SetInvisible();
+                if (newIndex < MainSystem.Instance.GetSlideCount())
+                {
+                    element.Setvisible();
+                }
+                else
+                {
+                    element.SetInvisible();
+                }
             }
+
             SortedList.Add(element);
             currentSlideNumber++;
             RenderAllTexture();
