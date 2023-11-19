@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using Oculus.Interaction;
 using Unity.VisualScripting;
 using UnityEditor;
@@ -22,10 +23,11 @@ public class SnapListController : MonoBehaviour
     public List<RenderTexture> renderTextureList = new List<RenderTexture>();
     [SerializeField] public int currentSlideNumber = 0;
     [SerializeField] private int beforeSlideNumber;
-
+    
     public Camera previewRenderCamera;
 
     private bool isInitialized = false;
+    private PreviewCube _lastHighlightedCube;
     
     // Start is called before the first frame update
     
@@ -37,8 +39,10 @@ public class SnapListController : MonoBehaviour
         //SetTextureToPreviewCube();
         SetNumberToPreviewCube();
         RenderAllTexture();
+        _lastHighlightedCube = SortedList[0];
+        HighlightCenterIndexSupport(true);
     }
-    
+
     public void SetInitialNumber()
     {
         int count = 0;
@@ -62,7 +66,7 @@ public class SnapListController : MonoBehaviour
             }
             else
             {
-                SortedList[i].Setvisible();
+                SortedList[i].SetVisible();
             }
 
             if (SortedList[i].isVisible)
@@ -119,7 +123,7 @@ public class SnapListController : MonoBehaviour
             }
             else
             {
-                SortedList[i].Setvisible();
+                SortedList[i].SetVisible();
             }
 
             if(SortedList[i].isVisible)
@@ -173,7 +177,7 @@ public class SnapListController : MonoBehaviour
             {
                 if (newIndex >= 0)
                 {
-                    element.Setvisible();
+                    element.SetVisible();
                 }
                 else
                 {
@@ -184,7 +188,7 @@ public class SnapListController : MonoBehaviour
             {
                 if (newIndex >= 0)
                 {
-                    element.Setvisible();
+                    element.SetVisible();
                 }
                 else
                 {
@@ -197,6 +201,8 @@ public class SnapListController : MonoBehaviour
             currentSlideNumber--;
             RenderAllTexture();
         }
+
+        HighlightCenterIndexSupport(true);
     }
 
     public void SetSelectingPreviewCube(PreviewCube cube)
@@ -223,7 +229,7 @@ public class SnapListController : MonoBehaviour
             {
                 if (newIndex < MainSystem.Instance.GetSlideCount())
                 {
-                    element.Setvisible();
+                    element.SetVisible();
                 }
                 else
                 {
@@ -234,7 +240,7 @@ public class SnapListController : MonoBehaviour
             {
                 if (newIndex < MainSystem.Instance.GetSlideCount())
                 {
-                    element.Setvisible();
+                    element.SetVisible();
                 }
                 else
                 {
@@ -246,5 +252,20 @@ public class SnapListController : MonoBehaviour
             currentSlideNumber++;
             RenderAllTexture();
         }
+        
+        HighlightCenterIndexSupport(true);
+    }
+
+    public void HighlightCenterIndexSupport(bool isTrue)
+    {
+        _lastHighlightedCube.indexSupport.DOScale( 0.02f, 0.2f);
+        _lastHighlightedCube.indexRenderer.material.DOColor(ColorManager.Default, 0.2f);
+        
+        if (!isTrue) return;
+        
+        SortedList[3].indexSupport.DOScale(0.023f, 0.2f);
+        SortedList[3].indexRenderer.material.DOColor(ColorManager.Select, 0.2f);
+            
+        _lastHighlightedCube = SortedList[3];
     }
 }

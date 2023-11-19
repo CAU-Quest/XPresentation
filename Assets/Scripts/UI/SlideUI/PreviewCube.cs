@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Oculus.Interaction;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PreviewCube : MonoBehaviour
 {
@@ -20,10 +21,13 @@ public class PreviewCube : MonoBehaviour
     [SerializeField] private GrabInteractable grabInteractable;
 
     public bool isVisible = true;
-
+    
+    public Transform indexSupport;
+    [HideInInspector] public MeshRenderer indexRenderer;
 
     void Awake()
     {
+        indexRenderer = indexSupport.GetComponent<MeshRenderer>();
         material = GetComponentInChildren<MeshRenderer>(true).material;
         grabInteractable = GetComponentInChildren<GrabInteractable>(true);
     }
@@ -33,6 +37,10 @@ public class PreviewCube : MonoBehaviour
         textNumber.SetText(number.ToString());
     }
 
+    public void GoToCurrentNumberSlide()
+    {
+        snapListController.GoToSlideByIndex(currentNumber);
+    }
 
     public void SetCurrentNumberToPreviousNumber()
     {
@@ -45,7 +53,7 @@ public class PreviewCube : MonoBehaviour
         grabInteractable.MaxInteractors = 0;
     }
     
-    public void Setvisible()
+    public void SetVisible()
     {
         isVisible = true;
         visual.SetActive(true);
@@ -57,7 +65,7 @@ public class PreviewCube : MonoBehaviour
     {
         if (!isVisible)
         {
-            Setvisible();
+            SetVisible();
             material.SetTexture("_CubeMap", renderTexture);
             SetInvisible();
         }
@@ -71,13 +79,17 @@ public class PreviewCube : MonoBehaviour
     {
         snapListController.SortedList.Remove(this);
         snapListController.SetSelectingPreviewCube(this);
+        snapListController.HighlightCenterIndexSupport(false);
+        indexSupport.gameObject.SetActive(false);
     }
 
     public void UnSelected()
     {
         snapListController.SortedList.Add(this);
         snapListController.SetNumberToPreviewCube();
-
+        snapListController.HighlightCenterIndexSupport(true);
+        indexSupport.gameObject.SetActive(true);
+        
         Debug.Log("Previous Number : " + previousNumber + " -> Current Number : " + currentNumber);
         if (previousNumber != currentNumber)
         {

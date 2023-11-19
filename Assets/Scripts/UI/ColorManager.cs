@@ -18,8 +18,8 @@ public static class ColorManager
     public static Color ToggleSelectedHover =  new Color(80f / 255f, 77f / 255f, 202f / 255f, 1f);
     public static Color ToggleSelect = SliderSelect;
 
-    public static Color BoundBoxEdgeDefault = new Color(177f / 255f, 177f / 255f, 222f / 255f, 1f);
-    public static Color BoundBoxEdgeHover = new Color(147f / 255f, 146f / 255f, 235f / 255f, 1f);
+    public static Color BoundBoxEdgeDefault = new Color(170f / 255f, 169f / 255f, 221f / 255f, 1f);
+    public static Color BoundBoxEdgeHover = new Color(138f / 255f, 136f / 255f, 231f / 255f, 1f);
     public static Color BoundBoxEdgeSelect = Select;
     public static Color BoundBoxVertexDefault = new Color(98f / 255f, 97f / 255f, 157f / 255f, 1f);
     public static Color BoundBoxVertexHover = new Color(117f / 255f, 115f / 255f, 221f / 255f, 1f);
