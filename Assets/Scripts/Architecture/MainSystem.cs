@@ -42,6 +42,8 @@ public class MainSystem : MonoBehaviour, ISubject
         {
             Destroy(this.gameObject);
         }
+
+        mode = Mode.Edit;
     }
 
     public void MoveSlide()

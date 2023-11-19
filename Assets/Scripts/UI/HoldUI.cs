@@ -138,10 +138,15 @@ public abstract class HoldUI : MonoBehaviour
     
     protected void SelectSector(int index, bool isTrue)
     {
+        sector.DOKill();
+        sectorButtons[index - 1].DOKill();
+        sectorButtonTexts[index - 1].DOKill();
+        
         var duration = 0.3f;
         if (allowAllSwitchOff)
         {
-            if (isTrue && _sectorImage.color.a == 0f)
+            _sectorImage.DOKill();
+            if (isTrue && _sectorImage.color.a < 1f)
             {
                 _sectorImage.DOFade(1f, duration);
                 duration = 0f;
