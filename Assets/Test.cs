@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Oculus.Interaction;
@@ -18,4 +19,15 @@ public class Test : MonoBehaviour
     public Color ToggleUnselectedHover = ColorManager.ToggleUnselectedHover;
     public Color ToggleSelectedHover = ColorManager.ToggleSelectedHover;
     public Color ToggleSelect = ColorManager.ToggleSelect;
+
+
+    public Camera previewRenderCamera;
+    public RenderTexture renderTexture;
+    
+    private void Update()
+    {
+        previewRenderCamera.RenderToCubemap(renderTexture);
+    }
+
+
 }

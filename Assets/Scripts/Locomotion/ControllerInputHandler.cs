@@ -6,10 +6,16 @@ using UnityEngine;
 
 public class ControllerInputHandler : MonoBehaviour
 {
+    //Locomotion
     private ControllerMovement _movement;
     private ControllerTurn _turn;
     private bool _lastActiveL, _lastActiveR;
     private GrabInteractor _leftGrabInteractor, _rightGrabInteractor;
+    
+    //Switch Slider
+    [SerializeField] private SnapListController snapListController;
+    private bool _isReadyToSwitch;
+        
     private void Awake()
     {
         _movement = GetComponent<ControllerMovement>();
@@ -24,6 +30,12 @@ public class ControllerInputHandler : MonoBehaviour
 
     private void Update()
     {
+        Locomotion();
+        SwitchSlide();
+    }
+
+    private void Locomotion() //move & turn
+    {
         var isActiveL = OVRInput.Get(OVRInput.RawButton.LHandTrigger) && !_leftGrabInteractor.isGrabbing;
         var isActiveR = OVRInput.Get(OVRInput.RawButton.RHandTrigger) && !_rightGrabInteractor.isGrabbing;
         
@@ -36,5 +48,29 @@ public class ControllerInputHandler : MonoBehaviour
 
         _lastActiveL = isActiveL;
         _lastActiveR = isActiveR;
+    }
+
+    private void SwitchSlide()
+    {
+        var axis = OVRInput.Get(OVRInput.Axis2D.PrimaryThumbstick);
+        
+        if (axis == new Vector2())
+        {
+            _isReadyToSwitch = true;
+            return;
+        }
+
+        if (!_isReadyToSwitch) return;
+        
+        if (Vector2.Dot(axis.normalized, Vector2.left) > 0.5f)
+        {
+            snapListController.SwipeToLeft();
+            _isReadyToSwitch = false;
+        }
+        else if (Vector2.Dot(axis.normalized, Vector2.right) > 0.5f)
+        {
+            snapListController.SwipeToRight();
+            _isReadyToSwitch = false;
+        }
     }
 }

@@ -2166,8 +2166,6 @@ MonoBehaviour:
   - {fileID: 6634202309911996956}
   - {fileID: 2283182140435105431}
   slider: {fileID: 8278821970224449264}
-  defaultColor: {r: 0.92156863, g: 0.92156863, b: 1, a: 1}
-  selectedColor: {r: 0.41960785, g: 0.40784314, b: 1, a: 1}
 --- !u!1 &3193834474060091877
 GameObject:
   m_ObjectHideFlags: 0
@@ -5652,8 +5650,6 @@ MonoBehaviour:
   - {fileID: 5659048845065277270}
   - {fileID: 1065650705025236672}
   slider: {fileID: 6357192792081554294}
-  defaultColor: {r: 0.92156863, g: 0.92156863, b: 1, a: 1}
-  selectedColor: {r: 0.41960785, g: 0.40784314, b: 1, a: 1}
 --- !u!1 &7105612071879447124
 GameObject:
   m_ObjectHideFlags: 0
