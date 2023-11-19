@@ -5,7 +5,7 @@ using UnityEngine;
 [System.Serializable]
 public class Slide : ISlide
 {
-    private Dictionary<uint, TransformData> transforms = new Dictionary<uint, TransformData>(); // id - Transform 딕셔너리, 객체의 ID로부터 Transform 데이터를 받아올 수 있음
+    private Dictionary<uint, SlideObjectData> slideObjectDatas = new Dictionary<uint, SlideObjectData>(); // id - Transform 딕셔너리, 객체의 ID로부터 Transform 데이터를 받아올 수 있음
     private Dictionary<uint, XRIAnimation> animations = new Dictionary<uint, XRIAnimation>(); // id - animation 딕셔너리
     
     public void CollectAllObject()
@@ -13,11 +13,11 @@ public class Slide : ISlide
         
     }
 
-    public TransformData GetObjectData(uint id)
+    public SlideObjectData GetObjectData(uint id)
     {
-        if (transforms.ContainsKey(id))
-            return transforms[id];
-        return new TransformData();
+        if (slideObjectDatas.ContainsKey(id))
+            return slideObjectDatas[id];
+        return new SlideObjectData();
     }
 
     public XRIAnimation GetAnimation(uint id)
@@ -28,15 +28,15 @@ public class Slide : ISlide
             return null;
     }
 
-    public void AddObjectData(uint id, TransformData transform)
+    public void AddObjectData(uint id, SlideObjectData transform)
     {
-        if (!transforms.ContainsKey(id))
+        if (!slideObjectDatas.ContainsKey(id))
         {
-            transforms.Add(id, transform);
+            slideObjectDatas.Add(id, transform);
         }
         else
         {
-            transforms[id] = transform;
+            slideObjectDatas[id] = transform;
         }
     }
     

@@ -5,11 +5,11 @@ using UnityEngine;
 public interface XRIAnimation
 {
     public void Play();
-    public TransformData GetPreviousTransformData();
-    public TransformData GetNextTransformData();
+    public SlideObjectData GetPreviousSlideObjectData();
+    public SlideObjectData GetNextSlideObjectData();
 
     public void SetParentObject(PresentationObject presentationObject);
 
-    public void SetPreviousTransform(TransformData transformData);
-    public void SetNextTransform(TransformData transformData);
+    public void SetPreviousSlideObjectData(SlideObjectData slideObjectData);
+    public void SetNextSlideObjectData(SlideObjectData slideObjectData);
 }
