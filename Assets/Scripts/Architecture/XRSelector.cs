@@ -26,6 +26,7 @@ public class XRSelector : MonoBehaviour
     public BoundBox boundBox;
     public TransformByVertexHandler transformByVertexHandler;
     public SelectObject selectObject;
+    public PresentationObject presentationObject;
     
     [Header("Line Properties")]
     
@@ -58,7 +59,8 @@ public class XRSelector : MonoBehaviour
         centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
         boundBox = selectedObject.GetComponent<BoundBox>();
         transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
-        if(boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null)
+        presentationObject = selectedObject.GetComponentInChildren<PresentationObject>();
+        if(boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null || presentationObject == null)
             Debug.Log("Selected Object doesn't have correct components");
         
         SetVertex();
@@ -289,13 +291,14 @@ public class XRSelector : MonoBehaviour
             centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
             boundBox = selectedObject.GetComponent<BoundBox>();
             transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
+            presentationObject = selectedObject.GetComponentInChildren<PresentationObject>();
             this.selectObject = selectObject;
 
             centerPositionByVertex.enabled = true;
             boundBox.enabled = true;
             transformByVertexHandler.enabled = true;
         
-            if (boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null)
+            if (boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null || presentationObject == null)
             {
                 Debug.Log("Selected Object doesn't have correct components");
                 return;
@@ -319,13 +322,14 @@ public class XRSelector : MonoBehaviour
             //centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
             //boundBox = selectedObject.GetComponent<BoundBox>();
             transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
+            presentationObject = selectedObject.GetComponentInChildren<PresentationObject>();
             this.selectObject = selectObject;
 
             //centerPositionByVertex.enabled = true;
             //boundBox.enabled = true;
             transformByVertexHandler.enabled = true;
             
-            if (transformByVertexHandler == null)
+            if (transformByVertexHandler == null || presentationObject == null)
             {
                 Debug.Log("Selected Object doesn't have correct components");
                 return;
@@ -362,7 +366,8 @@ public class XRSelector : MonoBehaviour
             centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
             boundBox = selectedObject.GetComponent<BoundBox>();
             transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
-            if(boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null)
+            presentationObject = selectedObject.GetComponentInChildren<PresentationObject>();
+            if(boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null || presentationObject == null)
                 Debug.Log("Selected Object doesn't have correct components");
         
         

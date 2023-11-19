@@ -61,8 +61,8 @@ public class EdgeHandler : MonoBehaviour
     }
     public void OnUnselect()
     {
-        Debug.Log("HI");
         XRSelector.Instance.edgeSelected = false;
+        XRSelector.Instance.presentationObject.SaveTransformToSlide();
         _renderer.material.DOKill();
         _renderer.material.DOColor(ColorManager.BoundBoxEdgeHover, 0.2f);
     }

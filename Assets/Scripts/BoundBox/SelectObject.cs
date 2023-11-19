@@ -18,6 +18,7 @@ public class SelectObject : MonoBehaviour
         return BoundObjectType;
     }
     
+    
     public void Unselect()
     {
         int lineLength = XRSelector.Instance.lineList.Length;
