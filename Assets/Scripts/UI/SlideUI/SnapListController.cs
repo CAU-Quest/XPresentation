@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
 using Oculus.Interaction;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -26,6 +27,7 @@ public class SnapListController : MonoBehaviour
     
     public Camera previewRenderCamera;
 
+    public TextMeshProUGUI totalCount;
     private bool isInitialized = false;
     private PreviewCube _lastHighlightedCube;
     
@@ -39,7 +41,9 @@ public class SnapListController : MonoBehaviour
         //SetTextureToPreviewCube();
         SetNumberToPreviewCube();
         RenderAllTexture();
-        _lastHighlightedCube = SortedList[0];
+
+        _lastHighlightedCube = SortedList[3];
+        totalCount.text = "/" + MainSystem.Instance.GetSlideCount().ToString("0");
         HighlightCenterIndexSupport(true);
     }
 
@@ -202,7 +206,7 @@ public class SnapListController : MonoBehaviour
             RenderAllTexture();
         }
 
-        HighlightCenterIndexSupport(true);
+        if(!selectingPreviewCube) HighlightCenterIndexSupport(true);
     }
 
     public void SetSelectingPreviewCube(PreviewCube cube)
@@ -253,16 +257,17 @@ public class SnapListController : MonoBehaviour
             RenderAllTexture();
         }
         
-        HighlightCenterIndexSupport(true);
+        if(!selectingPreviewCube) HighlightCenterIndexSupport(true);
     }
 
     public void HighlightCenterIndexSupport(bool isTrue)
     {
+        totalCount.DOFade(0f, 0.2f);
         _lastHighlightedCube.indexSupport.DOScale( 0.02f, 0.2f);
         _lastHighlightedCube.indexRenderer.material.DOColor(ColorManager.Default, 0.2f);
         
         if (!isTrue) return;
-        
+        totalCount.DOFade(1f, 0.2f);
         SortedList[3].indexSupport.DOScale(0.023f, 0.2f);
         SortedList[3].indexRenderer.material.DOColor(ColorManager.Select, 0.2f);
             

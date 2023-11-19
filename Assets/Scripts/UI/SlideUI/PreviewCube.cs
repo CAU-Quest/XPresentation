@@ -86,6 +86,7 @@ public class PreviewCube : MonoBehaviour
     public void UnSelected()
     {
         snapListController.SortedList.Add(this);
+        snapListController.SetSelectingPreviewCube(null);
         snapListController.SetNumberToPreviewCube();
         snapListController.HighlightCenterIndexSupport(true);
         indexSupport.gameObject.SetActive(true);

@@ -728,8 +728,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bb440db87c6ea04f98a40c7b3741cff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  snapListController: {fileID: 0}
   snapInteractor: {fileID: 3470090454760582243}
   textNumber: {fileID: 6673556176878625408}
+  visual: {fileID: 0}
+  previousNumber: 0
+  currentNumber: 0
+  material: {fileID: 0}
+  grabInteractable: {fileID: 0}
+  isVisible: 1
+  indexSupport: {fileID: 0}
+  indexRenderer: {fileID: 0}
 --- !u!114 &6739417875738227677
 MonoBehaviour:
   m_ObjectHideFlags: 0
