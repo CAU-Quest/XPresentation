@@ -9,8 +9,8 @@ public class XRAnimation : XRIAnimation
     public PresentationObject presentationObject;
     private uint id;
 
-    public TransformData previousTransform;
-    public TransformData nextTransform;
+    public SlideObjectData previousData;
+    public SlideObjectData nextData;
     public AnimationCurve lerpFunction = AnimationCurve.Linear(0, 0, 1, 1);
     
     
@@ -18,11 +18,14 @@ public class XRAnimation : XRIAnimation
     {
         float t = lerpFunction.Evaluate(MainSystem.Instance.slideInterval);
 
-        Vector3 newPosition = Vector3.LerpUnclamped(previousTransform.position, nextTransform.position, t);
-        Quaternion newRotation = Quaternion.LerpUnclamped(previousTransform.rotation, nextTransform.rotation, t);
-        Vector3 newScale = Vector3.LerpUnclamped(previousTransform.scale, nextTransform.scale, t);
+        SlideObjectData lerpData = new SlideObjectData();
         
-        presentationObject.SetTransform(newPosition, newRotation, newScale);
+        lerpData.position = Vector3.LerpUnclamped(previousData.position, nextData.position, t);
+        lerpData.rotation = Quaternion.LerpUnclamped(previousData.rotation, nextData.rotation, t);
+        lerpData.scale = Vector3.LerpUnclamped(previousData.scale, nextData.scale, t);
+        lerpData.color = Color.LerpUnclamped(previousData.color, nextData.color, t);
+        
+        presentationObject.SetSlideObjectData(lerpData);
     }
 
     public void SetParentObject(PresentationObject presentationObject)
@@ -31,20 +34,20 @@ public class XRAnimation : XRIAnimation
         this.id = presentationObject.GetID();
     }
 
-    public void SetPreviousTransform(TransformData transformData)
+    public void SetPreviousSlideObjectData(SlideObjectData slideObjectData)
     {
-        this.previousTransform = transformData;
+        this.previousData = slideObjectData;
     }
-    public void SetNextTransform(TransformData transformData)
+    public void SetNextSlideObjectData(SlideObjectData slideObjectData)
     {
-        this.nextTransform = transformData;
+        this.nextData = slideObjectData;
     }
-    public TransformData GetPreviousTransformData()
+    public SlideObjectData GetPreviousSlideObjectData()
     {
-        return previousTransform;
+        return previousData;
     }
-    public TransformData GetNextTransformData()
+    public SlideObjectData GetNextSlideObjectData()
     {
-        return previousTransform;
+        return nextData;
     }
 }

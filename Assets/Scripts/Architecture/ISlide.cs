@@ -4,8 +4,8 @@ using UnityEngine;
 
 public interface ISlide
 {
-    public TransformData GetObjectData(uint id);
+    public SlideObjectData GetObjectData(uint id);
     public XRIAnimation GetAnimation(uint id);
-    public void AddObjectData(uint id, TransformData transform);
+    public void AddObjectData(uint id, SlideObjectData transform);
     public void AddAnimation(uint id, XRIAnimation animation);
 }

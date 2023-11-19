@@ -18,7 +18,7 @@ public class XRAnimationLine : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        lineRenderer.SetPosition(0, object1.GetPosition());
-        lineRenderer.SetPosition(1, object2.GetPosition());
+        lineRenderer.SetPosition(0, object1.transform.position);
+        lineRenderer.SetPosition(1, object2.transform.position);
     }
 }

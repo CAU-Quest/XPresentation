@@ -7,12 +7,14 @@ using UnityEngine.Events;
 
 
 [System.Serializable]
-public struct TransformData
+public struct SlideObjectData
 {
     public Vector3 position;
     public Quaternion rotation;
     public Vector3 scale;
-    
+    public Color color;
+    public bool isGrabbable;
+    public bool isExist;
 }
 
 public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObserver
@@ -21,7 +23,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     public uint id = 1;
 
     public List<XRAnimation> animationList = new List<XRAnimation>();
-    public List<TransformData> slideData = new List<TransformData>();
+    public List<SlideObjectData> slideData = new List<SlideObjectData>();
 
     private int currentSlide;
     private MainSystem.Mode mode;
@@ -67,7 +69,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     {
         this.currentSlide = slide;
 
-        SetTransform(slideData[slide].position, slideData[slide].rotation, slideData[slide].scale);
+        SetSlideObjectData(slideData[slide]);
         ghost.applyTransform();
         if (mode == MainSystem.Mode.Animation)
         {
@@ -98,21 +100,21 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     {
         animationList.RemoveAt(index);
         slideData.RemoveAt(index);
-        SetTransform(slideData[currentSlide].position, slideData[currentSlide].rotation, slideData[currentSlide].scale);
+        SetSlideObjectData(slideData[currentSlide]);
     }
     
     public void addSlide()
     {
         List<Slide> slides = MainSystem.Instance.slideList;
-        TransformData beforeTransform = slideData[slideData.Count - 1];
+        SlideObjectData beforeTransform = slideData[slideData.Count - 1];
         for (int i = slideData.Count; i < MainSystem.Instance.GetSlideCount(); i++)
         {
             XRAnimation anim = new XRAnimation();
             
             anim.SetParentObject(this);
             //anim.SetSlide(slides[i], slides[i + 1]);
-            anim.SetPreviousTransform(beforeTransform);
-            anim.SetNextTransform(beforeTransform);
+            anim.SetPreviousSlideObjectData(beforeTransform);
+            anim.SetNextSlideObjectData(beforeTransform);
             
             slides[i].AddAnimation(id, anim);
             slides[i].AddObjectData(id, beforeTransform);
@@ -135,38 +137,36 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         List<Slide> slides = MainSystem.Instance.slideList;
         
         
-        TransformData transformData = new TransformData();
+        SlideObjectData transformData = new SlideObjectData();
         transformData.position = transform.position;
-        transformData.rotation = transform.rotation;
+        transformData.rotation = transform.parent.rotation;
         transformData.scale = transform.localScale;
+        transformData.color = meshRenderer.material.color;
         
         
-        TransformData nextTransformData = new TransformData();
+        SlideObjectData nextTransformData = new SlideObjectData();
         nextTransformData.position = transform.position;
-        nextTransformData.rotation = transform.rotation;
+        nextTransformData.rotation = transform.parent.rotation;
         nextTransformData.scale = transform.localScale;
+        nextTransformData.color = meshRenderer.material.color;
         for (int i = 0; i < MainSystem.Instance.GetSlideCount(); i++)
         {
             XRAnimation anim = new XRAnimation();
-            Vector3 position = transform.position;
-            Quaternion rotation = transform.rotation;
-            Vector3 scale = transform.localScale;
 
             transformData.position = nextTransformData.position;
             transformData.rotation = nextTransformData.rotation;
             transformData.scale = nextTransformData.scale;
+            transformData.color = meshRenderer.material.color;
             
-            nextTransformData = new TransformData();
+            nextTransformData = new SlideObjectData();
             nextTransformData.position = transformData.position;
-            nextTransformData.rotation = transformData.rotation;
+            nextTransformData.rotation = transform.parent.rotation;
             nextTransformData.scale = transformData.scale;
-
-            nextTransformData.position.y += Random.Range(0, 1f);
+            nextTransformData.color = meshRenderer.material.color;
             
             anim.SetParentObject(this);
-            //anim.SetSlide(slides[i], slides[i + 1]);
-            anim.SetPreviousTransform(transformData);
-            anim.SetNextTransform(nextTransformData);
+            anim.SetPreviousSlideObjectData(transformData);
+            anim.SetNextSlideObjectData(nextTransformData);
             
             slides[i].AddAnimation(id, anim);
             slides[i].AddObjectData(id, transformData);
@@ -175,7 +175,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         }
         
         
-        ghostObject = Instantiate(gameObject, transform);
+        ghostObject = Instantiate(gameObject);
         if (meshRenderer == null)
         {
             Debug.LogError("meshRenderer is null.");
@@ -196,7 +196,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         ghost.parentObject = this;
         ghost.SetID(id);
 
-        dottedLine = Instantiate(dottedLinePrefab, transform);
+        dottedLine = Instantiate(dottedLinePrefab);
         dottedLine.GetComponent<XRAnimationLine>().object1 = this;
         dottedLine.GetComponent<XRAnimationLine>().object2 = ghost;
 
@@ -218,8 +218,8 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         if (index + 1 < slideData.Count)
         {
             element.SetParentObject(this);
-            element.SetPreviousTransform(slideData[index]);
-            element.SetNextTransform(slideData[index + 1]);
+            element.SetPreviousSlideObjectData(slideData[index]);
+            element.SetNextSlideObjectData(slideData[index + 1]);
         }
         
         return element;
@@ -230,7 +230,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         Debug.Log("Move Slides(" + moved + ", " + count + ", " + into + ")");
         if (count == 1)
         {
-            TransformData transformElement = slideData[moved];
+            SlideObjectData transformElement = slideData[moved];
             slideData.RemoveAt(moved);
 
             slideData.Insert(into, transformElement);
@@ -259,7 +259,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         }
         else
         {
-            List<TransformData> transformDatas = slideData.GetRange(moved, count);
+            List<SlideObjectData> transformDatas = slideData.GetRange(moved, count);
             slideData.RemoveRange(moved, count);
             
             if (into < moved) slideData.InsertRange(into, transformDatas);
@@ -295,15 +295,16 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
 
     public void SaveTransformToSlide()
     {
-        TransformData transformData = new TransformData();
+        SlideObjectData transformData = new SlideObjectData();
         transformData.position = transform.position;
-        transformData.rotation = transform.rotation;
+        transformData.rotation = transform.parent.rotation;
         transformData.scale = transform.localScale;
+        transformData.color = meshRenderer.material.color;
         MainSystem.Instance.slideList[this.currentSlide].AddObjectData(this.id, transformData);
         this.slideData[this.currentSlide] = transformData;
-        this.animationList[this.currentSlide].SetPreviousTransform(transformData);
+        this.animationList[this.currentSlide].SetPreviousSlideObjectData(transformData);
         if(this.currentSlide - 1 >= 0)
-            this.animationList[this.currentSlide - 1].SetNextTransform(transformData);
+            this.animationList[this.currentSlide - 1].SetNextSlideObjectData(transformData);
     }
 
     public uint GetID()
@@ -311,20 +312,22 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         return id;
     }
     
-    public void SetTransform(Vector3 position, Quaternion rotation, Vector3 scale)
+    public void SetSlideObjectData(SlideObjectData slideObjectData)
     {
-        transform.SetPositionAndRotation(position, rotation);
-        transform.localScale = scale;
+        transform.SetPositionAndRotation(slideObjectData.position, slideObjectData.rotation);
+        transform.localScale = slideObjectData.scale;
+        meshRenderer.material.color = slideObjectData.color;
     }
 
-    public Vector3 GetPosition()
+    public SlideObjectData GetSlideObjectData()
     {
-        return this.transform.position;
-    }
-
-    public Quaternion GetRotation()
-    {
-        return this.transform.rotation;
+        SlideObjectData data = new SlideObjectData();
+        data.position = transform.position;
+        data.rotation = transform.parent.rotation;
+        data.scale = transform.localScale;
+        data.color = meshRenderer.material.color;
+        
+        return data;
     }
     
 }

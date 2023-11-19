@@ -21,7 +21,7 @@ public class PresentationGhostObject : MonoBehaviour
     public void applyTransform()
     {
         if(parentObject && parentObject.GetCurrentSlide() + 1 < MainSystem.Instance.GetSlideCount())
-            SetTransform(parentObject.slideData[parentObject.GetCurrentSlide() + 1].position, parentObject.slideData[parentObject.GetCurrentSlide() + 1].rotation, parentObject.slideData[parentObject.GetCurrentSlide() + 1].scale);
+            SetSlideObjectData(parentObject.slideData[parentObject.GetCurrentSlide() + 1]);
     }
     public void OnEnable()
     {
@@ -30,15 +30,15 @@ public class PresentationGhostObject : MonoBehaviour
     
     public void SaveTransformToSlide()
     {
-        TransformData transformData = new TransformData();
+        SlideObjectData transformData = new SlideObjectData();
         transformData.position = transform.position;
         transformData.rotation = transform.rotation;
         transformData.scale = transform.localScale;
         MainSystem.Instance.slideList[parentObject.GetCurrentSlide() + 1].AddObjectData(this.id, transformData);
         parentObject.slideData[parentObject.GetCurrentSlide() + 1] = transformData;
-        parentObject.animationList[parentObject.GetCurrentSlide() + 1].SetPreviousTransform(transformData);
+        parentObject.animationList[parentObject.GetCurrentSlide() + 1].SetPreviousSlideObjectData(transformData);
         if(parentObject.GetCurrentSlide() >= 0)
-            parentObject.animationList[parentObject.GetCurrentSlide()].SetNextTransform(transformData);
+            parentObject.animationList[parentObject.GetCurrentSlide()].SetNextSlideObjectData(transformData);
         
         Debug.Log("Ghost Save Complete");
     }
@@ -52,19 +52,19 @@ public class PresentationGhostObject : MonoBehaviour
         this.id = id;
     }
     
-    public void SetTransform(Vector3 position, Quaternion rotation, Vector3 scale)
+    public void SetSlideObjectData(SlideObjectData slideObjectData)
     {
-        transform.SetPositionAndRotation(position, rotation);
-        transform.localScale = scale;
+        transform.SetPositionAndRotation(slideObjectData.position, slideObjectData.rotation);
+        transform.localScale = slideObjectData.scale;
     }
 
-    public Vector3 GetPosition()
+    public SlideObjectData GetSlideObjectData()
     {
-        return this.transform.position;
-    }
-
-    public Quaternion GetRotation()
-    {
-        return this.transform.rotation;
+        SlideObjectData data = new SlideObjectData();
+        data.position = transform.position;
+        data.rotation = transform.parent.rotation;
+        data.scale = transform.localScale;
+        
+        return data;
     }
 }

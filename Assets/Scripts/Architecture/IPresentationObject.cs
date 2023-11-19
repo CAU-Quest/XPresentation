@@ -4,8 +4,7 @@ using UnityEngine;
 
 public interface IPresentationObject
 {
-    public void SetTransform(Vector3 position, Quaternion rotation, Vector3 scale);
-    public Vector3 GetPosition();
-    public Quaternion GetRotation();
+    public void SetSlideObjectData(SlideObjectData slideObjectData);
+    public SlideObjectData GetSlideObjectData();
     public uint GetID();
 }
