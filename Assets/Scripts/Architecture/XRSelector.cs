@@ -138,6 +138,7 @@ public class XRSelector : MonoBehaviour
 
     private void Update()
     {
+        if(!selectedObject) return; 
         if(edgeSelected) selectedObject.transform.rotation = transform.rotation;
         else transform.rotation = selectedObject.transform.rotation;
     }
