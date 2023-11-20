@@ -294,6 +294,11 @@ public class XRSelector : MonoBehaviour
             transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
             presentationObject = selectedObject.GetComponentInChildren<PresentationObject>();
             this.selectObject = selectObject;
+            
+            centerPositionByVertex.SetVertex();
+            boundBox.SetLines();
+            transformByVertexHandler.SetVertex();
+            transformByVertexHandler.SetLine();
 
             centerPositionByVertex.enabled = true;
             boundBox.enabled = true;
@@ -304,7 +309,7 @@ public class XRSelector : MonoBehaviour
                 Debug.Log("Selected Object doesn't have correct components");
                 return;
             }
-        
+            
             boundBox.UpdateBounds();
             centerPositionByVertex.CenterPosition();
             boundBox.UpdateBounds();
@@ -389,6 +394,7 @@ public class XRSelector : MonoBehaviour
         }
     }
 #endif
+    
     
     
     void OnEnable()

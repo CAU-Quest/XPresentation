@@ -145,7 +145,7 @@ namespace DimBoxes
             corners = new Vector3[] { topFrontRight, topFrontLeft, topBackLeft, topBackRight, bottomFrontRight, bottomFrontLeft, bottomBackLeft, bottomBackRight };
         }
 
-        protected virtual void SetLines()
+        public virtual void SetLines()
         {
             Debug.Log("BB-lr");
             if (XRSelector.Instance.GetLineList() != null)

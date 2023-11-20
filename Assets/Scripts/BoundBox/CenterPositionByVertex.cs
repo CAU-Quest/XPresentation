@@ -10,7 +10,7 @@ public class CenterPositionByVertex : MonoBehaviour
     private Vector3[] positions;
     
     
-    private void SetVertex() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
+    public void SetVertex() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
     {
         if (XRSelector.Instance.GetVertexList() != null)
             vertexList = XRSelector.Instance.GetVertexList();

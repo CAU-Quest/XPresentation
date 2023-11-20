@@ -105,13 +105,13 @@ public class TransformByVertexHandler : MonoBehaviour
         }
     }
 
-    private void SetVertex() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
+    public void SetVertex() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
     {
         if (XRSelector.Instance.GetVertexList() != null)
             vertexList = XRSelector.Instance.GetVertexList();
     }
 
-    private void SetLine()
+    public void SetLine()
     {
         if (XRSelector.Instance.boundBox == null) return;
         lineList = XRSelector.Instance.GetLineList();
