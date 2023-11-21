@@ -36,6 +36,8 @@ public class VertexHandler : MonoBehaviour
     void Start()
     {
         isSelected = false;
+        if (XRSelector.Instance.GetVertexList() != null)
+            vertexList = XRSelector.Instance.vertexList;
     }
     public void SetVertex(int top, int front, int left)
     {

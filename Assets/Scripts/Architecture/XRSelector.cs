@@ -356,7 +356,7 @@ public class XRSelector : MonoBehaviour
     public void OnValidate()
     {
         if (EditorApplication.isPlaying) return;
-        if (null == Instance)
+        if (Instance == null)
         {
             Instance = this;
         }
