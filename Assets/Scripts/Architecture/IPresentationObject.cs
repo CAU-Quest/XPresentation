@@ -4,7 +4,5 @@ using UnityEngine;
 
 public interface IPresentationObject
 {
-    public void SetSlideObjectData(SlideObjectData slideObjectData);
-    public SlideObjectData GetSlideObjectData();
-    public uint GetID();
+    public void SaveTransformToSlide();
 }

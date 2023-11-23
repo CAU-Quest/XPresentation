@@ -26,7 +26,7 @@ public class XRSelector : MonoBehaviour
     public BoundBox boundBox;
     public TransformByVertexHandler transformByVertexHandler;
     public SelectObject selectObject;
-    public PresentationObject presentationObject;
+    public IPresentationObject presentationObject;
     
     [Header("Line Properties")]
     

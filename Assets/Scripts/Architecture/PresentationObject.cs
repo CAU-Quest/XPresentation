@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
+using DimBoxes;
 using UnityEngine;
 using UnityEngine.Events;
 //using UnityEngine.XR.Interaction.Toolkit;
@@ -138,16 +139,16 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         
         
         SlideObjectData transformData = new SlideObjectData();
-        transformData.position = transform.position;
+        transformData.position = transform.parent.position;
         transformData.rotation = transform.parent.rotation;
-        transformData.scale = transform.localScale;
+        transformData.scale = transform.parent.localScale;
         transformData.color = meshRenderer.material.color;
         
         
         SlideObjectData nextTransformData = new SlideObjectData();
-        nextTransformData.position = transform.position;
+        nextTransformData.position = transform.parent.position;
         nextTransformData.rotation = transform.parent.rotation;
-        nextTransformData.scale = transform.localScale;
+        nextTransformData.scale = transform.parent.localScale;
         nextTransformData.color = meshRenderer.material.color;
         for (int i = 0; i < MainSystem.Instance.GetSlideCount(); i++)
         {
@@ -175,7 +176,26 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         }
         
         
-        ghostObject = Instantiate(gameObject);
+        ghostObject = Instantiate(transform.parent.gameObject);
+        TransformByVertexHandler tvh = ghostObject.GetComponent<TransformByVertexHandler>();
+        CenterPositionByVertex cpv = ghostObject.GetComponent<CenterPositionByVertex>();
+        BoundBox bb = ghostObject.GetComponent<BoundBox>();
+
+        if (tvh != null)
+        {
+            tvh.enabled = false;
+        }
+
+        if (cpv != null)
+        {
+            cpv.enabled = false;
+        }
+
+        if (bb != null)
+        {
+            bb.enabled = false;
+        }
+        
         if (meshRenderer == null)
         {
             Debug.LogError("meshRenderer is null.");
@@ -185,9 +205,11 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         {
             Debug.LogError("ghostObject is null.");
         }
-        ghostObject.GetComponent<MeshRenderer>().material = afterSlideMaterial;
-        Destroy(ghostObject.GetComponent<PresentationObject>());
-        ghost = ghostObject.AddComponent<PresentationGhostObject>();
+        ghostObject.GetComponentInChildren<MeshRenderer>().material = afterSlideMaterial;
+
+        GameObject go = ghostObject.GetComponentInChildren<PresentationObject>().gameObject;
+        Destroy(ghostObject.GetComponentInChildren<PresentationObject>());
+        ghost = go.AddComponent<PresentationGhostObject>();
 
         if (ghost == null)
         {
@@ -296,9 +318,10 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     public void SaveTransformToSlide()
     {
         SlideObjectData transformData = new SlideObjectData();
-        transformData.position = transform.position;
+        transformData.position = transform.parent.position;
         transformData.rotation = transform.parent.rotation;
-        transformData.scale = transform.localScale;
+        transformData.scale = transform.parent.localScale;
+        
         transformData.color = meshRenderer.material.color;
         MainSystem.Instance.slideList[this.currentSlide].AddObjectData(this.id, transformData);
         this.slideData[this.currentSlide] = transformData;
@@ -314,17 +337,17 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     
     public void SetSlideObjectData(SlideObjectData slideObjectData)
     {
-        transform.SetPositionAndRotation(slideObjectData.position, slideObjectData.rotation);
-        transform.localScale = slideObjectData.scale;
+        transform.parent.SetPositionAndRotation(slideObjectData.position, slideObjectData.rotation);
+        transform.parent.localScale = slideObjectData.scale;
         meshRenderer.material.color = slideObjectData.color;
     }
 
     public SlideObjectData GetSlideObjectData()
     {
         SlideObjectData data = new SlideObjectData();
-        data.position = transform.position;
+        data.position = transform.parent.position;
         data.rotation = transform.parent.rotation;
-        data.scale = transform.localScale;
+        data.scale = transform.parent.localScale;
         data.color = meshRenderer.material.color;
         
         return data;
