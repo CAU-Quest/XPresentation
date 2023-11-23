@@ -41,7 +41,8 @@ public class ObjectCreator : MonoBehaviour
                 objectPool.Get(3, position);
                 break;
             case SelectableAction.Plane:
-                objectPool.Get(4, position);
+                GameObject go = objectPool.Get(4, position);
+                
                 break;
             case SelectableAction.Text:
                 objectPool.Get(5, position);

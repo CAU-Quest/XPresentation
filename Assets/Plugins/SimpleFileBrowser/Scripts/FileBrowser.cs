@@ -1367,6 +1367,7 @@ namespace SimpleFileBrowser
 			filesScrollRect.velocity = Vector2.zero;
 
 			Vector2 position;
+			
 			RectTransformUtility.ScreenPointToLocalPointInRectangle( rectTransform, pointerPos, canvas.worldCamera, out position );
 
 			ShowContextMenuAt( position, false );
@@ -2242,7 +2243,7 @@ namespace SimpleFileBrowser
 			filesContainer.anchoredPosition = new Vector2( 0f, -m_skin.FileHeight );
 			yield return null;
 			filesContainer.anchoredPosition = new Vector2( 0f, -m_skin.FileHeight );
-
+			
 			( (RectTransform) renameItem.transform ).anchoredPosition = new Vector2( 1f, m_skin.FileHeight );
 			renameItem.Show( string.Empty, m_skin.FileSelectedBackgroundColor, m_skin.FolderIcon, ( folderName ) =>
 			{
