@@ -732,6 +732,7 @@ MonoBehaviour:
   snapInteractor: {fileID: 3470090454760582243}
   textNumber: {fileID: 6673556176878625408}
   visual: {fileID: 0}
+  cube: {fileID: 0}
   previousNumber: 0
   currentNumber: 0
   material: {fileID: 0}

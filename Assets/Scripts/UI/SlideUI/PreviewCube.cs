@@ -21,6 +21,7 @@ public class PreviewCube : MonoBehaviour
 
     [SerializeField] private Material material;
     [SerializeField] private GrabInteractable grabInteractable;
+    [SerializeField] private RayInteractable rayInteractable;
 
     public bool isVisible = true;
     
@@ -34,6 +35,7 @@ public class PreviewCube : MonoBehaviour
         indexRenderer = indexSupport.GetComponent<MeshRenderer>();
         material = GetComponentInChildren<MeshRenderer>(true).material;
         grabInteractable = GetComponentInChildren<GrabInteractable>(true);
+        rayInteractable = GetComponentInChildren<RayInteractable>(true);
     }
     public void SetNumber(int number)
     {
@@ -59,8 +61,10 @@ public class PreviewCube : MonoBehaviour
             cube.DOScale(0f, 0.2f).SetEase(Ease.OutCirc);
             yield return _waitForSeconds;
         }
+        cube.transform.localScale = Vector3.zero;
         visual.SetActive(false);
         grabInteractable.MaxInteractors = 0;
+        rayInteractable.MaxInteractors = 0;
     }
     
     public IEnumerator SetVisible(float time = 0.2f)
@@ -73,8 +77,11 @@ public class PreviewCube : MonoBehaviour
             cube.DOScale(1f, 0.2f).SetEase(Ease.InCirc);
             yield return _waitForSeconds;
         }
+        cube.transform.localScale = Vector3.one;
+        
         grabInteractable.enabled = true;
         grabInteractable.MaxInteractors = -1;
+        rayInteractable.MaxInteractors = -1;
     }
 
     public void SetRenderTexture(RenderTexture renderTexture)

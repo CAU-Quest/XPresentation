@@ -38,9 +38,6 @@ public class SnapListController : MonoBehaviour
         //listSnapPoseDelegate = GetComponentInChildren<SlideListSnapPoseDelegate>();
         snapInteractable = GetComponentInChildren<SnapInteractable>();
         beforeSlideNumber = currentSlideNumber;
-        //SetTextureToPreviewCube();
-        SetNumberToPreviewCube();
-        RenderAllTexture();
 
         _lastHighlightedCube = SortedList[3];
         totalCount.text = "/" + MainSystem.Instance.GetSlideCount().ToString("0");
@@ -88,23 +85,6 @@ public class SnapListController : MonoBehaviour
                 SortedList[i].previousNumber = currentSlideNumber - 3 + i;
             }
         }
-    }
-
-    void LateUpdate()
-    {
-        if (!isInitialized)
-        {
-            Debug.Log("Init");
-            SetInitialNumber();
-            RenderAllTexture();
-            isInitialized = true;
-        }/*
-        if (currentSlideNumber != beforeSlideNumber)
-        {
-            beforeSlideNumber = currentSlideNumber;
-            RenderAllTexture();
-        }
-        SetTextureToPreviewCube();*/
     }
 
     public void SetPreviousNumberToPreviewCube()
@@ -164,6 +144,15 @@ public class SnapListController : MonoBehaviour
         MainSystem.Instance.GoToSlideByIndex(currentSlideNumber);
     }
 
+    
+    public void GoToSlideByIndex(int index)
+    {
+        currentSlideNumber = index;
+        SetNumberToPreviewCube();
+        RenderAllTexture();
+    }
+    
+    /*
     public void GoToSlideByIndex(int index)
     {
         StartCoroutine(Swipe(index));
@@ -191,7 +180,7 @@ public class SnapListController : MonoBehaviour
         }
         Debug.Log(currentSlideNumber +","+index+"FIN");
     }
-
+*/
     public void SwipeToLeft()
     {
         if (currentSlideNumber > 0)

@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 632345950388451054}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.00000011920929, z: 0}
+  m_LocalPosition: {x: 0, y: 0.997, z: 0.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -75,7 +75,6 @@ MonoBehaviour:
   boundBox: {fileID: 0}
   transformByVertexHandler: {fileID: 0}
   selectObject: {fileID: 0}
-  presentationObject: {fileID: 0}
   lineMaterial: {fileID: 2100000, guid: f001cd4316999e947ad51c079dcf17fc, type: 2}
   lineWidth: 0.0184
   lineColor: {r: 1, g: 1, b: 1, a: 1}

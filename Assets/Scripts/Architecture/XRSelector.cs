@@ -10,6 +10,7 @@ using Object = UnityEngine.Object;
 
 public class XRSelector : MonoBehaviour
 {
+    [SerializeField]
     public static XRSelector Instance = null;
 
     public GameObject selectedObject;
@@ -48,7 +49,7 @@ public class XRSelector : MonoBehaviour
         }
         else
         {
-            Destroy(this.gameObject);
+            Destroy(gameObject);
         }
         if (selectedObject == null)
         {
@@ -354,7 +355,7 @@ public class XRSelector : MonoBehaviour
 
     public void Reset()
     {
-        if (Instance == null)
+        if (null == Instance)
         {
             Instance = this;
         }
@@ -364,6 +365,7 @@ public class XRSelector : MonoBehaviour
 #if UNITY_EDITOR
     public void OnValidate()
     {
+        /*
         if (EditorApplication.isPlaying) return;
         if (Instance == null)
         {
@@ -400,7 +402,7 @@ public class XRSelector : MonoBehaviour
             SetLines();
             SetLineRenderers();
             SetLineVertex();
-        }
+        }*/
     }
 #endif
     

@@ -12,11 +12,12 @@ GameObject:
   - component: {fileID: 1954997961941174283}
   - component: {fileID: 2886397992639653354}
   - component: {fileID: 6952269827790257414}
+  - component: {fileID: 4818433722471947790}
   - component: {fileID: 7451475023969192001}
-  - component: {fileID: 799059627890582983}
   - component: {fileID: 7940346091885310125}
   - component: {fileID: 6566554172397481210}
   - component: {fileID: 5349246487357428001}
+  - component: {fileID: 6152212646823388620}
   m_Layer: 5
   m_Name: Image
   m_TagString: Untagged
@@ -106,15 +107,7 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!222 &7451475023969192001
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1768674148376445444}
-  m_CullTransparentMesh: 1
---- !u!114 &799059627890582983
+--- !u!114 &4818433722471947790
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,7 +116,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1768674148376445444}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
@@ -134,16 +127,21 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_Texture: {fileID: 0}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!222 &7451475023969192001
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768674148376445444}
+  m_CullTransparentMesh: 1
 --- !u!114 &7940346091885310125
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -187,6 +185,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _position: {x: 0, y: 0, z: 0}
   _size: {x: 100, y: 100, z: 1}
+--- !u!114 &6152212646823388620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768674148376445444}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e880f35209e766e41805117c4218a92d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 1
+  animationList: []
+  slideData: []
+  isGrabbable: 1
+  isVisible: 1
 --- !u!1 &1795990095717846183
 GameObject:
   m_ObjectHideFlags: 0
@@ -499,6 +514,18 @@ MonoBehaviour:
       - m_Target: {fileID: 3804619535538595600}
         m_TargetAssemblyTypeName: SelectObject, Assembly-CSharp
         m_MethodName: Select
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6152212646823388620}
+        m_TargetAssemblyTypeName: PresentationObject, Assembly-CSharp
+        m_MethodName: SaveTransformToSlide
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

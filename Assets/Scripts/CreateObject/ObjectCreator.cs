@@ -5,6 +5,7 @@ using UnityEngine;
 using System.IO;
 using Dummiesman;
 using Oculus.Interaction;
+using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class ObjectCreator : MonoBehaviour
@@ -60,9 +61,15 @@ public class ObjectCreator : MonoBehaviour
                 go.transform.rotation = rotation;
                 break;
             case SelectableAction.ImportImage:
+	            XRUIManager.Instance.fileBrowser.SetActive(true);
+	            XRUIManager.Instance.fileBrowser.transform.position = position;
+	            XRUIManager.Instance.fileBrowser.transform.rotation = rotation;
 	            LoadImageFile();
                 break;
             case SelectableAction.ImportModel:
+	            XRUIManager.Instance.fileBrowser.SetActive(true);
+	            XRUIManager.Instance.fileBrowser.transform.position = position;
+	            XRUIManager.Instance.fileBrowser.transform.rotation = rotation;
 	            LoadObjFile();
                 break;
         }
@@ -101,7 +108,7 @@ public class ObjectCreator : MonoBehaviour
 	IEnumerator ShowLoadObjDialogCoroutine()
 	{
 		yield return FileBrowser.WaitForLoadDialog( FileBrowser.PickMode.FilesAndFolders, true, null, null, "Load Files and Folders", "Load" );
-
+		
 		Debug.Log( FileBrowser.Success );
 
 		if( FileBrowser.Success )
@@ -170,7 +177,7 @@ public class ObjectCreator : MonoBehaviour
 			
 			Texture2D loadedTexture = new Texture2D(1, 1);
 			loadedTexture.LoadImage(bytes);
-			imageObject.GetComponentInChildren<Image>().image = loadedTexture;
+			imageObject.GetComponentInChildren<RawImage>().texture = loadedTexture;
 		}
 	}
 }

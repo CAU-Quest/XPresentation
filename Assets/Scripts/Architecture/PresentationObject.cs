@@ -206,6 +206,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         meshRenderer = GetComponentInChildren<MeshRenderer>();
         canvas = GetComponent<Canvas>();
         grabbable = GetComponent<Grabbable>();
+        if (grabbable == null) grabbable = GetComponentInParent<Grabbable>();
         if(meshRenderer != null)
             normalModeMaterial = meshRenderer.material;
         MainSystem.Instance.RegisterObserver(this);

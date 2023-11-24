@@ -355,7 +355,7 @@ namespace SimpleFileBrowser
 			{
 				if( !m_instance )
 				{
-					m_instance = Instantiate( Resources.Load<GameObject>( "SimpleFileBrowserCanvas" ) ).GetComponent<FileBrowser>();
+					m_instance = Instantiate( Resources.Load<GameObject>( "SimpleFileBrowserCanvas" )).GetComponent<FileBrowser>();
 					DontDestroyOnLoad( m_instance.gameObject );
 					m_instance.gameObject.SetActive( false );
 				}

@@ -15,7 +15,8 @@ public class XRUIManager : MonoBehaviour
 
     [SerializeField] public RayInteractor leftRayInteractor;
     [SerializeField] public RayInteractor rightRayInteractor;
-    
+
+    public GameObject fileBrowser;
     
     public Transform positionSource;
     void Awake()

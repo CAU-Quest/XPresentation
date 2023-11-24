@@ -1057,6 +1057,7 @@ MonoBehaviour:
   currentNumber: 2
   material: {fileID: 2100000, guid: a89c1a44f220cfc40ac62f4072ea8a09, type: 2}
   grabInteractable: {fileID: 1608334264187987245}
+  rayInteractable: {fileID: 0}
   isVisible: 1
   indexSupport: {fileID: 8221708303145356225}
   indexRenderer: {fileID: 0}
@@ -1086,13 +1087,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 961119780438697930}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0.025, z: 0}
   m_LocalScale: {x: -0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1067138266183363829}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &8168915779311198280
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -1525,6 +1526,7 @@ MonoBehaviour:
   currentNumber: 2
   material: {fileID: 2100000, guid: a89c1a44f220cfc40ac62f4072ea8a09, type: 2}
   grabInteractable: {fileID: 4197602970898184754}
+  rayInteractable: {fileID: 0}
   isVisible: 1
   indexSupport: {fileID: 8250671566163826374}
   indexRenderer: {fileID: 0}
@@ -2434,6 +2436,7 @@ MonoBehaviour:
   currentNumber: 2
   material: {fileID: 2100000, guid: a89c1a44f220cfc40ac62f4072ea8a09, type: 2}
   grabInteractable: {fileID: 1826860525723455178}
+  rayInteractable: {fileID: 0}
   isVisible: 1
   indexSupport: {fileID: 810626708822012758}
   indexRenderer: {fileID: 0}
@@ -3310,13 +3313,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2901858239954740768}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0.025, z: 0}
   m_LocalScale: {x: -0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 736562268474928333}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &42420071719987456
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -4124,6 +4127,7 @@ MonoBehaviour:
   currentNumber: 2
   material: {fileID: 2100000, guid: a89c1a44f220cfc40ac62f4072ea8a09, type: 2}
   grabInteractable: {fileID: 8828119190763824703}
+  rayInteractable: {fileID: 0}
   isVisible: 1
   indexSupport: {fileID: 6506701811386174506}
   indexRenderer: {fileID: 0}
@@ -5077,13 +5081,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4927724941531559892}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0.025, z: 0}
   m_LocalScale: {x: -0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6101332284010102093}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &394589152959932242
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -6383,13 +6387,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6014484359622577053}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0.025, z: 0}
   m_LocalScale: {x: -0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 3304700993639764801}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &6795495170495280173
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7088,13 +7092,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6720130000407168534}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0.025, z: 0}
   m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6365296766302456046}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &5157010792163330220
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -7123,7 +7127,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4094b1271d9366c49b79af08953019c8, type: 2}
+  - {fileID: 2100000, guid: a89c1a44f220cfc40ac62f4072ea8a09, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7543,6 +7547,7 @@ MonoBehaviour:
   currentNumber: 2
   material: {fileID: 2100000, guid: a89c1a44f220cfc40ac62f4072ea8a09, type: 2}
   grabInteractable: {fileID: 4589003183284087213}
+  rayInteractable: {fileID: 0}
   isVisible: 1
   indexSupport: {fileID: 907118081308264290}
   indexRenderer: {fileID: 0}
@@ -8121,6 +8126,7 @@ MonoBehaviour:
   currentNumber: 2
   material: {fileID: 2100000, guid: a89c1a44f220cfc40ac62f4072ea8a09, type: 2}
   grabInteractable: {fileID: 7531913504752099725}
+  rayInteractable: {fileID: 0}
   isVisible: 1
   indexSupport: {fileID: 5567649854593295042}
   indexRenderer: {fileID: 0}
@@ -8576,13 +8582,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7581080522146501855}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0.025, z: 0}
   m_LocalScale: {x: -0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 2159849619791269848}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &2806992290869465776
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -9185,13 +9191,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8278244180212366850}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0.025, z: 0}
   m_LocalScale: {x: -0.05, y: 0.05, z: 0.05}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4586491230399620452}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!33 &4023733022404633483
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -9700,6 +9706,7 @@ MonoBehaviour:
   currentNumber: 2
   material: {fileID: 2100000, guid: a89c1a44f220cfc40ac62f4072ea8a09, type: 2}
   grabInteractable: {fileID: 5029988881363183114}
+  rayInteractable: {fileID: 0}
   isVisible: 1
   indexSupport: {fileID: 8945498648963670925}
   indexRenderer: {fileID: 0}
