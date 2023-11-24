@@ -41,6 +41,47 @@ public class ChangeColorWithColorPickerEditor : Editor
     }
 }
 
+[CustomEditor(typeof(ObjectCreator))]
+public class ObjectCreatorEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        ObjectCreator CreateObject = (ObjectCreator)target;
+        
+        
+        if (GUILayout.Button("Create Cube"))
+        {
+            CreateObject.CreateObject(SelectableAction.Cube);
+        }
+        if (GUILayout.Button("Create Sphere"))
+        {
+            CreateObject.CreateObject(SelectableAction.Sphere);
+        }
+        if (GUILayout.Button("Create Cylinder"))
+        {
+            CreateObject.CreateObject(SelectableAction.Cylinder);
+        }
+        if (GUILayout.Button("Create Plane"))
+        {
+            CreateObject.CreateObject(SelectableAction.Plane);
+        }
+        if (GUILayout.Button("Create Text"))
+        {
+            CreateObject.CreateObject(SelectableAction.Text);
+        }
+        if (GUILayout.Button("Import Image Plane"))
+        {
+            CreateObject.CreateObject(SelectableAction.ImportImage);
+        }
+        if (GUILayout.Button("Import Model"))
+        {
+            CreateObject.CreateObject(SelectableAction.ImportModel);
+        }
+    }
+}
+
 
 [CustomEditor(typeof(SnapListController))]
 public class SnapListControllerEditor : Editor

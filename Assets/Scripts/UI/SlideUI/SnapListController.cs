@@ -45,6 +45,15 @@ public class SnapListController : MonoBehaviour
         _lastHighlightedCube = SortedList[3];
         totalCount.text = "/" + MainSystem.Instance.GetSlideCount().ToString("0");
         HighlightCenterIndexSupport(true);
+        StartCoroutine("InitNumber");
+    }
+
+    IEnumerator InitNumber()
+    {
+        yield return new WaitForSeconds(0.5f);
+        SetInitialNumber();
+        RenderAllTexture();
+        HighlightCenterIndexSupport(true);
     }
 
     public void SetInitialNumber()

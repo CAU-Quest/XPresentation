@@ -8,27 +8,40 @@ public class MainSystem : MonoBehaviour, ISubject
 
     private List<ISystemObserver> observers = new List<ISystemObserver>();
 
+    [HideInInspector]
+    public List<Slide> slideList = new List<Slide>();
+
     public enum Mode
     {
         None, Edit, Animation, Preview
     }
 
+    [Header("System")]
+
     public Mode mode; 
-
-    public List<Slide> slideList = new List<Slide>();
-
+    
     [SerializeField]
     private int slideCount = 1;
-    [SerializeField]
-    private int currentSlideNum;
+    public int currentSlideNum;
     [SerializeField]
     public float slideInterval;
     public bool isPlayingAnimation = true;
+    
+    [Header("Import Option")]
+
+    public Material beforeSlideMaterial;
+    public Material afterSlideMaterial;
+    public GameObject dottedLinePrefab;
+    
+    
+    [Header("Functions")]
+
+
 
     public int moved;
     public int count;
     public int into;
-    
+
     void Awake()
     {
         if (null == Instance)

@@ -46,7 +46,11 @@ public class TransformByVertexHandler : MonoBehaviour
 
     public void Init()
     {
-        if (XRSelector.Instance.transformByVertexHandler != this) enabled = false;
+        if (XRSelector.Instance.transformByVertexHandler != this)
+        {
+            enabled = false;
+            return;
+        }
         else enabled = true;
         if (BoundObjectType == BoundObjectType.ThreeDimension)
         {
@@ -63,6 +67,7 @@ public class TransformByVertexHandler : MonoBehaviour
             CalculateInitialTransform();
         }
     }
+    
 
     private void SetCorner(Vector3[] vertex) // { topFrontRight, topFrontLeft, topBackLeft, topBackRight, bottomFrontRight, bottomFrontLeft, bottomBackLeft, bottomBackRight };
     {                         

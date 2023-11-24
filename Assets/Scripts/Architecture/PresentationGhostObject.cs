@@ -56,6 +56,10 @@ public class PresentationGhostObject : MonoBehaviour, IPresentationObject
     {
         transform.SetPositionAndRotation(slideObjectData.position, slideObjectData.rotation);
         transform.parent.localScale = slideObjectData.scale;
+        if (slideObjectData.isVisible)
+        {
+            gameObject.SetActive(false);
+        }
     }
 
     public SlideObjectData GetSlideObjectData()

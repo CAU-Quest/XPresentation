@@ -31,6 +31,18 @@ public class XRUIManager : MonoBehaviour
         }
     }
 
+    public Pose GetPlayerSightPose()
+    {
+        Vector3 direction = positionSource.forward;
+        direction.y = 0;
+        direction.Normalize();
+
+        Vector3 targetPosition = positionSource.position + direction * distance + Vector3.up * verticalOffset;
+        Quaternion rotation = Quaternion.Euler(direction);
+
+        return new Pose(targetPosition, rotation);
+    }
+
     public void OpenColorPicker(Renderer renderer)
     {
         colorPicker.SetRenderer(renderer);

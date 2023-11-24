@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using DimBoxes;
+using Oculus.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
 //using UnityEngine.XR.Interaction.Toolkit;
@@ -15,7 +16,7 @@ public struct SlideObjectData
     public Vector3 scale;
     public Color color;
     public bool isGrabbable;
-    public bool isExist;
+    public bool isVisible;
 }
 
 public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObserver
@@ -29,33 +30,44 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     private int currentSlide;
     private MainSystem.Mode mode;
 
-    public Material beforeSlideMaterial;
-    public Material afterSlideMaterial;
-    public Material normalModeMaterial;
+    private Canvas canvas;
+
+    private Material normalModeMaterial;
 
     private GameObject dottedLine;
-    public GameObject dottedLinePrefab;
 
     private GameObject ghostObject;
     private PresentationGhostObject ghost;
 
     private MeshRenderer meshRenderer;
+    private Grabbable grabbable;
+
+    public bool isGrabbable = true;
+    public bool isVisible = true;
 
     public void ObserverUpdateMode(MainSystem.Mode mode)
     {
         this.mode = mode;
         if (mode == MainSystem.Mode.Animation)
         {
-            meshRenderer.material = beforeSlideMaterial;
+            if(meshRenderer != null)
+                meshRenderer.material = MainSystem.Instance.beforeSlideMaterial;
             if (currentSlide + 1 < MainSystem.Instance.GetSlideCount())
             {
-                ghostObject.SetActive(true);
-                dottedLine.SetActive(true);
+                if (slideData[currentSlide + 1].isVisible)
+                {
+                    ghostObject.SetActive(true);
+                    if (isVisible)
+                    {
+                        dottedLine.SetActive(true);
+                    }
+                }
             }
         }
         else
         {
-            meshRenderer.material = normalModeMaterial;
+            if(meshRenderer != null)
+                meshRenderer.material = normalModeMaterial;
             ghostObject.SetActive(false);
             dottedLine.SetActive(false);
         }
@@ -76,8 +88,15 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         {
             if (currentSlide + 1 < MainSystem.Instance.GetSlideCount())
             {
-                ghostObject.SetActive(true);
-                dottedLine.SetActive(true);
+                if (slideData[slide + 1].isVisible)
+                {
+                    ghostObject.SetActive(true);
+                    if (isVisible)
+                    {
+                        dottedLine.SetActive(true);
+                    }
+                }
+                
             }
             else
             {
@@ -128,51 +147,121 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     {
         slideData[index] = MainSystem.Instance.slideList[index].GetObjectData(id);
     }
+
+    public void SetGrabbable(bool boolean)
+    {
+        isGrabbable = boolean;
+        
+        if(isGrabbable)
+            grabbable.MaxGrabPoints = -1;
+        else
+            grabbable.MaxGrabPoints = 0;
+    }
+
+    public void SetVisible()
+    {
+        isVisible = true;
+        if (isGrabbable && grabbable)
+        {
+            grabbable.MaxGrabPoints = -1;
+        }
+        if (meshRenderer)
+        {
+            meshRenderer.enabled = true;
+        }
+
+        if (canvas)
+        {
+            canvas.enabled = true;
+        }
+    }
+
+    public void SetInvisible()
+    {
+        isVisible = false;
+        if (grabbable)
+        {
+            grabbable.MaxGrabPoints = 0;
+        }
+        if (meshRenderer)
+        {
+            meshRenderer.enabled = false;
+        }
+
+        if (canvas)
+        {
+            canvas.enabled = false;
+        }
+    }
     
 
     public void Start()
     {
+        Init(MainSystem.Instance.currentSlideNum);
+    }
+
+    public void Init(int currentSlideNum)
+    {
         this.id = idCount++;
-        meshRenderer = GetComponent<MeshRenderer>();
+        meshRenderer = GetComponentInChildren<MeshRenderer>();
+        canvas = GetComponent<Canvas>();
+        grabbable = GetComponent<Grabbable>();
+        if(meshRenderer != null)
+            normalModeMaterial = meshRenderer.material;
         MainSystem.Instance.RegisterObserver(this);
         List<Slide> slides = MainSystem.Instance.slideList;
         
         
-        SlideObjectData transformData = new SlideObjectData();
-        transformData.position = transform.parent.position;
-        transformData.rotation = transform.parent.rotation;
-        transformData.scale = transform.parent.localScale;
-        transformData.color = meshRenderer.material.color;
+        SlideObjectData slideObjectData = new SlideObjectData();
         
+        SlideObjectData nextSlideData = new SlideObjectData();
+        nextSlideData.position = Vector3.zero;
+        nextSlideData.rotation = Quaternion.identity;
+        nextSlideData.scale = Vector3.one;
+        nextSlideData.color = Color.white;
+        nextSlideData.isVisible = false;
+        nextSlideData.isGrabbable = false;
         
-        SlideObjectData nextTransformData = new SlideObjectData();
-        nextTransformData.position = transform.parent.position;
-        nextTransformData.rotation = transform.parent.rotation;
-        nextTransformData.scale = transform.parent.localScale;
-        nextTransformData.color = meshRenderer.material.color;
         for (int i = 0; i < MainSystem.Instance.GetSlideCount(); i++)
         {
             XRAnimation anim = new XRAnimation();
 
-            transformData.position = nextTransformData.position;
-            transformData.rotation = nextTransformData.rotation;
-            transformData.scale = nextTransformData.scale;
-            transformData.color = meshRenderer.material.color;
+            slideObjectData.position = nextSlideData.position;
+            slideObjectData.rotation = nextSlideData.rotation;
+            slideObjectData.scale = nextSlideData.scale;
+            slideObjectData.isVisible = nextSlideData.isVisible;
+            slideObjectData.isGrabbable = nextSlideData.isGrabbable;
+            if(meshRenderer != null)
+                slideObjectData.color = meshRenderer.material.color;
             
-            nextTransformData = new SlideObjectData();
-            nextTransformData.position = transformData.position;
-            nextTransformData.rotation = transform.parent.rotation;
-            nextTransformData.scale = transformData.scale;
-            nextTransformData.color = meshRenderer.material.color;
+            nextSlideData = new SlideObjectData();
+            nextSlideData.position = Vector3.zero;
+            nextSlideData.rotation = Quaternion.identity;
+            nextSlideData.scale = Vector3.one;
+            nextSlideData.color = Color.white;
+            nextSlideData.isVisible = false;
+            nextSlideData.isGrabbable = false;
+            
+            if (currentSlideNum == i)
+            {
+                slideObjectData.position = transform.parent.position;
+                slideObjectData.rotation = transform.parent.rotation;
+                slideObjectData.scale = transform.parent.localScale;
+        
+                if(meshRenderer != null)
+                    slideObjectData.color = meshRenderer.material.color;
+                slideObjectData.isVisible = true;
+                slideObjectData.isGrabbable = true;
+            }
             
             anim.SetParentObject(this);
-            anim.SetPreviousSlideObjectData(transformData);
-            anim.SetNextSlideObjectData(nextTransformData);
+            anim.SetPreviousSlideObjectData(slideObjectData);
+            anim.SetNextSlideObjectData(nextSlideData);
             
             slides[i].AddAnimation(id, anim);
-            slides[i].AddObjectData(id, transformData);
+            slides[i].AddObjectData(id, slideObjectData);
             animationList.Add(anim);
-            slideData.Add(transformData);
+            slideData.Add(slideObjectData);
         }
         
         
@@ -196,18 +285,15 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
             bb.enabled = false;
         }
         
-        if (meshRenderer == null)
-        {
-            Debug.LogError("meshRenderer is null.");
-        }
 
         if (ghostObject == null)
         {
             Debug.LogError("ghostObject is null.");
         }
-        ghostObject.GetComponentInChildren<MeshRenderer>().material = afterSlideMaterial;
 
         GameObject go = ghostObject.GetComponentInChildren<PresentationObject>().gameObject;
+        if(meshRenderer != null)
+            go.GetComponentInChildren<MeshRenderer>().material = MainSystem.Instance.afterSlideMaterial;
         Destroy(ghostObject.GetComponentInChildren<PresentationObject>());
         ghost = go.AddComponent<PresentationGhostObject>();
 
@@ -218,7 +304,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         ghost.parentObject = this;
         ghost.SetID(id);
 
-        dottedLine = Instantiate(dottedLinePrefab);
+        dottedLine = Instantiate(MainSystem.Instance.dottedLinePrefab);
         dottedLine.GetComponent<XRAnimationLine>().object1 = this;
         dottedLine.GetComponent<XRAnimationLine>().object2 = ghost;
 
@@ -321,8 +407,8 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         transformData.position = transform.parent.position;
         transformData.rotation = transform.parent.rotation;
         transformData.scale = transform.parent.localScale;
-        
-        transformData.color = meshRenderer.material.color;
+        if(meshRenderer != null)
+            transformData.color = meshRenderer.material.color;
         MainSystem.Instance.slideList[this.currentSlide].AddObjectData(this.id, transformData);
         this.slideData[this.currentSlide] = transformData;
         this.animationList[this.currentSlide].SetPreviousSlideObjectData(transformData);
@@ -339,7 +425,17 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     {
         transform.parent.SetPositionAndRotation(slideObjectData.position, slideObjectData.rotation);
         transform.parent.localScale = slideObjectData.scale;
-        meshRenderer.material.color = slideObjectData.color;
+        if(meshRenderer != null)
+            meshRenderer.material.color = slideObjectData.color;
+        if (slideObjectData.isVisible)
+        {
+            SetVisible();
+        }
+        else
+        {
+            SetInvisible();
+        }
+        SetGrabbable(slideObjectData.isGrabbable);
     }
 
     public SlideObjectData GetSlideObjectData()
@@ -348,7 +444,8 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         data.position = transform.parent.position;
         data.rotation = transform.parent.rotation;
         data.scale = transform.parent.localScale;
-        data.color = meshRenderer.material.color;
+        if(meshRenderer != null)
+            data.color = meshRenderer.material.color;
         
         return data;
     }

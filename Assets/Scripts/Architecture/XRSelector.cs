@@ -351,6 +351,15 @@ public class XRSelector : MonoBehaviour
         }
         BoundObjectType = boundObjectType;
     }
+
+    public void Reset()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+    }
+    
     
 #if UNITY_EDITOR
     public void OnValidate()
