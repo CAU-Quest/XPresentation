@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class PresentationGhostObject : MonoBehaviour
+public class PresentationGhostObject : MonoBehaviour, IPresentationObject
 {
     private uint id = 1;
 
@@ -31,9 +31,9 @@ public class PresentationGhostObject : MonoBehaviour
     public void SaveTransformToSlide()
     {
         SlideObjectData transformData = new SlideObjectData();
-        transformData.position = transform.position;
-        transformData.rotation = transform.rotation;
-        transformData.scale = transform.localScale;
+        transformData.position = transform.parent.position;
+        transformData.rotation = transform.parent.rotation;
+        transformData.scale = transform.parent.localScale;
         MainSystem.Instance.slideList[parentObject.GetCurrentSlide() + 1].AddObjectData(this.id, transformData);
         parentObject.slideData[parentObject.GetCurrentSlide() + 1] = transformData;
         parentObject.animationList[parentObject.GetCurrentSlide() + 1].SetPreviousSlideObjectData(transformData);
@@ -55,15 +55,15 @@ public class PresentationGhostObject : MonoBehaviour
     public void SetSlideObjectData(SlideObjectData slideObjectData)
     {
         transform.SetPositionAndRotation(slideObjectData.position, slideObjectData.rotation);
-        transform.localScale = slideObjectData.scale;
+        transform.parent.localScale = slideObjectData.scale;
     }
 
     public SlideObjectData GetSlideObjectData()
     {
         SlideObjectData data = new SlideObjectData();
-        data.position = transform.position;
+        data.position = transform.parent.position;
         data.rotation = transform.parent.rotation;
-        data.scale = transform.localScale;
+        data.scale = transform.parent.localScale;
         
         return data;
     }

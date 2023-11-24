@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 3753701460968562334}
   - component: {fileID: 1350596060901907885}
   - component: {fileID: 2817134550652474145}
-  - component: {fileID: 5836580605838141540}
   m_Layer: 0
   m_Name: Sphere
   m_TagString: Untagged
@@ -31,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 2029652268387437617}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.000000026193112, y: -0.000000019009029, z: 0.000000058253494}
+  m_LocalPosition: {x: -0.000000059604645, y: 0.000000059604645, z: -0.00000011920929}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -221,18 +220,6 @@ MonoBehaviour:
   normalModeMaterial: {fileID: 2100000, guid: 7ae7d9878e2a55149b63c5ab8a969e0f, type: 2}
   dottedLinePrefab: {fileID: 8018140223861054104, guid: d56e8ec7d79ea9544869f0894a1ad046,
     type: 3}
---- !u!114 &5836580605838141540
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2029652268387437617}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b435c574889657049a5471af3770b649, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6019685760379513668
 GameObject:
   m_ObjectHideFlags: 0
@@ -382,15 +369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f20e121e18bb82140ab86ff0c9e4aeeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vertexList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  vertexList: []
 --- !u!114 &545575682186811443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -405,31 +384,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boundSource: 0
   meshBound:
-    m_Center: {x: 0.15099993, y: 1.0941595, z: 0.9064549}
-    m_Extent: {x: 0.099999994, y: 0.100000024, z: 0.100000024}
-  meshBoundOffset: {x: -0.000000014901161, y: 0, z: 0.000000059604645}
-  corners:
-  - {x: 0.09999998, y: 0.100000024, z: 0.10000008}
-  - {x: -0.10000001, y: 0.100000024, z: 0.10000008}
-  - {x: -0.10000001, y: 0.100000024, z: -0.099999964}
-  - {x: 0.09999998, y: 0.100000024, z: -0.099999964}
-  - {x: 0.09999998, y: -0.100000024, z: 0.10000008}
-  - {x: -0.10000001, y: -0.100000024, z: 0.10000008}
-  - {x: -0.10000001, y: -0.100000024, z: -0.099999964}
-  - {x: 0.09999998, y: -0.100000024, z: -0.099999964}
-  lineList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+    m_Center: {x: -0.811, y: 0.753, z: 1.152}
+    m_Extent: {x: 0.100000024, y: 0.100000024, z: 0.10000014}
+  meshBoundOffset: {x: -0.000000059604645, y: 0.000000059604645, z: -0.00000011920929}
+  corners: []
+  lineList: []
   startingScale: {x: 1, y: 1, z: 1}
 --- !u!114 &1076602059880610402
 MonoBehaviour:
@@ -444,32 +403,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BoundObjectType: 1
-  vertexList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  vertexList: []
   initialScale: {x: 1, y: 1, z: 1}
-  initialWidth: 0.19999999
-  initialHeight: 0.20000005
+  initialWidth: 0.20000005
+  initialHeight: 0.20000029
   initialDepth: 0.20000005
-  lineList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  lineList: []
 --- !u!114 &1915514635785392776
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -514,7 +453,7 @@ Transform:
   m_GameObject: {fileID: 8075814036334765598}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -0.000000059604645, y: 0.000000059604645, z: -0.00000011920929}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
