@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
@@ -5,23 +6,19 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ToggleButton : MonoBehaviour
+public class ToggleButton : MonoBehaviour, IInitializationNeeded
 {
     [SerializeField] private Image buttonImage;
     [SerializeField] private TextMeshProUGUI buttonText;
-    
-    private SelectUI _selectUI;
-    private bool _isOn;
-    
-    private void Awake()
-    {
-        _selectUI = GetComponentInParent<SelectUI>();
-        _selectUI.initUI += InitProperty;
-    }
 
-    private void InitProperty()
+    private bool _isOn;
+    private SelectUI _selectUI;
+
+    public void InitProperty(SelectUI selectUI)
     {
-        _isOn = _selectUI.selectedProperty.grabbableInPresentation;
+        _selectUI = selectUI;
+        
+        _isOn = selectUI.selectedProperty.grabbableInPresentation;
         buttonImage.DOColor((_isOn) ? ColorManager.ToggleSelected : ColorManager.ToggleUnselected, 0.3f);
         buttonText.text = (_isOn) ? "V" : "";
     }

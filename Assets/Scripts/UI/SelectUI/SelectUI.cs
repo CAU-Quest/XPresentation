@@ -9,7 +9,7 @@ using UnityEngine.UI;
 
 public class SelectUI : MonoBehaviour
 {
-    private enum Mode { Transform = 1, Color, Animation, Etc }
+    public enum Mode { Transform = 1, Color, Animation, Etc }
     private Mode _mode;
 
     [SerializeField] private GameObject[] canvases;
@@ -18,7 +18,16 @@ public class SelectUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI[] labelTexts;
         
     public ObjectSelectionProperty selectedProperty;
-    public Action initUI;
+    private IInitializationNeeded[][] _initializationNeeded;
+    
+    private void Awake()
+    {
+        _initializationNeeded = new IInitializationNeeded[canvases.Length][];
+        for (int i = 0; i < canvases.Length; i++)
+        {
+            _initializationNeeded[i] = canvases[i].GetComponentsInChildren<IInitializationNeeded>();
+        }
+    }
 
     void Start()
     {
@@ -52,7 +61,11 @@ public class SelectUI : MonoBehaviour
     {
         canvases[0].SetActive(true);
         Select(Mode.Transform);
-        initUI.Invoke();
+
+        foreach (var component in _initializationNeeded[(int)Mode.Transform])
+        {
+            component.InitProperty(this);
+        }
     }
 
     private void CloseUI()
@@ -104,6 +117,11 @@ public class SelectUI : MonoBehaviour
             labelPanels[i].DOColor((i == modeIndex) ? ColorManager.Select : ColorManager.Default, 0.3f);
             labelPanels[i].DOFade((i == modeIndex) ? 1f : 0f, 0.3f);
             labelTexts[i].DOFade((i == modeIndex) ? 1f : 0f, 0.3f);
+        }
+
+        foreach (var component in _initializationNeeded[(int)mode])
+        {
+            component.InitProperty(this);
         }
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class SliderButton : MonoBehaviour
+public class SliderButton : MonoBehaviour, IInitializationNeeded
 {
     [SerializeField] protected float maxOffset = 1f;
     [SerializeField] protected Transform handle;
@@ -16,20 +16,12 @@ public class SliderButton : MonoBehaviour
     [SerializeField] private Image buttonImage, handleImage, graduationImage, graduationShadowImage, valuePanelImage, handleValuePanelImage;
     [SerializeField] private TextMeshProUGUI valueText, handleValueText;
     
-    protected SelectUI selectUI;
     protected float initialValue;
     protected const float SwipeLength = 0.2f;
     protected bool turnOffWhenUnselect, isSelectingHandle;
     protected Vector3 initialHandleLocalPos;
 
-    
-    protected void Awake()
-    {
-        selectUI = GetComponentInParent<SelectUI>();
-        selectUI.initUI += InitProperty;
-    }
-
-    protected virtual void InitProperty()
+    public virtual void InitProperty(SelectUI selectUI)
     {
         SetInitialValue();
         valueText.text = initialValue.ToString("0.0");
@@ -89,9 +81,9 @@ public class SliderButton : MonoBehaviour
         valueText.DOKill();
     }
 
-    protected void SetGraduation(bool isOn)
+    protected virtual void SetGraduation(bool isOn)
     {
-        graduationImage.DOFade(isOn? 1f : 0f, 0.2f).SetEase(isOn ? Ease.OutCirc : Ease.InCirc);
+        if(graduationImage) graduationImage.DOFade(isOn? 1f : 0f, 0.2f).SetEase(isOn ? Ease.OutCirc : Ease.InCirc);
         graduationShadowImage.DOFade(isOn? 1f : 0f, 0.2f).SetEase(isOn ? Ease.OutCirc : Ease.InCirc);
     }
     

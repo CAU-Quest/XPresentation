@@ -127,7 +127,7 @@ namespace Oculus.Interaction
                     pointer = new Pointer(canvas);
                     pointer.PointerEventData = new PointerEventData(eventSystem);
                     pointer.SetPosition(evt.Pose.position);
-                    _pointerMap.Add(evt.Identifier, pointer);
+                    _pointerMap.TryAdd(evt.Identifier, pointer);
                     break;
                 case PointerEventType.Unhover:
                     pointer = _pointerMap[evt.Identifier];

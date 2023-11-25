@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
-public class ColorPicker : MonoBehaviour
+public class ColorPicker : MonoBehaviour, IInitializationNeeded
 {
     /// <summary>
     /// Event that gets called by the ColorPicker
@@ -24,7 +24,7 @@ public class ColorPicker : MonoBehaviour
     private static Color32 originalColor;
     //current Color
     private static Color32 modifiedColor;
-    private static HSV modifiedHsv;
+    private static HSV modifiedHsv = new HSV();
 
     //useAlpha bool
     private static bool useA;
@@ -38,16 +38,25 @@ public class ColorPicker : MonoBehaviour
     public Slider gComponent;
     public Slider bComponent;
     public Slider aComponent;
-    public InputField hexaComponent;
+    //public InputField hexaComponent;
     public RawImage colorComponent;
 
+    [SerializeField] private RawImage rAImage, rBImage, gAImage, gBImage, bAImage, bBImage, aImage;
+    
     private void Awake()
     {
         instance = this;
-        gameObject.SetActive(false);
+        rComponent.onValueChanged.AddListener(SetR);
+        gComponent.onValueChanged.AddListener(SetG);
+        bComponent.onValueChanged.AddListener(SetB);
+        aComponent.onValueChanged.AddListener(SetA);
     }
-
-
+    
+    public void InitProperty(SelectUI selectUI)
+    {
+        Create(selectUI.selectedProperty.Material.color, "", null, null);
+    }
+    
     /// <summary>
     /// Creates a new Colorpicker
     /// </summary>
@@ -59,7 +68,7 @@ public class ColorPicker : MonoBehaviour
     /// <returns>
     /// False if the instance is already running
     /// </returns>
-    public static bool Create(Color original, string message, ColorEvent onColorChanged, ColorEvent onColorSelected, bool useAlpha = false)
+    public static bool Create(Color original, string message, ColorEvent onColorChanged, ColorEvent onColorSelected, bool useAlpha = true)
     {   
         if(instance is null)
         {
@@ -75,10 +84,10 @@ public class ColorPicker : MonoBehaviour
             onCS = onColorSelected;
             useA = useAlpha;
             instance.gameObject.SetActive(true);
-            instance.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = message;
+//            instance.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = message;
             instance.aComponent.gameObject.SetActive(useAlpha);
             instance.RecalculateMenu(true);
-            instance.hexaComponent.placeholder.GetComponent<Text>().text = "RRGGBB" + (useAlpha ? "AA" : "");
+            //instance.hexaComponent.placeholder.GetComponent<Text>().text = "RRGGBB" + (useAlpha ? "AA" : "");
             return true;
         }
         else
@@ -101,28 +110,29 @@ public class ColorPicker : MonoBehaviour
             modifiedColor = modifiedHsv.ToColor();
         }
         rComponent.value = modifiedColor.r;
-        rComponent.transform.GetChild(3).GetComponent<InputField>().text = modifiedColor.r.ToString();
+        //rComponent.transform.GetChild(3).GetComponent<InputField>().text = modifiedColor.r.ToString();
         gComponent.value = modifiedColor.g;
-        gComponent.transform.GetChild(3).GetComponent<InputField>().text = modifiedColor.g.ToString();
+        //gComponent.transform.GetChild(3).GetComponent<InputField>().text = modifiedColor.g.ToString();
         bComponent.value = modifiedColor.b;
-        bComponent.transform.GetChild(3).GetComponent<InputField>().text = modifiedColor.b.ToString();
+        //bComponent.transform.GetChild(3).GetComponent<InputField>().text = modifiedColor.b.ToString();
         if (useA)
         {
             aComponent.value = modifiedColor.a;
-            aComponent.transform.GetChild(3).GetComponent<InputField>().text = modifiedColor.a.ToString();
+            //aComponent.transform.GetChild(3).GetComponent<InputField>().text = modifiedColor.a.ToString();
         }
         mainComponent.value = (float)modifiedHsv.H;
-        rComponent.transform.GetChild(0).GetComponent<RawImage>().color = new Color32(255, modifiedColor.g, modifiedColor.b, 255);
-        rComponent.transform.GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color32(0, modifiedColor.g, modifiedColor.b, 255);
-        gComponent.transform.GetChild(0).GetComponent<RawImage>().color = new Color32(modifiedColor.r, 255, modifiedColor.b, 255);
-        gComponent.transform.GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color32(modifiedColor.r, 0, modifiedColor.b, 255);
-        bComponent.transform.GetChild(0).GetComponent<RawImage>().color = new Color32(modifiedColor.r, modifiedColor.g, 255, 255);
-        bComponent.transform.GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color32(modifiedColor.r, modifiedColor.g, 0, 255);
-        if (useA) aComponent.transform.GetChild(0).GetChild(0).GetComponent<RawImage>().color = new Color32(modifiedColor.r, modifiedColor.g, modifiedColor.b, 255);
+        rAImage.color = new Color32(255, modifiedColor.g, modifiedColor.b, 255);
+        rBImage.color = new Color32(0, modifiedColor.g, modifiedColor.b, 255);
+        gAImage.color = new Color32(modifiedColor.r, 255, modifiedColor.b, 255);
+        gBImage.color = new Color32(modifiedColor.r, 0, modifiedColor.b, 255);
+        bAImage.color = new Color32(modifiedColor.r, modifiedColor.g, 255, 255);
+        bBImage.color = new Color32(modifiedColor.r, modifiedColor.g, 0, 255);
+        aImage.color = new Color32(modifiedColor.r, modifiedColor.g, modifiedColor.b, 255);
+        
         positionIndicator.parent.GetChild(0).GetComponent<RawImage>().color = new HSV(modifiedHsv.H, 1d, 1d).ToColor();
         positionIndicator.anchorMin = new Vector2((float)modifiedHsv.S, (float)modifiedHsv.V);
         positionIndicator.anchorMax = positionIndicator.anchorMin;
-        hexaComponent.text = useA ? ColorUtility.ToHtmlStringRGBA(modifiedColor) : ColorUtility.ToHtmlStringRGB(modifiedColor);
+        //hexaComponent.text = useA ? ColorUtility.ToHtmlStringRGBA(modifiedColor) : ColorUtility.ToHtmlStringRGB(modifiedColor);
         colorComponent.color = modifiedColor;
         onCC?.Invoke(modifiedColor);
         interact = true;
@@ -266,7 +276,7 @@ public class ColorPicker : MonoBehaviour
             }
             else
             {
-                hexaComponent.text = useA ? ColorUtility.ToHtmlStringRGBA(modifiedColor) : ColorUtility.ToHtmlStringRGB(modifiedColor);
+                //hexaComponent.text = useA ? ColorUtility.ToHtmlStringRGBA(modifiedColor) : ColorUtility.ToHtmlStringRGB(modifiedColor);
             }
         }
     }
@@ -296,7 +306,7 @@ public class ColorPicker : MonoBehaviour
         done = true;
         onCC?.Invoke(modifiedColor);
         onCS?.Invoke(modifiedColor);
-        instance.transform.gameObject.SetActive(false);
+        //instance.transform.gameObject.SetActive(false);
     }
     //HSV helper class
     private sealed class HSV

@@ -15,26 +15,26 @@ public class ColorSliderButton : SliderButton
     
     [SerializeField] private Usage usage;
     [SerializeField] private Slider slider;
-    [SerializeField] private RayInteractable sliderPanel;
+    [SerializeField] private RawImage graduationImageA, graduationImageB;
         
     private Material _selectedMaterial;
     
     private void Start()
     {
-        SetHandleValuePanel(false);
-        SetGraduation(false);
-        SetValuePanel(true);
-        handle.gameObject.SetActive(false);
-        sliderPanel.enabled = false;
-
         slider.onValueChanged.AddListener(OnValueChanged);
         slider.gameObject.SetActive(false);
     }
 
-    protected override void InitProperty()
+    public override void InitProperty(SelectUI selectUI)
     {
         _selectedMaterial = selectUI.selectedProperty.Material;
-        base.InitProperty();
+        
+        SetHandleValuePanel(false);
+        SetGraduation(false);
+        SetValuePanel(true);
+        handle.gameObject.SetActive(false);
+        
+        base.InitProperty(selectUI);
     }
     
     protected override void SetInitialValue()
@@ -58,20 +58,18 @@ public class ColorSliderButton : SliderButton
         initialValue *= 255f;
     }
     
-    public override void OnHoverButton() //onHover
+    public override void OnHoverButton()
     {
         transform.SetAsLastSibling();
         base.OnHoverButton();
-
-        sliderPanel.enabled = true;
+        
         slider.gameObject.SetActive(true);
         SetHoverColor();
         SetGraduation(true);
     }
-
+    
     public void OnUnhoverSlider()
     {
-        sliderPanel.enabled = false;
         handle.gameObject.SetActive(false);
         slider.gameObject.SetActive(false);
         SetDefaultColor();
@@ -101,8 +99,10 @@ public class ColorSliderButton : SliderButton
         UpdateValue(value);
     }
     
-    protected override void UpdateValue(float value) //value = -500 ~ 500
+    protected override void UpdateValue(float value) //value = 0~255
     {
+        base.UpdateValue(value);
+        value /= 255f;
         var color = _selectedMaterial.color;
         
         switch (usage)
@@ -120,8 +120,12 @@ public class ColorSliderButton : SliderButton
                 _selectedMaterial.color = new Color(color.r, color.g, color.b, value);
                 break;
         }
-
-        value *= 255f;
-        base.UpdateValue(value);
+    }
+    
+    protected override void SetGraduation(bool isOn)
+    {
+        base.SetGraduation(isOn);
+        graduationImageA.DOFade(isOn? 1f : 0f, 0.2f).SetEase(isOn ? Ease.OutCirc : Ease.InCirc);
+        graduationImageB.DOFade(isOn? 1f : 0f, 0.2f).SetEase(isOn ? Ease.OutCirc : Ease.InCirc);
     }
 }

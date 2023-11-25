@@ -51,13 +51,10 @@ public class XRUIManager : MonoBehaviour
         Vector3 direction = positionSource.forward;
         direction.y = 0;
         direction.Normalize();
-
         Vector3 targetPosition = positionSource.position + direction * distance + Vector3.up * verticalOffset;
-
         colorPicker.transform.position = targetPosition;
         colorPicker.ShowColorPicker();
         
         colorPicker.gameObject.SetActive(true);
     }
-
 }

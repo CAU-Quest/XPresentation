@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TransformSliderButton : SliderButton
+public class TransformSliderButton : SliderButton, IInitializationNeeded
 {
     private enum Usage
     {
@@ -13,10 +13,10 @@ public class TransformSliderButton : SliderButton
     private Transform _selectedTransform;
     private Transform _activeTipTransform;
     
-    protected override void InitProperty()
+    public override void InitProperty(SelectUI selectUI)
     {
         _selectedTransform = selectUI.selectedProperty.Transform;
-        base.InitProperty();
+        base.InitProperty(selectUI);
     }
     
     protected override void SetInitialValue()
