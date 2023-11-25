@@ -125,27 +125,18 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     
     public void addSlide()
     {
-        List<Slide> slides = MainSystem.Instance.slideList;
         SlideObjectData beforeTransform = slideData[slideData.Count - 1];
         for (int i = slideData.Count; i < MainSystem.Instance.GetSlideCount(); i++)
         {
             XRAnimation anim = new XRAnimation();
             
             anim.SetParentObject(this);
-            //anim.SetSlide(slides[i], slides[i + 1]);
             anim.SetPreviousSlideObjectData(beforeTransform);
             anim.SetNextSlideObjectData(beforeTransform);
             
-            slides[i].AddAnimation(id, anim);
-            slides[i].AddObjectData(id, beforeTransform);
             animationList.Add(anim);
             slideData.Add(beforeTransform);
         }
-    }
-
-    public void GetTransformDataFromSlide(int index)
-    {
-        slideData[index] = MainSystem.Instance.slideList[index].GetObjectData(id);
     }
 
     public void SetGrabbable(bool boolean)
@@ -210,7 +201,6 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         if(meshRenderer != null)
             normalModeMaterial = meshRenderer.material;
         MainSystem.Instance.RegisterObserver(this);
-        List<Slide> slides = MainSystem.Instance.slideList;
         
         
         SlideObjectData slideObjectData = new SlideObjectData();
@@ -259,8 +249,6 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
             anim.SetPreviousSlideObjectData(slideObjectData);
             anim.SetNextSlideObjectData(nextSlideData);
             
-            slides[i].AddAnimation(id, anim);
-            slides[i].AddObjectData(id, slideObjectData);
             animationList.Add(anim);
             slideData.Add(slideObjectData);
         }
@@ -410,7 +398,6 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         transformData.scale = transform.parent.localScale;
         if(meshRenderer != null)
             transformData.color = meshRenderer.material.color;
-        MainSystem.Instance.slideList[this.currentSlide].AddObjectData(this.id, transformData);
         this.slideData[this.currentSlide] = transformData;
         this.animationList[this.currentSlide].SetPreviousSlideObjectData(transformData);
         if(this.currentSlide - 1 >= 0)
