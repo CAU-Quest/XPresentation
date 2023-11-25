@@ -6,10 +6,8 @@ public class MainSystem : MonoBehaviour, ISubject
 {
     public static MainSystem Instance = null;
 
-    private List<ISystemObserver> observers = new List<ISystemObserver>();
+    public List<ISystemObserver> observers = new List<ISystemObserver>();
 
-    [HideInInspector]
-    public List<Slide> slideList = new List<Slide>();
 
     public enum Mode
     {
@@ -47,8 +45,6 @@ public class MainSystem : MonoBehaviour, ISubject
         if (null == Instance)
         {
             Instance = this;
-            for(int i = 0; i < slideCount; i++)
-                slideList.Add(new Slide());
             DontDestroyOnLoad(this.gameObject);
         }
         else
@@ -120,12 +116,9 @@ public class MainSystem : MonoBehaviour, ISubject
         }
     }
     
-    
-    
     public void AddSlide()
     {
         slideCount += 1;
-        slideList.Add(new Slide());
         for (int i = 0; i < this.observers.Count; i++)
         {
             observers[i].ObserverAddSlide();
@@ -143,28 +136,14 @@ public class MainSystem : MonoBehaviour, ISubject
 
     public void MoveSlideTo(int moved, int into) // moved 위치에 있는 slide를 into 위치로 옮김
     {
-        Slide element = slideList[moved];
-        slideList.RemoveAt(moved);
-        
-        slideList.Insert(into, element);
         NotifyObserversMoveSlides(moved, 1, into);
     }
 
     public void MoveSlidesTo(int moved, int count, int into) // moved 위치에 있는 count 갯수 만큼의 slide를 into 위치로 옮김
     {
-        List<Slide> elements = slideList.GetRange(moved, count);
-        slideList.RemoveRange(moved, count);
-
-        if(into < moved) slideList.InsertRange(into, elements);
-        else slideList.InsertRange(into - count + 1, elements);
-        
         NotifyObserversMoveSlides(moved, count, into);
     }
 
-    public ISlide GetSlideByIndex(int index)
-    {
-        return slideList[index];
-    }
 
     public void GoToPreviousSlide()
     {
@@ -207,14 +186,6 @@ public class MainSystem : MonoBehaviour, ISubject
             NotifyObservers();
         }
     }
-
-    public void ToggleMode()
-    {
-        this.mode++;
-        //this.mode %= 4;
-        NotifyObservers();
-    }
-
     public void AnimationToggle()
     {
         isPlayingAnimation = true;

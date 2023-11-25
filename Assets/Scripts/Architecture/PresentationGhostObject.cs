@@ -34,7 +34,6 @@ public class PresentationGhostObject : MonoBehaviour, IPresentationObject
         transformData.position = transform.parent.position;
         transformData.rotation = transform.parent.rotation;
         transformData.scale = transform.parent.localScale;
-        MainSystem.Instance.slideList[parentObject.GetCurrentSlide() + 1].AddObjectData(this.id, transformData);
         parentObject.slideData[parentObject.GetCurrentSlide() + 1] = transformData;
         parentObject.animationList[parentObject.GetCurrentSlide() + 1].SetPreviousSlideObjectData(transformData);
         if(parentObject.GetCurrentSlide() >= 0)
