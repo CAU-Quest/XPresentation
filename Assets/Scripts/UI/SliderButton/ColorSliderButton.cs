@@ -16,24 +16,19 @@ public class ColorSliderButton : SliderButton
     [SerializeField] private Usage usage;
     [SerializeField] private Slider slider;
     [SerializeField] private RayInteractable sliderPanel;
-    [SerializeField] private BoundsClipper handleBoundClipper;
         
     private Material _selectedMaterial;
-    private WaitForSeconds _waitForSeconds;
-    private bool _isHandleHovered, _isReadyToCloseSlider;
-
+    
     private void Start()
     {
-        _waitForSeconds = new WaitForSeconds(0.2f);
-        
         SetHandleValuePanel(false);
         SetGraduation(false);
         SetValuePanel(true);
         handle.gameObject.SetActive(false);
         sliderPanel.enabled = false;
-        ResetHandleBounds();
-        
+
         slider.onValueChanged.AddListener(OnValueChanged);
+        slider.gameObject.SetActive(false);
     }
 
     protected override void InitProperty()
@@ -59,6 +54,8 @@ public class ColorSliderButton : SliderButton
                 initialValue = _selectedMaterial.color.a;
                 break;
         }
+
+        initialValue *= 255f;
     }
     
     public override void OnHoverButton() //onHover
@@ -67,58 +64,32 @@ public class ColorSliderButton : SliderButton
         base.OnHoverButton();
 
         sliderPanel.enabled = true;
+        slider.gameObject.SetActive(true);
         SetHoverColor();
         SetGraduation(true);
     }
 
     public void OnUnhoverSlider()
     {
-        StartCoroutine(CloseSlider());
+        sliderPanel.enabled = false;
+        handle.gameObject.SetActive(false);
+        slider.gameObject.SetActive(false);
+        SetDefaultColor();
+        SetGraduation(false);
     }
 
-    private IEnumerator CloseSlider(float time = 0.2f)
-    {
-        if(time != 0f) yield return _waitForSeconds;
-        
-        if (_isHandleHovered)
-        {
-            _isReadyToCloseSlider = true;
-        }
-        else
-        {
-            _isReadyToCloseSlider = false;
-            sliderPanel.enabled = false;
-            handle.gameObject.SetActive(false);
-            SetDefaultColor();
-            SetGraduation(true);
-        }
-    }
-
-    public void OnHoverHandle()
-    {
-        _isHandleHovered = true;
-    }
-
-    public void OnUnhoverHandle()
-    {
-        _isHandleHovered = false;
-        if (_isReadyToCloseSlider) StartCoroutine(CloseSlider(0f));
-    }
-
-    public void OnSelectHandle()
+    public void OnSelectSlider()
     {
         SetSelectColor();
-        SetHandleBounds();
         
         DOKill();
         SetHandleValuePanel(true);
         SetValuePanel(false);
     }
 
-    public void OnUnselectHandle()
+    public void OnUnselectSlider()
     {
         SetHoverColor();
-        ResetHandleBounds();
         
         DOKill();
         SetHandleValuePanel(false);
@@ -152,17 +123,5 @@ public class ColorSliderButton : SliderButton
 
         value *= 255f;
         base.UpdateValue(value);
-    }
-
-    private void ResetHandleBounds()
-    {
-        handleBoundClipper.Position = handle.localPosition;
-        handleBoundClipper.Size = new Vector3(100f, 100f, 1f);
-    }
-    
-    private void SetHandleBounds()
-    {
-        handleBoundClipper.Position = new Vector3();
-        handleBoundClipper.Size = new Vector3(2000f, 500f, 1f);
     }
 }

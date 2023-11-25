@@ -110,6 +110,7 @@ public class SliderButton : MonoBehaviour
     protected void SetHoverColor()
     {
         buttonImage.DOColor(ColorManager.SliderHover, 0.2f);
+        handleImage.DOColor(ColorManager.Default, 0.2f);
     }
 
     protected void SetSelectColor()
