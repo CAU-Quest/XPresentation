@@ -30,9 +30,39 @@ MonoBehaviour:
     referenceMode: 2
     serializationDepthLimit: 64
     assemblyNames:
-    - Assembly-CSharp-firstpass
     - Assembly-CSharp
-    showAdvancedSettings: 0
+    - Assembly-CSharp-firstpass
+    - AssistantCoreSDKRuntime
+    - Facebook.Wit.Dictation
+    - Meta.Voice.Hub.Runtime
+    - Meta.Voice.Samples.BuiltInTimer
+    - Meta.Voice.Samples.Chess
+    - Meta.Voice.Samples.Dictation
+    - Meta.Voice.Samples.LightTraits
+    - Meta.Voice.Samples.LiveUnderstanding
+    - Meta.Voice.Samples.Shapes
+    - Meta.Voice.Samples.ShapesConduit
+    - Meta.Voice.Samples.TTSVoices
+    - Meta.VoiceSDK.Mic.Common
+    - Meta.VoiceSDK.Mic.Other
+    - Meta.VoiceSDK.Mic.WebGL
+    - Meta.WitAi
+    - Meta.WitAi.Conduit
+    - Meta.WitAi.Lib
+    - Meta.WitAi.TTS
+    - Meta.XR.BuildingBlocks
+    - Oculus.AudioManager
+    - Oculus.Interaction
+    - Oculus.Interaction.OVR
+    - Oculus.Interaction.OVR.Samples
+    - Oculus.LipSync
+    - Oculus.Platform
+    - Oculus.Spatializer
+    - Oculus.VR
+    - SimpleFileBrowser.Runtime
+    - VoiceSDK.Dictation.Runtime
+    - VoiceSDK.Runtime
+    showAdvancedSettings: 1
   addMgrToSceneAutomatically: 0
   autoUpdateReferences: 1
   addAllPrefabsToManager: 1
