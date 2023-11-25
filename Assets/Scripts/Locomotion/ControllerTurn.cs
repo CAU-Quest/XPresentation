@@ -18,32 +18,32 @@ public class ControllerTurn : MonoBehaviour
 
     public void UpdateTurn()
     {
+        var leftHandPos = _leftHandAnchor.localPosition;
+        var rightHandPos = _rightHandAnchor.localPosition;
+        
         if (_isFirst)
         {
-            _lastLeftHandPos = Vector3.zero;
-            _lastRightHandPos = Vector3.zero;
+            _lastLeftHandPos = leftHandPos;
+            _lastRightHandPos = rightHandPos;
             _isFirst = false;
             return;
         }
-
-        var leftHandPos = _leftHandAnchor.localPosition;
-        var rightHandPos = _rightHandAnchor.localPosition;
-        var middlePos = (leftHandPos + rightHandPos) * 0.5f;
         
         var lastHandV = _lastRightHandPos - _lastLeftHandPos;
         lastHandV = new Vector3(lastHandV.x, 0f, lastHandV.z);
         var handV = rightHandPos - leftHandPos;
         handV = new Vector3(handV.x, 0f, handV.z);
-
-        var angle = Vector3.Angle(handV, lastHandV);
-        var sign = (leftHandPos.z > _lastLeftHandPos.z) ? -1 : 1;
         
+        var angle = Vector3.Angle(handV, lastHandV);
+        var forwardV = Quaternion.Euler(0f, -90f, 0f) * lastHandV;
+        var sign = (Vector3.Dot(handV, forwardV) > 0f) ? 1f : -1f;
+        
+        var middlePos = (_leftHandAnchor.position + _rightHandAnchor.position) * 0.5f;
         _player.RotateAround(middlePos, Vector3.up, angle * sign);
 
         _lastLeftHandPos = leftHandPos;
         _lastRightHandPos = rightHandPos;
     }
-    
     public void ResetProperty()
     {
         _isFirst = true;
