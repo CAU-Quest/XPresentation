@@ -11,10 +11,11 @@ public class PresentationGhostObject : MonoBehaviour, IPresentationObject
     private uint id = 1;
 
     public PresentationObject parentObject;
+    public DeployType deployType;
 
     public void Start()
     {
-        UnityEngine.Events.UnityAction<Oculus.Interaction.PointerEvent> pointerAction = (args) => UpdateCurrentObjectDataInSlide();
+        UnityAction<PointerEvent> pointerAction = (args) => UpdateCurrentObjectDataInSlide();
         GetComponent<PointableUnityEventWrapper>().WhenUnselect.AddListener(pointerAction);
     }
 

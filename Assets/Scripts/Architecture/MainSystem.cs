@@ -95,6 +95,15 @@ public class MainSystem : MonoBehaviour, ISubject
             XRSelector.Instance.vertexList[i].gameObject.SetActive(false);
         }
     }
+    
+    public void NotifyObserverSaveData()
+    {
+        SaveData.Instance.objects.Clear();
+        for (int i = 0; i < this.observers.Count; i++)
+        {
+            observers[i].ObserverUpdateSave();
+        }
+    }
 
     public void NotifyObserversMoveSlides(int moved, int count, int into)
     {

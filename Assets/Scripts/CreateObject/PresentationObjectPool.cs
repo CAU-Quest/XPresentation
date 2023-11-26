@@ -6,6 +6,8 @@ using UnityEngine;
 public class PresentationObjectPool : MonoBehaviour
 {
     public static PresentationObjectPool Instance = null;
+
+    public SaveData saveData;
     
     public GameObject[] prefabs; 
     List<GameObject>[] pools;
