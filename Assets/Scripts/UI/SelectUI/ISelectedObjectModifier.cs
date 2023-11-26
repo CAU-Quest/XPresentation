@@ -12,11 +12,4 @@ public interface ISelectedObjectModifier
 
     void InitProperty(PresentationObject selectedObject);
     void UpdateSelectedObjectData(PresentationObject selectedObject, SlideObjectData data);
-
-    /*
-    SlideObjectData CreateNewSlideObjectData(Color col)
-    {
-           
-    }
-    */
 }

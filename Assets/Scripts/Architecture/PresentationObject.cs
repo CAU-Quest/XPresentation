@@ -31,6 +31,26 @@ public struct SlideObjectData
         isGrabbable = grabbable;
         isVisible = visible;
     }
+    
+    public SlideObjectData(SlideObjectData currentData, Vector3 pos, Quaternion rot, Vector3 scale)
+    {
+        position = pos;
+        rotation = rot;
+        this.scale = scale;
+        color = currentData.color;
+        isGrabbable = currentData.isGrabbable;
+        isVisible = currentData.isVisible;
+    }
+    
+    public SlideObjectData(SlideObjectData currentData, Color col)
+    {
+        position = currentData.position;
+        rotation = currentData.rotation;
+        scale = currentData.scale;
+        color = col;
+        isGrabbable = currentData.isGrabbable;
+        isVisible = currentData.isVisible;
+    }
 }
 
 public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObserver
