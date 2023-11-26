@@ -53,6 +53,8 @@ namespace Oculus.Interaction
         public Vector3 Forward { get; protected set; }
         public Vector3 End { get; set; }
 
+        public bool IsSelecting { get; protected set; }
+
         public float MaxRayLength
         {
             get
@@ -155,6 +157,7 @@ namespace Oculus.Interaction
             if (interactable != null)
             {
                 onSelect?.Invoke(interactable);
+                IsSelecting = true;
                 
                 _movedHit = CollisionInfo.Value;
                 Pose hitPose = new Pose(_movedHit.Point, Quaternion.LookRotation(_movedHit.Normal));
@@ -173,6 +176,7 @@ namespace Oculus.Interaction
             if (_movement != null)
             {
                 onUnselect?.Invoke();
+                IsSelecting = false;
                 
                 _movement.StopAndSetPose(_movement.Pose);
             }

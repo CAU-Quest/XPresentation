@@ -211,10 +211,6 @@ public class GradientPicker : MonoBehaviour
             alphaKeyObjects[selectedAlphaKey].transform.GetChild(0).GetChild(0).GetComponent<Image>().color = Color.gray;
         }
         colorKeyObjects[value].transform.GetChild(0).GetChild(0).GetComponent<Image>().color = Color.green;
-        if (selectedColorKey != value && !ColorPicker.done)
-        {
-            ColorPicker.Done();
-        }
         selectedColorKey = value;
         colorKeyObjects[value].Select();
     }
@@ -240,11 +236,6 @@ public class GradientPicker : MonoBehaviour
         {
             if (s.name == "ColorKey" && colorKeys.Count > 2)
             {
-                if (!ColorPicker.done)
-                {
-                    ColorPicker.Done();
-                    return;
-                }
                 int index = colorKeyObjects.IndexOf(s);
                 Destroy(colorKeyObjects[index].gameObject);
                 colorKeyObjects.RemoveAt(index);
@@ -373,8 +364,6 @@ public class GradientPicker : MonoBehaviour
     /// </summary>
     public static void Done()
     {
-        if(!ColorPicker.done)
-            ColorPicker.Done();
         foreach (Slider s in instance.colorKeyObjects)
         {
             Destroy(s.gameObject);

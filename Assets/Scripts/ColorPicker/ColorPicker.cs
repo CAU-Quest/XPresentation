@@ -1,4 +1,5 @@
 ﻿using System;
+using Oculus.Interaction;
 using UnityEngine;
 using UnityEngine.UI;
 public class ColorPicker : MonoBehaviour, ISelectedObjectModifierInitializer
@@ -10,10 +11,6 @@ public class ColorPicker : MonoBehaviour, ISelectedObjectModifierInitializer
     public delegate void ColorEvent(Color c);
 
     private static ColorPicker instance;
-    /// <returns>
-    /// True when the ColorPicker is closed
-    /// </returns>
-    public static bool done = true;
 
     //onColorChanged event
     private static ColorEvent onCC;
@@ -32,6 +29,8 @@ public class ColorPicker : MonoBehaviour, ISelectedObjectModifierInitializer
     private bool interact;
 
     // these can only work with the prefab and its children
+    public RectTransform pivot;
+    public RawImage chosenColorImage;
     public RectTransform positionIndicator;
     public Slider mainComponent;
     public Slider rComponent;
@@ -42,6 +41,8 @@ public class ColorPicker : MonoBehaviour, ISelectedObjectModifierInitializer
     public RawImage colorComponent;
 
     [SerializeField] private RawImage rAImage, rBImage, gAImage, gBImage, bAImage, bBImage, aImage;
+
+    private bool _isSelected;
     
     private void Awake()
     {
@@ -75,26 +76,19 @@ public class ColorPicker : MonoBehaviour, ISelectedObjectModifierInitializer
             Debug.LogError("No Colorpicker prefab active on 'Start' in scene");
             return false;
         }
-        if(done)
-        {
-            done = false;
-            originalColor = original;
-            modifiedColor = original;
-            onCC = onColorChanged;
-            onCS = onColorSelected;
-            useA = useAlpha;
-            instance.gameObject.SetActive(true);
-//            instance.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = message;
-            instance.aComponent.gameObject.SetActive(useAlpha);
-            instance.RecalculateMenu(true);
-            //instance.hexaComponent.placeholder.GetComponent<Text>().text = "RRGGBB" + (useAlpha ? "AA" : "");
-            return true;
-        }
-        else
-        {
-            Done();
-            return false;
-        }
+
+        originalColor = original;
+        modifiedColor = original;
+        onCC = onColorChanged;
+        onCS = onColorSelected;
+        useA = useAlpha;
+        instance.gameObject.SetActive(true);
+        //instance.transform.GetChild(0).GetChild(0).GetComponent<Text>().text = message;
+        instance.aComponent.gameObject.SetActive(useAlpha);
+        instance.RecalculateMenu(true);
+        //instance.hexaComponent.placeholder.GetComponent<Text>().text = "RRGGBB" + (useAlpha ? "AA" : "");
+        return true;
+
     }
 
     //called when color is modified, to update other UI components
@@ -129,7 +123,7 @@ public class ColorPicker : MonoBehaviour, ISelectedObjectModifierInitializer
         bBImage.color = new Color32(modifiedColor.r, modifiedColor.g, 0, 255);
         aImage.color = new Color32(modifiedColor.r, modifiedColor.g, modifiedColor.b, 255);
         
-        positionIndicator.parent.GetChild(0).GetComponent<RawImage>().color = new HSV(modifiedHsv.H, 1d, 1d).ToColor();
+        chosenColorImage.color = new HSV(modifiedHsv.H, 1d, 1d).ToColor();
         positionIndicator.anchorMin = new Vector2((float)modifiedHsv.S, (float)modifiedHsv.V);
         positionIndicator.anchorMax = positionIndicator.anchorMin;
         //hexaComponent.text = useA ? ColorUtility.ToHtmlStringRGBA(modifiedColor) : ColorUtility.ToHtmlStringRGB(modifiedColor);
@@ -138,47 +132,38 @@ public class ColorPicker : MonoBehaviour, ISelectedObjectModifierInitializer
         interact = true;
     }
 
-    //used by EventTrigger to calculate the chosen value in color box
-    public void SetChooser()
+
+    public void OnSelect()
     {
-        Vector3 leftRayCursor = XRUIManager.Instance.leftRayInteractor.End;
-        Vector3 rightRayCursor = XRUIManager.Instance.rightRayInteractor.End;
+        _isSelected = true;
+    }
 
-        Vector3 leftRayLocalCursor = positionIndicator.parent.InverseTransformPoint(leftRayCursor);
-        Vector3 rightRayLocalCursor = positionIndicator.parent.InverseTransformPoint(rightRayCursor);
+    public void OnUnselect()
+    {
+        _isSelected = false;
+    }
 
-        Vector2 localpoint = Vector2.zero;
-        bool isFound = false;
-        
-        if (XRUIManager.Instance.leftRayInteractor.isActiveAndEnabled)
-        {
-            if (leftRayLocalCursor.z == 0)
-            {
-                localpoint = new Vector2(leftRayLocalCursor.x, leftRayLocalCursor.y);
-                isFound = true;
-            }
-        }
-        
-        if (XRUIManager.Instance.rightRayInteractor.isActiveAndEnabled)
-        {
-            if (rightRayLocalCursor.z == 0)
-            {
-                localpoint = new Vector2(rightRayLocalCursor.x, rightRayLocalCursor.y);
-                isFound = true;
-            }
-        }
+    private void Update()
+    {
+        if(!_isSelected) return;
 
-        if (!isFound) return;
+        SetColorAtHSVBox();
+    }
+
+    public void SetColorAtHSVBox()
+    {
+        var activeRayCursorPos = (XRUIManager.Instance.leftRayInteractor.IsSelecting)
+            ? XRUIManager.Instance.leftRayInteractor.End
+            : XRUIManager.Instance.rightRayInteractor.End;
         
-        localpoint = Rect.PointToNormalized((positionIndicator.parent as RectTransform).rect, localpoint);
-        if (positionIndicator.anchorMin != localpoint)
-        {
-            positionIndicator.anchorMin = localpoint;
-            positionIndicator.anchorMax = localpoint;
-            modifiedHsv.S = localpoint.x;
-            modifiedHsv.V = localpoint.y;
-            RecalculateMenu(false);
-        }
+        var activeRayCursorLocalPos = pivot.InverseTransformPoint(activeRayCursorPos);
+        var hsvPoint = new Vector2(Mathf.Clamp(activeRayCursorLocalPos.x, -80f, 80f), 
+                                    Mathf.Clamp(activeRayCursorLocalPos.y, -80f, 80f));
+        modifiedHsv.S = (hsvPoint.x + 80f)/ 160f;
+        modifiedHsv.V = (hsvPoint.y + 80f )/ 160f;
+        positionIndicator.localPosition = hsvPoint;
+
+        RecalculateMenu(false);
     }
 
     //gets main Slider value
@@ -280,34 +265,7 @@ public class ColorPicker : MonoBehaviour, ISelectedObjectModifierInitializer
             }
         }
     }
-    //cancel button call
-    public void CCancel()
-    {
-        Cancel();
-    }
-    /// <summary>
-    /// Manually cancel the ColorPicker and recover the default value
-    /// </summary>
-    public static void Cancel()
-    {
-        modifiedColor = originalColor;
-        Done();
-    }
-    //done button call
-    public void CDone()
-    {
-        Done();
-    }
-    /// <summary>
-    /// Manually close the ColorPicker and apply the selected color
-    /// </summary>
-    public static void Done()
-    {
-        done = true;
-        onCC?.Invoke(modifiedColor);
-        onCS?.Invoke(modifiedColor);
-        //instance.transform.gameObject.SetActive(false);
-    }
+
     //HSV helper class
     private sealed class HSV
     {
