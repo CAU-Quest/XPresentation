@@ -144,15 +144,16 @@ public class SnapListController : MonoBehaviour
         MainSystem.Instance.GoToSlideByIndex(currentSlideNumber);
     }
 
-    
+    /*
     public void GoToSlideByIndex(int index)
     {
         currentSlideNumber = index;
         SetNumberToPreviewCube();
         RenderAllTexture();
     }
+    */
     
-    /*
+    
     public void GoToSlideByIndex(int index)
     {
         StartCoroutine(Swipe(index));
@@ -163,7 +164,7 @@ public class SnapListController : MonoBehaviour
         var waitForSeconds = new WaitForSeconds(0.1f);
 
         Debug.Log("START");
-        while (currentSlideNumber != index)
+        while (currentSlideNumber + 1 < index || currentSlideNumber - 1 > index)
         {
             Debug.Log(currentSlideNumber +","+index);
             if (currentSlideNumber > index)
@@ -180,7 +181,8 @@ public class SnapListController : MonoBehaviour
         }
         Debug.Log(currentSlideNumber +","+index+"FIN");
     }
-*/
+
+
     public void SwipeToLeft()
     {
         if (currentSlideNumber > 0)

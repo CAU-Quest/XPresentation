@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TransformSliderButton : SliderButton, IInitializationNeeded
+public class TransformSliderButton : SliderButton
 {
     private enum Usage
     {
@@ -13,10 +14,11 @@ public class TransformSliderButton : SliderButton, IInitializationNeeded
     private Transform _selectedTransform;
     private Transform _activeTipTransform;
     
-    public override void InitProperty(SelectUI selectUI)
+    public override void InitProperty(PresentationObject selectedObject)
     {
-        _selectedTransform = selectUI.selectedProperty.Transform;
-        base.InitProperty(selectUI);
+        SelectedObject = selectedObject;
+        _selectedTransform = selectedObject.Transform;
+        base.InitProperty(selectedObject);
     }
     
     protected override void SetInitialValue()
@@ -131,37 +133,54 @@ public class TransformSliderButton : SliderButton, IInitializationNeeded
         var position = _selectedTransform.position;
         var rotation = _selectedTransform.rotation.eulerAngles;
         var scale = _selectedTransform.localScale;
+        var newPosition = position; 
+        var newRotation = Quaternion.Euler(rotation);
+        var newScale = scale;
         
         switch (usage)
         {
             case Usage.PositionX:
-                _selectedTransform.position = new Vector3(value, position.y ,position.z);
+                newPosition = new Vector3(value, position.y ,position.z);
+                _selectedTransform.position = newPosition;
                 break;
             case Usage.PositionY:
-                _selectedTransform.position = new Vector3(position.x, value, position.z);
+                newPosition = new Vector3(position.x, value, position.z);
+                _selectedTransform.position = newPosition;
                 break;
             case Usage.PositionZ:
-                _selectedTransform.position = new Vector3(position.x, position.y, value);
+                newPosition = new Vector3(position.x, value, position.z);
+                _selectedTransform.position = newPosition;
                 break;
             case Usage.RotationX:
-                _selectedTransform.rotation = Quaternion.Euler(value, rotation.y ,rotation.z);
+                newRotation = Quaternion.Euler(value, rotation.y ,rotation.z);
+                _selectedTransform.rotation = newRotation;
                 break;
             case Usage.RotationY:
-                _selectedTransform.rotation = Quaternion.Euler(rotation.x, value, rotation.z);
+                newRotation = Quaternion.Euler(rotation.x, value, rotation.z);
+                _selectedTransform.rotation = newRotation;
                 break;
             case Usage.RotationZ:
-                _selectedTransform.rotation = Quaternion.Euler(rotation.x, rotation.y, value);
+                newRotation = Quaternion.Euler(rotation.x, rotation.y, value);
+                _selectedTransform.rotation = newRotation;
                 break;
             case Usage.ScaleX:
-                _selectedTransform.localScale = new Vector3(value, scale.y ,scale.z);
+                newScale = new Vector3(value, scale.y ,scale.z);
+                _selectedTransform.localScale = newScale;
                 break;
             case Usage.ScaleY:
-                _selectedTransform.localScale = new Vector3(scale.x, value, scale.z);
+                newScale = new Vector3(scale.x, value, scale.z);
+                _selectedTransform.localScale = newScale;
                 break;
             case Usage.ScaleZ:
-                _selectedTransform.localScale = new Vector3(scale.x, scale.y, value);
+                newScale = new Vector3(scale.x, scale.y, value);
+                _selectedTransform.localScale = newScale;
                 break;
         }
+
+        NewSlideObjectData = new SlideObjectData(newPosition, newRotation, newScale, CurrentSlideObjectData.color,
+            CurrentSlideObjectData.isGrabbable, CurrentSlideObjectData.isVisible);
+        WhenHasModification.Invoke(SelectedObject, NewSlideObjectData);
+        CurrentSlideObjectData = NewSlideObjectData;
         base.UpdateValue(value);
     }
     

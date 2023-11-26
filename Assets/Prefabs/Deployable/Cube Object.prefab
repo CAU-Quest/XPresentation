@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5304431359899433424}
   - component: {fileID: 2074933319637606461}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube Surface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -56,8 +56,8 @@ GameObject:
   - component: {fileID: 3856833748225579165}
   - component: {fileID: 3885586770676884735}
   - component: {fileID: 5686828889017182286}
-  - component: {fileID: 4787980148139984638}
-  m_Layer: 0
+  - component: {fileID: 9142274340363330290}
+  m_Layer: 8
   m_Name: Element
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -176,7 +176,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 4787980148139984638}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PresentationObject, Assembly-CSharp
         m_MethodName: SaveTransformToSlide
         m_Mode: 1
@@ -194,7 +194,7 @@ MonoBehaviour:
   _whenCancel:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &4787980148139984638
+--- !u!114 &9142274340363330290
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -209,11 +209,8 @@ MonoBehaviour:
   id: 1
   animationList: []
   slideData: []
-  beforeSlideMaterial: {fileID: 2100000, guid: e26f81e5f254fa6428077265f051cc92, type: 2}
-  afterSlideMaterial: {fileID: 2100000, guid: efff9abe4eff0a948afa84e564a1f968, type: 2}
-  normalModeMaterial: {fileID: 2100000, guid: 7ae7d9878e2a55149b63c5ab8a969e0f, type: 2}
-  dottedLinePrefab: {fileID: 8018140223861054104, guid: d56e8ec7d79ea9544869f0894a1ad046,
-    type: 3}
+  isGrabbable: 1
+  isVisible: 1
 --- !u!1 &1870575921869042933
 GameObject:
   m_ObjectHideFlags: 0
@@ -225,7 +222,7 @@ GameObject:
   - component: {fileID: 3517606820984509371}
   - component: {fileID: 8498960820215946497}
   - component: {fileID: 1216116987652358744}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -307,7 +304,7 @@ GameObject:
   m_Component:
   - component: {fileID: 419792286308153070}
   - component: {fileID: 8689025857073642840}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Hand Grab Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -365,7 +362,7 @@ GameObject:
   - component: {fileID: 5916969921008396219}
   - component: {fileID: 2828426455860348879}
   - component: {fileID: 476519316656885020}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -517,7 +514,7 @@ GameObject:
   - component: {fileID: 4229643250365490786}
   - component: {fileID: 6682949502353690934}
   - component: {fileID: 902655981492342225}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}

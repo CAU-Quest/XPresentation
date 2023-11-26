@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
-public class ColorPicker : MonoBehaviour, IInitializationNeeded
+public class ColorPicker : MonoBehaviour, ISelectedObjectModifier
 {
     /// <summary>
     /// Event that gets called by the ColorPicker
@@ -54,9 +54,19 @@ public class ColorPicker : MonoBehaviour, IInitializationNeeded
     
     public void InitProperty(SelectUI selectUI)
     {
-        Create(selectUI.selectedProperty.Material.color, "", null, null);
+        Create(selectUI.selectedObject.Material.color, "", null, null);
     }
-    
+
+    public void UpdateTransformInSelectedObjectData(Vector3 pos, Quaternion rot, Vector3 scale)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void UpdateColorInSelectedObjectData(Color col)
+    {
+        throw new NotImplementedException();
+    }
+
     /// <summary>
     /// Creates a new Colorpicker
     /// </summary>

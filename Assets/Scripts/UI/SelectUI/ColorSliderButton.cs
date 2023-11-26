@@ -25,16 +25,17 @@ public class ColorSliderButton : SliderButton
         slider.gameObject.SetActive(false);
     }
 
-    public override void InitProperty(SelectUI selectUI)
+    public override void InitProperty(PresentationObject selectedObject)
     {
-        _selectedMaterial = selectUI.selectedProperty.Material;
+        SelectedObject = selectedObject;
+        _selectedMaterial = selectedObject.Material;
         
         SetHandleValuePanel(false);
         SetGraduation(false);
         SetValuePanel(true);
         handle.gameObject.SetActive(false);
         
-        base.InitProperty(selectUI);
+        base.InitProperty(selectedObject);
     }
     
     protected override void SetInitialValue()
@@ -104,22 +105,30 @@ public class ColorSliderButton : SliderButton
         base.UpdateValue(value);
         value /= 255f;
         var color = _selectedMaterial.color;
+        var newColor = color;
         
         switch (usage)
         {
             case Usage.ColorR:
-                _selectedMaterial.color = new Color(value, color.g, color.b, color.a);
+                newColor = new Color(value, color.g, color.b, color.a);
                 break;
             case Usage.ColorG:
-                _selectedMaterial.color = new Color(color.r, value, color.b, color.a);
+                newColor = new Color(color.r, value, color.b, color.a);
                 break;
             case Usage.ColorB:
-                _selectedMaterial.color = new Color(color.r, color.g, value, color.a);
+                newColor = new Color(color.r, color.g, value, color.a);
                 break;
             case Usage.ColorA:
-                _selectedMaterial.color = new Color(color.r, color.g, color.b, value);
+                newColor = new Color(color.r, color.g, color.b, value);
                 break;
         }
+
+        _selectedMaterial.color = newColor;
+        
+        NewSlideObjectData = new SlideObjectData(CurrentSlideObjectData.position, CurrentSlideObjectData.rotation, CurrentSlideObjectData.scale, newColor,
+            CurrentSlideObjectData.isGrabbable, CurrentSlideObjectData.isVisible);
+        WhenHasModification.Invoke(SelectedObject, NewSlideObjectData);
+        CurrentSlideObjectData = NewSlideObjectData;
     }
     
     protected override void SetGraduation(bool isOn)

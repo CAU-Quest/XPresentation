@@ -5,6 +5,7 @@ using DG.Tweening;
 using Oculus.Interaction;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class SelectUI : MonoBehaviour
@@ -16,16 +17,21 @@ public class SelectUI : MonoBehaviour
     [SerializeField] private Image[] buttons;
     [SerializeField] private Image[] labelPanels;
     [SerializeField] private TextMeshProUGUI[] labelTexts;
-        
-    public ObjectSelectionProperty selectedProperty;
-    private IInitializationNeeded[][] _initializationNeeded;
+    
+    [HideInInspector] public PresentationObject selectedObject;
+    private ISelectedObjectModifier[][] _modifiers;
+    private bool _isOpened;
     
     private void Awake()
     {
-        _initializationNeeded = new IInitializationNeeded[canvases.Length][];
+        _modifiers = new ISelectedObjectModifier[canvases.Length][];
         for (int i = 0; i < canvases.Length; i++)
         {
-            _initializationNeeded[i] = canvases[i].GetComponentsInChildren<IInitializationNeeded>();
+            _modifiers[i] = canvases[i].GetComponentsInChildren<ISelectedObjectModifier>();
+            foreach (var modifier in _modifiers[i])
+            {
+                modifier.WhenHasModification += modifier.UpdateSelectedObjectData;
+            }
         }
     }
 
@@ -41,18 +47,18 @@ public class SelectUI : MonoBehaviour
 
     private void GetSelectedObjectInfo(GrabInteractable interactable)
     {
-        if (interactable.TryGetComponent(out ObjectSelectionProperty property))
+        if (interactable.gameObject.layer == LayerMask.NameToLayer("Presentation Object"))
         {
-            selectedProperty = property;
+            selectedObject = (PresentationObject) XRSelector.Instance.presentationObject;
             OpenUI();
         }
     }
     
     private void GetSelectedObjectInfo(RayInteractable interactable)
     {
-        if (interactable.TryGetComponent(out ObjectSelectionProperty property))
+        if (interactable.gameObject.layer == LayerMask.NameToLayer("Presentation Object"))
         {
-            selectedProperty = property;
+            selectedObject = (PresentationObject) XRSelector.Instance.presentationObject;
             OpenUI();
         }
     }
@@ -62,10 +68,12 @@ public class SelectUI : MonoBehaviour
         canvases[0].SetActive(true);
         Select(Mode.Transform);
 
-        foreach (var component in _initializationNeeded[(int)Mode.Transform])
+        foreach (var component in _modifiers[(int)Mode.Transform])
         {
-            component.InitProperty(this);
+            component.InitProperty(selectedObject);
         }
+
+        _isOpened = true;
     }
 
     private void CloseUI()
@@ -74,8 +82,9 @@ public class SelectUI : MonoBehaviour
         {
             canvases[i].SetActive(false);
         }
-        
-        selectedProperty = null;
+
+        selectedObject = null;
+        _isOpened = false;
     }
 
     public void OnHover(int index)
@@ -119,9 +128,9 @@ public class SelectUI : MonoBehaviour
             labelTexts[i].DOFade((i == modeIndex) ? 1f : 0f, 0.3f);
         }
 
-        foreach (var component in _initializationNeeded[(int)mode])
+        foreach (var component in _modifiers[(int)mode])
         {
-            component.InitProperty(this);
+            component.InitProperty(selectedObject);
         }
     }
 }

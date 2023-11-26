@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Text;
@@ -5,6 +6,8 @@ using DimBoxes;
 using Oculus.Interaction;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
+
 //using UnityEngine.XR.Interaction.Toolkit;
 
 
@@ -17,6 +20,17 @@ public struct SlideObjectData
     public Color color;
     public bool isGrabbable;
     public bool isVisible;
+
+    public SlideObjectData(Vector3 pos, Quaternion rot, Vector3 scale, Color col, bool grabbable = false,
+        bool visible = false)
+    {
+        position = pos;
+        rotation = rot;
+        this.scale = scale;
+        color = col;
+        isGrabbable = grabbable;
+        isVisible = visible;
+    }
 }
 
 public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObserver
@@ -42,7 +56,10 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     private MeshRenderer meshRenderer;
     private Grabbable grabbable;
 
-    public bool isGrabbable = true;
+
+    public Transform Transform => transform.parent;
+    public Material Material => (meshRenderer) ? meshRenderer.material : null;
+    public bool isGrabbableInPresentation = true;
     public bool isVisible = true;
 
     public void ObserverUpdateMode(MainSystem.Mode mode)
@@ -82,7 +99,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     {
         this.currentSlide = slide;
 
-        SetSlideObjectData(slideData[slide]);
+        ApplySlideObjectData(slideData[slide]);
         ghost.applyTransform();
         if (mode == MainSystem.Mode.Animation)
         {
@@ -120,7 +137,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     {
         animationList.RemoveAt(index);
         slideData.RemoveAt(index);
-        SetSlideObjectData(slideData[currentSlide]);
+        ApplySlideObjectData(slideData[currentSlide]);
     }
     
     public void addSlide()
@@ -141,9 +158,9 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
 
     public void SetGrabbable(bool boolean)
     {
-        isGrabbable = boolean;
+        isGrabbableInPresentation = boolean;
         
-        if(isGrabbable)
+        if(isGrabbableInPresentation)
             grabbable.MaxGrabPoints = -1;
         else
             grabbable.MaxGrabPoints = 0;
@@ -152,7 +169,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     public void SetVisible()
     {
         isVisible = true;
-        if (isGrabbable && grabbable)
+        if (isGrabbableInPresentation && grabbable)
         {
             grabbable.MaxGrabPoints = -1;
         }
@@ -216,14 +233,13 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         for (int i = 0; i < MainSystem.Instance.GetSlideCount(); i++)
         {
             XRAnimation anim = new XRAnimation();
-
+            
             slideObjectData.position = nextSlideData.position;
             slideObjectData.rotation = nextSlideData.rotation;
             slideObjectData.scale = nextSlideData.scale;
             slideObjectData.isVisible = nextSlideData.isVisible;
             slideObjectData.isGrabbable = nextSlideData.isGrabbable;
-            if(meshRenderer != null)
-                slideObjectData.color = meshRenderer.material.color;
+            if (meshRenderer != null) slideObjectData.color = meshRenderer.material.color;
             
             nextSlideData = new SlideObjectData();
             nextSlideData.position = Vector3.zero;
@@ -238,9 +254,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
                 slideObjectData.position = transform.parent.position;
                 slideObjectData.rotation = transform.parent.rotation;
                 slideObjectData.scale = transform.parent.localScale;
-        
-                if(meshRenderer != null)
-                    slideObjectData.color = meshRenderer.material.color;
+                if (meshRenderer != null) slideObjectData.color = meshRenderer.material.color;
                 slideObjectData.isVisible = true;
                 slideObjectData.isGrabbable = true;
             }
@@ -392,16 +406,22 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
 
     public void SaveTransformToSlide()
     {
-        SlideObjectData transformData = new SlideObjectData();
-        transformData.position = transform.parent.position;
-        transformData.rotation = transform.parent.rotation;
-        transformData.scale = transform.parent.localScale;
-        if(meshRenderer != null)
-            transformData.color = meshRenderer.material.color;
-        this.slideData[this.currentSlide] = transformData;
-        this.animationList[this.currentSlide].SetPreviousSlideObjectData(transformData);
+        var data = new SlideObjectData();
+        data.position = transform.parent.position;
+        data.rotation = transform.parent.rotation;
+        data.scale = transform.parent.localScale;
+        if (meshRenderer != null) data.color = meshRenderer.material.color;
+        
+        this.slideData[this.currentSlide] = data;
+        this.animationList[this.currentSlide].SetPreviousSlideObjectData(data);
         if(this.currentSlide - 1 >= 0)
-            this.animationList[this.currentSlide - 1].SetNextSlideObjectData(transformData);
+            this.animationList[this.currentSlide - 1].SetNextSlideObjectData(data);
+    }
+
+    public SlideObjectData GetCurrentSlideObjectData()
+    {
+        var currentSlideIndex = MainSystem.Instance.currentSlideNum;
+        return slideData[currentSlideIndex];
     }
 
     public uint GetID()
@@ -409,13 +429,13 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         return id;
     }
     
-    public void SetSlideObjectData(SlideObjectData slideObjectData)
+    public void ApplySlideObjectData(SlideObjectData data) //SetSlideObjectData -> ApplySlideObjectData
     {
-        transform.parent.SetPositionAndRotation(slideObjectData.position, slideObjectData.rotation);
-        transform.parent.localScale = slideObjectData.scale;
-        if(meshRenderer != null)
-            meshRenderer.material.color = slideObjectData.color;
-        if (slideObjectData.isVisible)
+        transform.parent.SetPositionAndRotation(data.position, data.rotation);
+        transform.parent.localScale = data.scale;
+        if (meshRenderer != null) meshRenderer.material.color = data.color;
+        
+        if (data.isVisible)
         {
             SetVisible();
         }
@@ -423,19 +443,33 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         {
             SetInvisible();
         }
-        SetGrabbable(slideObjectData.isGrabbable);
+        SetGrabbable(data.isGrabbable);
     }
 
+    public void UpdateSlideObjectData(Vector3 pos, Quaternion rot, Vector3 scale)
+    {
+        
+    }
+
+    public void UpdateSlideObjectData(Color col)
+    {
+        
+    }
+    
+    /*
     public SlideObjectData GetSlideObjectData()
     {
-        SlideObjectData data = new SlideObjectData();
+        var data = new SlideObjectData();
         data.position = transform.parent.position;
         data.rotation = transform.parent.rotation;
         data.scale = transform.parent.localScale;
-        if(meshRenderer != null)
-            data.color = meshRenderer.material.color;
-        
+        if (meshRenderer != null)
+        {
+            data.material = meshRenderer.material;
+            data.color = data.material.color;
+        }
+
         return data;
     }
-    
+    */
 }

@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class SliderButton : MonoBehaviour, IInitializationNeeded
+public class SliderButton : MonoBehaviour, ISelectedObjectModifier
 {
     [SerializeField] protected float maxOffset = 1f;
     [SerializeField] protected Transform handle;
@@ -21,13 +21,24 @@ public class SliderButton : MonoBehaviour, IInitializationNeeded
     protected bool turnOffWhenUnselect, isSelectingHandle;
     protected Vector3 initialHandleLocalPos;
 
-    public virtual void InitProperty(SelectUI selectUI)
+    public PresentationObject SelectedObject { get; set; }
+    public SlideObjectData CurrentSlideObjectData { get; set; }
+    public SlideObjectData NewSlideObjectData { get; set; }
+    public Action<PresentationObject, SlideObjectData> WhenHasModification { get; set; }
+
+    public virtual void InitProperty(PresentationObject selectedObject)
     {
         SetInitialValue();
+        CurrentSlideObjectData = selectedObject.GetCurrentSlideObjectData();
         valueText.text = initialValue.ToString("0.0");
         handleValueText.text = initialValue.ToString("0.0");
     }
-    
+
+    public void UpdateSelectedObjectData(PresentationObject presentationObject, SlideObjectData data)
+    {
+        throw new NotImplementedException();
+    }
+
     protected virtual void SetInitialValue() { }
 
     private void Start()

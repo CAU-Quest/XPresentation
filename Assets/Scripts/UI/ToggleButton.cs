@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ToggleButton : MonoBehaviour, IInitializationNeeded
+public class ToggleButton : MonoBehaviour, ISelectedObjectModifier
 {
     [SerializeField] private Image buttonImage;
     [SerializeField] private TextMeshProUGUI buttonText;
@@ -18,7 +18,7 @@ public class ToggleButton : MonoBehaviour, IInitializationNeeded
     {
         _selectUI = selectUI;
         
-        _isOn = selectUI.selectedProperty.grabbableInPresentation;
+        _isOn = selectUI.selectedObject.isGrabbableInPresentation;
         buttonImage.DOColor((_isOn) ? ColorManager.ToggleSelected : ColorManager.ToggleUnselected, 0.3f);
         buttonText.text = (_isOn) ? "V" : "";
     }
@@ -37,7 +37,7 @@ public class ToggleButton : MonoBehaviour, IInitializationNeeded
     {
         buttonImage.DOColor(ColorManager.ToggleSelect, 0.3f);
         _isOn = !_isOn;
-        _selectUI.selectedProperty.grabbableInPresentation = _isOn;
+        _selectUI.selectedObject.isGrabbableInPresentation = _isOn;
         buttonText.text = (_isOn) ? "V" : "";
     }
 }
