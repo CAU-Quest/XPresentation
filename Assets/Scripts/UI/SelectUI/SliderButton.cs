@@ -34,9 +34,9 @@ public class SliderButton : MonoBehaviour, ISelectedObjectModifier
         handleValueText.text = initialValue.ToString("0.0");
     }
 
-    public void UpdateSelectedObjectData(PresentationObject presentationObject, SlideObjectData data)
+    public void UpdateSelectedObjectData(PresentationObject selectedObject, SlideObjectData data)
     {
-        throw new NotImplementedException();
+        selectedObject.ApplyDataToSlide(data);
     }
 
     protected virtual void SetInitialValue() { }

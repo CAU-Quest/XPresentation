@@ -70,7 +70,7 @@ public class VertexHandler : MonoBehaviour
     {
         isSelected = false;
         XRSelector.Instance.selectObject.Select();
-        XRSelector.Instance.presentationObject.SaveTransformToSlide();
+        XRSelector.Instance.presentationObject.UpdateCurrentObjectDataInSlide();
         _renderer.material.DOKill();
         _renderer.material.DOColor(ColorManager.BoundBoxVertexHover, 0.2f);
     }

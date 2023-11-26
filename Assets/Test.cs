@@ -6,28 +6,25 @@ using UnityEngine;
 
 public class Test : MonoBehaviour
 {
-    public Color Default = ColorManager.Default;
-    public Color Hover = ColorManager.Hover;
-    public Color Select = ColorManager.Select;
+    public A[] list1;
+    public B[] list2;
 
-    public Color SliderDefault = ColorManager.SliderDefault;
-    public Color SliderHover = ColorManager.SliderHover;
-    public Color SliderSelect = ColorManager.SliderSelect;
-    
-    public Color ToggleUnselected = ColorManager.ToggleUnselected;
-    public Color ToggleSelected = ColorManager.ToggleSelected;
-    public Color ToggleUnselectedHover = ColorManager.ToggleUnselectedHover;
-    public Color ToggleSelectedHover = ColorManager.ToggleSelectedHover;
-    public Color ToggleSelect = ColorManager.ToggleSelect;
-
-
-    public Camera previewRenderCamera;
-    public RenderTexture renderTexture;
-    
-    private void Update()
+    private void Start()
     {
-        previewRenderCamera.RenderToCubemap(renderTexture);
+        list1 = GetComponentsInChildren<A>();
+        list2 = GetComponentsInChildren<B>();
+
+        Debug.Log("LIST1 : "+list1.Length);
+        Debug.Log("LIST2 : "+list2.Length);
     }
+}
 
+public interface A
+{
+    void Hi();
+}
 
+public interface B : A
+{
+    void Bye();
 }

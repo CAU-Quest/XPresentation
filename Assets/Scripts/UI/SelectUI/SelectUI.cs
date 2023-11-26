@@ -18,15 +18,20 @@ public class SelectUI : MonoBehaviour
     [SerializeField] private Image[] labelPanels;
     [SerializeField] private TextMeshProUGUI[] labelTexts;
     
-    [HideInInspector] public PresentationObject selectedObject;
+    public PresentationObject selectedObject;
+    private ISelectedObjectModifierInitializer[][] _initializers;
     private ISelectedObjectModifier[][] _modifiers;
     private bool _isOpened;
     
     private void Awake()
     {
+        _initializers = new ISelectedObjectModifierInitializer[canvases.Length][];
         _modifiers = new ISelectedObjectModifier[canvases.Length][];
+        
         for (int i = 0; i < canvases.Length; i++)
         {
+            _initializers[i] = canvases[i].GetComponentsInChildren<ISelectedObjectModifierInitializer>();
+            
             _modifiers[i] = canvases[i].GetComponentsInChildren<ISelectedObjectModifier>();
             foreach (var modifier in _modifiers[i])
             {
@@ -49,7 +54,7 @@ public class SelectUI : MonoBehaviour
     {
         if (interactable.gameObject.layer == LayerMask.NameToLayer("Presentation Object"))
         {
-            selectedObject = (PresentationObject) XRSelector.Instance.presentationObject;
+            selectedObject = XRSelector.Instance.selectedObject.GetComponentInChildren<PresentationObject>();
             OpenUI();
         }
     }
@@ -58,7 +63,7 @@ public class SelectUI : MonoBehaviour
     {
         if (interactable.gameObject.layer == LayerMask.NameToLayer("Presentation Object"))
         {
-            selectedObject = (PresentationObject) XRSelector.Instance.presentationObject;
+            selectedObject = XRSelector.Instance.selectedObject.GetComponentInChildren<PresentationObject>();
             OpenUI();
         }
     }
@@ -68,7 +73,7 @@ public class SelectUI : MonoBehaviour
         canvases[0].SetActive(true);
         Select(Mode.Transform);
 
-        foreach (var component in _modifiers[(int)Mode.Transform])
+        foreach (var component in _initializers[(int)Mode.Transform])
         {
             component.InitProperty(selectedObject);
         }
@@ -128,7 +133,7 @@ public class SelectUI : MonoBehaviour
             labelTexts[i].DOFade((i == modeIndex) ? 1f : 0f, 0.3f);
         }
 
-        foreach (var component in _modifiers[(int)mode])
+        foreach (var component in _initializers[(int)mode])
         {
             component.InitProperty(selectedObject);
         }

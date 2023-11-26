@@ -8,9 +8,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-//using UnityEngine.XR.Interaction.Toolkit;
-
-
 [System.Serializable]
 public struct SlideObjectData
 {
@@ -49,6 +46,16 @@ public struct SlideObjectData
         scale = currentData.scale;
         color = col;
         isGrabbable = currentData.isGrabbable;
+        isVisible = currentData.isVisible;
+    }
+    
+    public SlideObjectData(SlideObjectData currentData, bool grabbable)
+    {
+        position = currentData.position;
+        rotation = currentData.rotation;
+        scale = currentData.scale;
+        color = currentData.color;
+        isGrabbable = grabbable;
         isVisible = currentData.isVisible;
     }
 }
@@ -119,7 +126,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     {
         this.currentSlide = slide;
 
-        ApplySlideObjectData(slideData[slide]);
+        ApplyDataToObject(slideData[slide]);
         ghost.applyTransform();
         if (mode == MainSystem.Mode.Animation)
         {
@@ -157,7 +164,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     {
         animationList.RemoveAt(index);
         slideData.RemoveAt(index);
-        ApplySlideObjectData(slideData[currentSlide]);
+        ApplyDataToObject(slideData[currentSlide]);
     }
     
     public void addSlide()
@@ -238,7 +245,6 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         if(meshRenderer != null)
             normalModeMaterial = meshRenderer.material;
         MainSystem.Instance.RegisterObserver(this);
-        
         
         SlideObjectData slideObjectData = new SlideObjectData();
         
@@ -424,32 +430,24 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         }
     }
 
-    public void SaveTransformToSlide()
+    public void UpdateCurrentObjectDataInSlide()
     {
-        var data = new SlideObjectData();
-        data.position = transform.parent.position;
-        data.rotation = transform.parent.rotation;
-        data.scale = transform.parent.localScale;
-        if (meshRenderer != null) data.color = meshRenderer.material.color;
+        var parent = transform.parent;
+        var color = (meshRenderer != null) ? meshRenderer.material.color : Color.white;
+        var data = new SlideObjectData(parent.position, parent.rotation, parent.localScale, color);
         
+        ApplyDataToSlide(data);
+    }
+
+    public void ApplyDataToSlide(SlideObjectData data)
+    {
         this.slideData[this.currentSlide] = data;
         this.animationList[this.currentSlide].SetPreviousSlideObjectData(data);
         if(this.currentSlide - 1 >= 0)
             this.animationList[this.currentSlide - 1].SetNextSlideObjectData(data);
     }
-
-    public SlideObjectData GetCurrentSlideObjectData()
-    {
-        var currentSlideIndex = MainSystem.Instance.currentSlideNum;
-        return slideData[currentSlideIndex];
-    }
-
-    public uint GetID()
-    {
-        return id;
-    }
     
-    public void ApplySlideObjectData(SlideObjectData data) //SetSlideObjectData -> ApplySlideObjectData
+    public void ApplyDataToObject(SlideObjectData data) //SetSlideObjectData -> ApplySlideObjectData
     {
         transform.parent.SetPositionAndRotation(data.position, data.rotation);
         transform.parent.localScale = data.scale;
@@ -466,14 +464,15 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         SetGrabbable(data.isGrabbable);
     }
 
-    public void UpdateSlideObjectData(Vector3 pos, Quaternion rot, Vector3 scale)
+    public SlideObjectData GetCurrentSlideObjectData()
     {
-        
+        var currentSlideIndex = MainSystem.Instance.currentSlideNum;
+        return slideData[currentSlideIndex];
     }
 
-    public void UpdateSlideObjectData(Color col)
+    public uint GetID()
     {
-        
+        return id;
     }
     
     /*

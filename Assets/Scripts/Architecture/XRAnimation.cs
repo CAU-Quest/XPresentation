@@ -25,7 +25,7 @@ public class XRAnimation : XRIAnimation
         lerpData.scale = Vector3.LerpUnclamped(previousData.scale, nextData.scale, t);
         lerpData.color = Color.LerpUnclamped(previousData.color, nextData.color, t);
         
-        presentationObject.ApplySlideObjectData(lerpData);
+        presentationObject.ApplyDataToObject(lerpData);
     }
 
     public void SetParentObject(PresentationObject presentationObject)

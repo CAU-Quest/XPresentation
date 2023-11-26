@@ -13,7 +13,7 @@ public class PresentationObjectEditor : Editor
         PresentationObject presentationObject = (PresentationObject)target;
         if (GUILayout.Button("Save Transform"))
         {
-            presentationObject.SaveTransformToSlide();
+            presentationObject.UpdateCurrentObjectDataInSlide();
         }
     }
 }

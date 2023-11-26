@@ -14,21 +14,21 @@ public class PresentationGhostObject : MonoBehaviour, IPresentationObject
 
     public void Start()
     {
-        UnityEngine.Events.UnityAction<Oculus.Interaction.PointerEvent> pointerAction = (args) => SaveTransformToSlide();
+        UnityEngine.Events.UnityAction<Oculus.Interaction.PointerEvent> pointerAction = (args) => UpdateCurrentObjectDataInSlide();
         GetComponent<PointableUnityEventWrapper>().WhenUnselect.AddListener(pointerAction);
     }
 
     public void applyTransform()
     {
         if(parentObject && parentObject.GetCurrentSlide() + 1 < MainSystem.Instance.GetSlideCount())
-            SetSlideObjectData(parentObject.slideData[parentObject.GetCurrentSlide() + 1]);
+            ApplyDataToObject(parentObject.slideData[parentObject.GetCurrentSlide() + 1]);
     }
     public void OnEnable()
     {
         applyTransform();
     }
     
-    public void SaveTransformToSlide()
+    public void UpdateCurrentObjectDataInSlide()
     {
         SlideObjectData transformData = new SlideObjectData();
         transformData.position = transform.parent.position;
@@ -42,6 +42,11 @@ public class PresentationGhostObject : MonoBehaviour, IPresentationObject
         Debug.Log("Ghost Save Complete");
     }
 
+    public void ApplyDataToSlide(SlideObjectData data)
+    {
+        throw new NotImplementedException();
+    }
+
     public uint GetID()
     {
         return id;
@@ -51,11 +56,11 @@ public class PresentationGhostObject : MonoBehaviour, IPresentationObject
         this.id = id;
     }
     
-    public void SetSlideObjectData(SlideObjectData slideObjectData)
+    public void ApplyDataToObject(SlideObjectData data)
     {
-        transform.SetPositionAndRotation(slideObjectData.position, slideObjectData.rotation);
-        transform.parent.localScale = slideObjectData.scale;
-        if (slideObjectData.isVisible)
+        transform.SetPositionAndRotation(data.position, data.rotation);
+        transform.parent.localScale = data.scale;
+        if (data.isVisible)
         {
             gameObject.SetActive(false);
         }

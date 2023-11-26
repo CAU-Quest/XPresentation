@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
-public class ColorPicker : MonoBehaviour, ISelectedObjectModifier
+public class ColorPicker : MonoBehaviour, ISelectedObjectModifierInitializer
 {
     /// <summary>
     /// Event that gets called by the ColorPicker
@@ -52,19 +52,9 @@ public class ColorPicker : MonoBehaviour, ISelectedObjectModifier
         aComponent.onValueChanged.AddListener(SetA);
     }
     
-    public void InitProperty(SelectUI selectUI)
+    public void InitProperty(PresentationObject selectedObject)
     {
-        Create(selectUI.selectedObject.Material.color, "", null, null);
-    }
-
-    public void UpdateTransformInSelectedObjectData(Vector3 pos, Quaternion rot, Vector3 scale)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void UpdateColorInSelectedObjectData(Color col)
-    {
-        throw new NotImplementedException();
+        Create(selectedObject.Material.color, "", null, null);
     }
 
     /// <summary>
@@ -391,19 +381,5 @@ public class ColorPicker : MonoBehaviour, ISelectedObjectModifier
                     return new Color32();
             }
         }
-    }
-
-    public PresentationObject SelectedObject { get; set; }
-    public SlideObjectData CurrentSlideObjectData { get; set; }
-    public SlideObjectData NewSlideObjectData { get; set; }
-    public Action<PresentationObject, SlideObjectData> WhenHasModification { get; set; }
-    public void InitProperty(PresentationObject selectedObject)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void UpdateSelectedObjectData(PresentationObject selectedObject, SlideObjectData data)
-    {
-        throw new NotImplementedException();
     }
 }
