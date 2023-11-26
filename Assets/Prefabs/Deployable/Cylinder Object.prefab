@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 5666051965163047392}
   - component: {fileID: 798842096804018685}
   - component: {fileID: 5990288451160668566}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -137,10 +137,34 @@ MonoBehaviour:
   _interactableView: {fileID: 2964042498993881934}
   _whenHover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8761310892770999305}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: set_layer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 6
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenUnhover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 8761310892770999305}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: set_layer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 8
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenSelect:
     m_PersistentCalls:
       m_Calls:
@@ -207,7 +231,7 @@ GameObject:
   - component: {fileID: 5701002310683030770}
   - component: {fileID: 4905952218906298255}
   - component: {fileID: 7199310059950815280}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Element
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +293,7 @@ MonoBehaviour:
   _whenHover:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5407016956924360009}
+      - m_Target: {fileID: 8761310892770999305}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: set_layer
         m_Mode: 3
@@ -284,14 +308,14 @@ MonoBehaviour:
   _whenUnhover:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5407016956924360009}
+      - m_Target: {fileID: 8761310892770999305}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: set_layer
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 8
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -328,7 +352,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 7199310059950815280}
         m_TargetAssemblyTypeName: PresentationObject, Assembly-CSharp
-        m_MethodName: SaveTransformToSlide
+        m_MethodName: UpdateCurrentObjectDataInSlide
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -372,7 +396,7 @@ GameObject:
   - component: {fileID: 529921035791472972}
   - component: {fileID: 5272913621145975252}
   - component: {fileID: 428751449701700391}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -454,8 +478,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2255774209417324368}
   - component: {fileID: 4915697371509902982}
-  m_Layer: 0
-  m_Name: Hand Grab Interactable
+  m_Layer: 8
+  m_Name: Grab Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -512,7 +536,7 @@ GameObject:
   - component: {fileID: 5395355323511556896}
   - component: {fileID: 1297031008327257595}
   - component: {fileID: 5264710337991471713}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cylinder Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -649,6 +673,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectType: 3
+  BoundObjectType: 1
+  transformByVertexHandler: {fileID: 0}
+  boundBox: {fileID: 0}
+  centerPositionByVertex: {fileID: 0}
 --- !u!1 &8851319525856384192
 GameObject:
   m_ObjectHideFlags: 0
@@ -659,7 +687,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4136022722064324275}
   - component: {fileID: 4659664804229609650}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube Surface
   m_TagString: Untagged
   m_Icon: {fileID: 0}

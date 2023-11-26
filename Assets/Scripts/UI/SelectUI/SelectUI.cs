@@ -52,19 +52,34 @@ public class SelectUI : MonoBehaviour
 
     private void GetSelectedObjectInfo(GrabInteractable interactable)
     {
-        if (interactable.gameObject.layer == LayerMask.NameToLayer("Presentation Object"))
+        var parent = interactable.transform;
+        while (parent != null)
         {
-            selectedObject = XRSelector.Instance.selectedObject.GetComponentInChildren<PresentationObject>();
-            OpenUI();
+            if (parent.TryGetComponent(out SelectObject select))
+            {
+                selectedObject = (PresentationObject) select.presentationObject;
+                OpenUI();
+                break;
+            }
+            parent = parent.parent;
         }
+
+
     }
     
     private void GetSelectedObjectInfo(RayInteractable interactable)
     {
-        if (interactable.gameObject.layer == LayerMask.NameToLayer("Presentation Object"))
+        var parent = interactable.transform;
+        while (parent != null)
         {
-            selectedObject = XRSelector.Instance.selectedObject.GetComponentInChildren<PresentationObject>();
-            OpenUI();
+            if (parent.TryGetComponent(out SelectObject select))
+            {
+                selectedObject = (PresentationObject)select.presentationObject;
+                OpenUI();
+                break;
+            }
+
+            parent = parent.parent;
         }
     }
     

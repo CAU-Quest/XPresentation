@@ -119,7 +119,7 @@ MonoBehaviour:
   _whenHover:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1632109375152023088}
+      - m_Target: {fileID: 3019440876651225372}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: set_layer
         m_Mode: 3
@@ -134,14 +134,14 @@ MonoBehaviour:
   _whenUnhover:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1632109375152023088}
+      - m_Target: {fileID: 3019440876651225372}
         m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
         m_MethodName: set_layer
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 8
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
@@ -176,9 +176,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 9142274340363330290}
         m_TargetAssemblyTypeName: PresentationObject, Assembly-CSharp
-        m_MethodName: SaveTransformToSlide
+        m_MethodName: UpdateCurrentObjectDataInSlide
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 419792286308153070}
   - component: {fileID: 8689025857073642840}
   m_Layer: 8
-  m_Name: Hand Grab Interactable
+  m_Name: Grab Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -499,6 +499,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectType: 2
+  BoundObjectType: 1
+  transformByVertexHandler: {fileID: 0}
+  boundBox: {fileID: 0}
+  centerPositionByVertex: {fileID: 0}
 --- !u!1 &6701772282115241752
 GameObject:
   m_ObjectHideFlags: 0
@@ -636,10 +640,34 @@ MonoBehaviour:
   _interactableView: {fileID: 3403552653191809682}
   _whenHover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3019440876651225372}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: set_layer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 6
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenUnhover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3019440876651225372}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: set_layer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 8
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenSelect:
     m_PersistentCalls:
       m_Calls:

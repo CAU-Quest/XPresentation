@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DimBoxes;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public enum BoundObjectType
 {
@@ -17,13 +18,10 @@ public class SelectObject : MonoBehaviour
     public DeployType objectType;
     public BoundObjectType BoundObjectType = BoundObjectType.ThreeDimension;
 
-    [HideInInspector]
-    public TransformByVertexHandler _transformByVertexHandler;
-    [HideInInspector]
-    public BoundBox _boundBox;
-    [HideInInspector]
-    public CenterPositionByVertex _centerPositionByVertex;
-    public IPresentationObject _presentationObject;
+    [HideInInspector] public TransformByVertexHandler transformByVertexHandler; 
+    [HideInInspector] public BoundBox boundBox;
+    [HideInInspector] public CenterPositionByVertex centerPositionByVertex;
+    public IPresentationObject presentationObject;
     
     
     public BoundObjectType GetBoundObjectType()
@@ -35,15 +33,15 @@ public class SelectObject : MonoBehaviour
     {
         if (BoundObjectType == BoundObjectType.ThreeDimension)
         {
-            if (_transformByVertexHandler == null) _transformByVertexHandler = GetComponent<TransformByVertexHandler>();
-            if (_boundBox == null) _boundBox = GetComponent<BoundBox>();
-            if (_centerPositionByVertex == null) _centerPositionByVertex = GetComponent<CenterPositionByVertex>();
-            if (_presentationObject == null) _presentationObject = GetComponentInChildren<IPresentationObject>();
+            if (transformByVertexHandler == null) transformByVertexHandler = GetComponent<TransformByVertexHandler>();
+            if (boundBox == null) boundBox = GetComponent<BoundBox>();
+            if (centerPositionByVertex == null) centerPositionByVertex = GetComponent<CenterPositionByVertex>();
+            if (presentationObject == null) presentationObject = GetComponentInChildren<IPresentationObject>();
         }
         if (BoundObjectType == BoundObjectType.TwoDimension)
         {
-            if (_transformByVertexHandler == null) _transformByVertexHandler = GetComponent<TransformByVertexHandler>();
-            if (_presentationObject == null) _presentationObject = GetComponentInChildren<IPresentationObject>();
+            if (transformByVertexHandler == null) transformByVertexHandler = GetComponent<TransformByVertexHandler>();
+            if (presentationObject == null) presentationObject = GetComponentInChildren<IPresentationObject>();
         }
     }
 
@@ -71,15 +69,15 @@ public class SelectObject : MonoBehaviour
 
         if (BoundObjectType == BoundObjectType.ThreeDimension)
         {
-            XRSelector.Instance.transformByVertexHandler = _transformByVertexHandler;
-            XRSelector.Instance.centerPositionByVertex = _centerPositionByVertex;
-            XRSelector.Instance.boundBox = _boundBox;
-            XRSelector.Instance.presentationObject = _presentationObject;
+            XRSelector.Instance.transformByVertexHandler = transformByVertexHandler;
+            XRSelector.Instance.centerPositionByVertex = centerPositionByVertex;
+            XRSelector.Instance.boundBox = boundBox;
+            XRSelector.Instance.presentationObject = presentationObject;
         }
         else
         {
-            XRSelector.Instance.transformByVertexHandler = _transformByVertexHandler;
-            XRSelector.Instance.presentationObject = _presentationObject;
+            XRSelector.Instance.transformByVertexHandler = transformByVertexHandler;
+            XRSelector.Instance.presentationObject = presentationObject;
         }
         
         XRSelector.Instance.SetComponent(this, BoundObjectType);

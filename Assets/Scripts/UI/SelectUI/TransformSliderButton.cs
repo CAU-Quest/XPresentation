@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class TransformSliderButton : SliderButton
 {
@@ -11,6 +12,8 @@ public class TransformSliderButton : SliderButton
     };
     
     [SerializeField] private Usage usage;
+    [SerializeField] private Transform sliderLocal;
+    private const float SwipeLength = 500f;
     private Transform _selectedTransform;
     private Transform _activeTipTransform;
     
@@ -107,19 +110,23 @@ public class TransformSliderButton : SliderButton
 
     private float UpdateHandleTransform()
     {
-        var tipPosX = _activeTipTransform.position.x;
-        var initialHandlePos = transform.TransformPoint(initialHandleLocalPos);
-        if (tipPosX - initialHandlePos.x > SwipeLength)
+        var tipLocalPos = sliderLocal.InverseTransformPoint(_activeTipTransform.position);
+        var tipLocalPosX = tipLocalPos.x;
+
+        if (tipLocalPosX - initialHandleLocalPos.x > SwipeLength)
         {
-            handle.position = new Vector3(initialHandlePos.x + SwipeLength, initialHandlePos.y, initialHandlePos.z);
+            Debug.Log("A");
+            handle.localPosition = new Vector3(initialHandleLocalPos.x + SwipeLength, initialHandleLocalPos.y, initialHandleLocalPos.z);
         }
-        else if(tipPosX - initialHandlePos.x < -SwipeLength)
+        else if(tipLocalPosX - initialHandleLocalPos.x < -SwipeLength)
         {
-            handle.position = new Vector3(initialHandlePos.x - SwipeLength, initialHandlePos.y, initialHandlePos.z);
+            Debug.Log("B");
+            handle.localPosition = new Vector3(initialHandleLocalPos.x - SwipeLength, initialHandleLocalPos.y, initialHandleLocalPos.z);
         }
         else
         {
-            handle.position = new Vector3(tipPosX, initialHandlePos.y, initialHandlePos.z);
+            Debug.Log("C");
+            handle.localPosition = new Vector3(tipLocalPosX, initialHandleLocalPos.y, initialHandleLocalPos.z);
         }
         return handle.localPosition.x;
     }

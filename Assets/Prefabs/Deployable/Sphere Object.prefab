@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2323011472624080723}
   - component: {fileID: 80088216174005078}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube Surface
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 4050677526592097774}
   - component: {fileID: 8794600562671712782}
   - component: {fileID: 2372105367642067405}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,10 +182,34 @@ MonoBehaviour:
   _interactableView: {fileID: 4759216702936549807}
   _whenHover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4448217032205017089}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: set_layer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 6
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenUnhover:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4448217032205017089}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: set_layer
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 8
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   _whenSelect:
     m_PersistentCalls:
       m_Calls:
@@ -250,8 +274,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1946127996535895789}
   - component: {fileID: 4155364284168259916}
-  m_Layer: 0
-  m_Name: Hand Grab Interactable
+  m_Layer: 8
+  m_Name: Grab Interactable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -308,7 +332,7 @@ GameObject:
   - component: {fileID: 6265888022849228661}
   - component: {fileID: 4397692198299433695}
   - component: {fileID: 7970946385353138432}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere Object
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -445,6 +469,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   objectType: 1
+  BoundObjectType: 1
+  transformByVertexHandler: {fileID: 0}
+  boundBox: {fileID: 0}
+  centerPositionByVertex: {fileID: 0}
 --- !u!1 &7921909027281736836
 GameObject:
   m_ObjectHideFlags: 0
@@ -456,7 +484,7 @@ GameObject:
   - component: {fileID: 2692335347119873781}
   - component: {fileID: 2477836432130902375}
   - component: {fileID: 1259418593120524069}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -540,7 +568,7 @@ GameObject:
   - component: {fileID: 93160351220392744}
   - component: {fileID: 7217399683393159972}
   - component: {fileID: 2085217830846313220}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Element
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -661,7 +689,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 2085217830846313220}
         m_TargetAssemblyTypeName: PresentationObject, Assembly-CSharp
-        m_MethodName: SaveTransformToSlide
+        m_MethodName: UpdateCurrentObjectDataInSlide
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

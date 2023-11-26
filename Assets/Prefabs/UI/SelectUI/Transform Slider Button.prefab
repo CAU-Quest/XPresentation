@@ -671,6 +671,7 @@ MonoBehaviour:
   valueText: {fileID: 7021513438583166060}
   handleValueText: {fileID: 4019857683720822486}
   usage: 0
+  sliderLocal: {fileID: 227949203873329258}
 --- !u!1 &2619112006843859776
 GameObject:
   m_ObjectHideFlags: 0

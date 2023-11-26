@@ -17,7 +17,6 @@ public class SliderButton : MonoBehaviour, ISelectedObjectModifier
     [SerializeField] private TextMeshProUGUI valueText, handleValueText;
     
     protected float initialValue;
-    protected const float SwipeLength = 0.2f;
     protected bool turnOffWhenUnselect, isSelectingHandle;
     protected Vector3 initialHandleLocalPos;
 
