@@ -383,6 +383,7 @@ MonoBehaviour:
   id: 1
   animationList: []
   slideData: []
+  deployType: 0
   isGrabbableInPresentation: 1
   isVisible: 1
 --- !u!1 &7782047687446347052
@@ -672,7 +673,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef478e0a292d7b840997d4dd8c79025d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 3
+  deployType: 3
   BoundObjectType: 1
   transformByVertexHandler: {fileID: 0}
   boundBox: {fileID: 0}

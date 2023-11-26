@@ -336,7 +336,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef478e0a292d7b840997d4dd8c79025d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectType: 4
+  deployType: 4
   BoundObjectType: 1
   transformByVertexHandler: {fileID: 0}
   boundBox: {fileID: 0}

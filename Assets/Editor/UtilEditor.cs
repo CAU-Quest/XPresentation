@@ -141,6 +141,29 @@ public class StageSetterEditor : Editor
 
 
 
+[CustomEditor(typeof(SaveData))]
+public class SaveDataEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        SaveData saveData = (SaveData)target;
+        
+        
+        if (GUILayout.Button("Save Data"))
+        {
+            saveData.SaveGameData();
+        }
+        if (GUILayout.Button("Load Data"))
+        {
+            saveData.LoadGameData();
+        }
+
+    }
+}
+
+
 [CustomEditor(typeof(EdgeHandler))]
 public class EdgeHandlerEditor : Editor
 {

@@ -9,7 +9,7 @@ public interface ISystemObserver
     void ObserverRemoveSlide(int index);
     void ObserverAddSlide();
     void ObserverMoveSlides(int moved, int count, int into);
-
+    void ObserverUpdateSave();
 }
 
 public interface ISubject
@@ -17,4 +17,5 @@ public interface ISubject
     void RegisterObserver(ISystemObserver observer);
     void RemoveObserver(ISystemObserver observer);
     void NotifyObservers();
+    void NotifyObserverSaveData();
 }

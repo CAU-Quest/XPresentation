@@ -15,7 +15,7 @@ public class SelectObject : MonoBehaviour
 {
     [SerializeField] 
     [Header("Object Property")]
-    public DeployType objectType;
+    public DeployType deployType;
     public BoundObjectType BoundObjectType = BoundObjectType.ThreeDimension;
 
     [HideInInspector] public TransformByVertexHandler transformByVertexHandler; 
