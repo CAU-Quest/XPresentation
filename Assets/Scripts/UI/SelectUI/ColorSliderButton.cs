@@ -122,11 +122,9 @@ public class ColorSliderButton : SliderButton
                 newColor = new Color(color.r, color.g, color.b, value);
                 break;
         }
-
         _selectedMaterial.color = newColor;
         
-        NewSlideObjectData = new SlideObjectData(CurrentSlideObjectData.position, CurrentSlideObjectData.rotation, CurrentSlideObjectData.scale, newColor,
-            CurrentSlideObjectData.isGrabbable, CurrentSlideObjectData.isVisible);
+        NewSlideObjectData = new SlideObjectData(CurrentSlideObjectData, newColor);
         WhenHasModification.Invoke(SelectedObject, NewSlideObjectData);
         CurrentSlideObjectData = NewSlideObjectData;
     }

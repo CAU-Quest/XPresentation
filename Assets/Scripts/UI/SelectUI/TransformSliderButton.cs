@@ -177,7 +177,8 @@ public class TransformSliderButton : SliderButton
                 break;
         }
 
-        NewSlideObjectData = CreateNewSlideObjectData(newPosition, newRotation, newScale);
+        NewSlideObjectData = new SlideObjectData(CurrentSlideObjectData, newPosition, newRotation, newScale);
+        WhenHasModification.Invoke(SelectedObject, NewSlideObjectData);
         CurrentSlideObjectData = NewSlideObjectData;
         base.UpdateValue(value);
     }
