@@ -359,11 +359,8 @@ MonoBehaviour:
   id: 1
   animationList: []
   slideData: []
-  beforeSlideMaterial: {fileID: 2100000, guid: e26f81e5f254fa6428077265f051cc92, type: 2}
-  afterSlideMaterial: {fileID: 2100000, guid: efff9abe4eff0a948afa84e564a1f968, type: 2}
-  normalModeMaterial: {fileID: 2100000, guid: 7ae7d9878e2a55149b63c5ab8a969e0f, type: 2}
-  dottedLinePrefab: {fileID: 8018140223861054104, guid: d56e8ec7d79ea9544869f0894a1ad046,
-    type: 3}
+  isGrabbableInPresentation: 1
+  isVisible: 1
 --- !u!1 &7782047687446347052
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,7 +648,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef478e0a292d7b840997d4dd8c79025d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoundObjectType: 1
+  objectType: 3
 --- !u!1 &8851319525856384192
 GameObject:
   m_ObjectHideFlags: 0

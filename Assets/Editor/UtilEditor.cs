@@ -53,31 +53,31 @@ public class ObjectCreatorEditor : Editor
         
         if (GUILayout.Button("Create Cube"))
         {
-            CreateObject.CreateObject(SelectableAction.Cube);
+            CreateObject.CreateObject(DeployType.Cube);
         }
         if (GUILayout.Button("Create Sphere"))
         {
-            CreateObject.CreateObject(SelectableAction.Sphere);
+            CreateObject.CreateObject(DeployType.Sphere);
         }
         if (GUILayout.Button("Create Cylinder"))
         {
-            CreateObject.CreateObject(SelectableAction.Cylinder);
+            CreateObject.CreateObject(DeployType.Cylinder);
         }
         if (GUILayout.Button("Create Plane"))
         {
-            CreateObject.CreateObject(SelectableAction.Plane);
+            CreateObject.CreateObject(DeployType.Plane);
         }
         if (GUILayout.Button("Create Text"))
         {
-            CreateObject.CreateObject(SelectableAction.Text);
+            CreateObject.CreateObject(DeployType.Text);
         }
         if (GUILayout.Button("Import Image Plane"))
         {
-            CreateObject.CreateObject(SelectableAction.ImportImage);
+            CreateObject.CreateObject(DeployType.ImportImage);
         }
         if (GUILayout.Button("Import Model"))
         {
-            CreateObject.CreateObject(SelectableAction.ImportModel);
+            CreateObject.CreateObject(DeployType.ImportModel);
         }
     }
 }
@@ -140,23 +140,6 @@ public class StageSetterEditor : Editor
 }
 
 
-[CustomEditor(typeof(SelectObject))]
-public class SelectObjectEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-
-        SelectObject SelectObject = (SelectObject)target;
-        
-        
-        if (GUILayout.Button("Select"))
-        {
-            SelectObject.Select();
-        }
-
-    }
-}
 
 [CustomEditor(typeof(EdgeHandler))]
 public class EdgeHandlerEditor : Editor

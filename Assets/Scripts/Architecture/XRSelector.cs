@@ -290,12 +290,6 @@ public class XRSelector : MonoBehaviour
         {
             transform.rotation = selectedObject.transform.rotation;
         
-            centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
-            boundBox = selectedObject.GetComponent<BoundBox>();
-            transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
-            presentationObject = selectedObject.GetComponentInChildren<PresentationObject>();
-            this.selectObject = selectObject;
-            
             centerPositionByVertex.SetVertex();
             boundBox.SetLines();
             transformByVertexHandler.SetVertex();
@@ -326,14 +320,6 @@ public class XRSelector : MonoBehaviour
         {
             transform.rotation = selectedObject.transform.rotation;
             
-            //centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
-            //boundBox = selectedObject.GetComponent<BoundBox>();
-            transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
-            presentationObject = selectedObject.GetComponentInChildren<PresentationObject>();
-            this.selectObject = selectObject;
-
-            //centerPositionByVertex.enabled = true;
-            //boundBox.enabled = true;
             transformByVertexHandler.enabled = true;
             
             if (transformByVertexHandler == null || presentationObject == null)

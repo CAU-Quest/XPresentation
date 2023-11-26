@@ -26,7 +26,7 @@ public class ObjectCreator : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
-    public void CreateObject(SelectableAction action)
+    public void CreateObject(DeployType action)
     {
         Vector3 direction = XRUIManager.Instance.positionSource.forward;
         direction.y = 0;
@@ -38,35 +38,33 @@ public class ObjectCreator : MonoBehaviour
         GameObject go;
         switch (action)
         {
-            case SelectableAction.Close:
-                break;
-            case SelectableAction.Sphere:
+            case DeployType.Sphere:
                 go =  PresentationObjectPool.Instance.Get(0, position);
                 go.transform.rotation = rotation;
                 break;
-            case SelectableAction.Cube:
+            case DeployType.Cube:
                 go = PresentationObjectPool.Instance.Get(1, position);
                 go.transform.rotation = rotation;
                 break;
-            case SelectableAction.Cylinder:
+            case DeployType.Cylinder:
                 go = PresentationObjectPool.Instance.Get(2, position);
                 go.transform.rotation = rotation;
                 break;
-            case SelectableAction.Plane:
+            case DeployType.Plane:
                 go = PresentationObjectPool.Instance.Get(3, position);
                 go.transform.rotation = rotation;
                 break;
-            case SelectableAction.Text:
+            case DeployType.Text:
                 go = PresentationObjectPool.Instance.Get(4, position);
                 go.transform.rotation = rotation;
                 break;
-            case SelectableAction.ImportImage:
+            case DeployType.ImportImage:
 	            XRUIManager.Instance.fileBrowser.SetActive(true);
 	            XRUIManager.Instance.fileBrowser.transform.position = position;
 	            XRUIManager.Instance.fileBrowser.transform.rotation = rotation;
 	            LoadImageFile();
                 break;
-            case SelectableAction.ImportModel:
+            case DeployType.ImportModel:
 	            XRUIManager.Instance.fileBrowser.SetActive(true);
 	            XRUIManager.Instance.fileBrowser.transform.position = position;
 	            XRUIManager.Instance.fileBrowser.transform.rotation = rotation;
