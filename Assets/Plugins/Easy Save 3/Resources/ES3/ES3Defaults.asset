@@ -59,6 +59,7 @@ MonoBehaviour:
     - Oculus.Platform
     - Oculus.Spatializer
     - Oculus.VR
+    - ShaderCode
     - SimpleFileBrowser.Runtime
     - VoiceSDK.Dictation.Runtime
     - VoiceSDK.Runtime
