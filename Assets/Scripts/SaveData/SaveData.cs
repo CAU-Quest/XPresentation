@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Dummiesman;
+using Oculus.Interaction;
 using UnityEngine;
+using UnityEngine.UI;
 
 public struct SaveObjectData
 {
@@ -8,6 +11,8 @@ public struct SaveObjectData
     public DeployType deployType;
     public List<SlideObjectData> slideObjectDatas;
     public List<XRAnimation> animations;
+    public string objectPath;
+    public string imagePath;
 }
 
 public class SaveData : MonoBehaviour
@@ -42,6 +47,16 @@ public class SaveData : MonoBehaviour
         {
             SaveObjectData data = objects[i];
             GameObject go = PresentationObjectPool.Instance.Get((int)data.deployType - 1, Vector3.zero);
+            if (data.deployType == DeployType.ImportImage)
+            {
+                go.GetComponentInChildren<RawImage>().texture = Resources.Load<Texture>(data.imagePath);
+            } else if (data.deployType == DeployType.ImportModel)
+            {
+                GameObject element = go.GetComponentInChildren<Grabbable>().gameObject;
+
+                new OBJLoader().Load(data.objectPath);
+                element.AddComponent<PresentationObject>();
+            }
             PresentationObject presentationObject = go.GetComponentInChildren<PresentationObject>();
             presentationObject.animationList = new List<XRAnimation>();
             presentationObject.slideData = new List<SlideObjectData>();
@@ -53,6 +68,7 @@ public class SaveData : MonoBehaviour
             {
                 presentationObject.animationList.Add(data.animations[j]);
             }
+
         }
     }
 }

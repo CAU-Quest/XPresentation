@@ -22,6 +22,9 @@ public class SelectObject : MonoBehaviour
     [HideInInspector] public BoundBox boundBox;
     [HideInInspector] public CenterPositionByVertex centerPositionByVertex;
     public IPresentationObject presentationObject;
+
+    public string objectPath;
+    public string imagePath;
     
     
     public BoundObjectType GetBoundObjectType()

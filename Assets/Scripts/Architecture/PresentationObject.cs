@@ -132,6 +132,14 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         saveObjectData.animations = animationList;
         saveObjectData.id = id;
         saveObjectData.deployType = deployType;
+        if (deployType == DeployType.ImportModel)
+        {
+            saveObjectData.objectPath = GetComponentInParent<SelectObject>().objectPath;
+            saveObjectData.imagePath = GetComponentInParent<SelectObject>().imagePath;
+        } else if (deployType == DeployType.ImportImage)
+        {
+            saveObjectData.imagePath = GetComponentInParent<SelectObject>().imagePath;
+        }
         
         SaveData.Instance.objects.Add(saveObjectData);
     }
