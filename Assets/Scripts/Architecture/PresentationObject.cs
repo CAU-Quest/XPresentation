@@ -140,6 +140,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         {
             saveObjectData.imagePath = GetComponentInParent<SelectObject>().imagePath;
         }
+        Debug.Log(saveObjectData.imagePath);
         
         SaveData.Instance.objects.Add(saveObjectData);
     }

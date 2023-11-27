@@ -122,7 +122,7 @@ public class ObjectCreator : MonoBehaviour
 			GameObject importObject = PresentationObjectPool.Instance.Get(6, SpawnPose.position);
 			importObject.transform.rotation = SpawnPose.rotation;
 			GameObject element = importObject.GetComponentInChildren<Grabbable>().gameObject;
-			importObject.GetComponent<SelectObject>().objectPath = destinationPath;
+			importObject.GetComponent<SelectObject>().objectPath = FileBrowser.Result[0];
 
 			PresentationObject presentationObject = element.AddComponent<PresentationObject>();
 			
@@ -176,7 +176,7 @@ public class ObjectCreator : MonoBehaviour
 			GameObject imageObject = PresentationObjectPool.Instance.Get(5, SpawnPose.position);
 			imageObject.transform.rotation = SpawnPose.rotation;
 			
-			imageObject.GetComponent<SelectObject>().imagePath = destinationPath;
+			imageObject.GetComponent<SelectObject>().imagePath = FileBrowser.Result[0];
 			Texture2D loadedTexture = new Texture2D(1, 1);
 			loadedTexture.LoadImage(bytes);
 			imageObject.GetComponentInChildren<RawImage>().texture = loadedTexture;

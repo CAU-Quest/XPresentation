@@ -49,6 +49,7 @@ public class SaveData : MonoBehaviour
             GameObject go = PresentationObjectPool.Instance.Get((int)data.deployType - 1, Vector3.zero);
             if (data.deployType == DeployType.ImportImage)
             {
+                Debug.Log(data.imagePath);
                 go.GetComponentInChildren<RawImage>().texture = Resources.Load<Texture>(data.imagePath);
             } else if (data.deployType == DeployType.ImportModel)
             {
