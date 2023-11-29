@@ -8,11 +8,14 @@ using UnityEngine;
 using UnityEngine.Animations;
 using Object = UnityEngine.Object;
 
-public class XRSelector : MonoBehaviour
+public class XRSelector : MonoBehaviour, IUserInterfaceSubject
 {
-    [SerializeField]
+    #region Member Variables
+
     public static XRSelector Instance = null;
 
+    public List<IUserInterfaceObserver> observers = new List<IUserInterfaceObserver>();
+    
     public GameObject selectedObject;
     
     public BoundBoxLine[] lineList;
@@ -40,6 +43,46 @@ public class XRSelector : MonoBehaviour
     [HideInInspector]
     public bool edgeSelected = false;
 
+    
+
+    #endregion
+
+    #region UI Observer Handling
+    
+    public void RegisterObserver(IUserInterfaceObserver observer)
+    {
+        this.observers.Add(observer);
+    }
+    
+    public void RemoveObserver(IUserInterfaceObserver observer)
+    {
+        this.observers.Remove(observer);
+    }
+
+    
+    public void NotifyObjectChangeToObservers()
+    {
+        if (selectedObject && presentationObject != null)
+        {
+            for (int i = 0; i < this.observers.Count; i++)
+            {
+                this.observers[i].ObserverObjectUpdate(presentationObject);
+            }
+        }
+    }
+    
+    public void NotifySlideChangeToObservers()
+    {
+        for (int i = 0; i < this.observers.Count; i++)
+        {
+            this.observers[i].ObserverSlideUpdate(MainSystem.Instance.currentSlideNum);
+        }
+    }
+    
+
+    #endregion
+
+    #region Unity Life Cycle
     void Awake()
     {
         if (null == Instance)
@@ -69,7 +112,140 @@ public class XRSelector : MonoBehaviour
         SetLineVertex();
 
     }
+    
+    public void Start()
+    {
+        vertexList = GetComponentsInChildren<VertexHandler>(true);
+        lineList = GetComponentsInChildren<BoundBoxLine>(true);
+        
+        for(int i = 0; i < vertexList.Length; i++)
+            vertexList[i].gameObject.SetActive(true);
+        for(int i = 0; i < lineList.Length; i++)
+            lineList[i].gameObject.SetActive(true);
+    }
 
+
+    private void Update()
+    {
+        if(!selectedObject) return; 
+        if(edgeSelected) selectedObject.transform.rotation = transform.rotation;
+        else transform.rotation = selectedObject.transform.rotation;
+    }
+
+    
+    public void Reset()
+    {
+        if (null == Instance)
+        {
+            Instance = this;
+        }
+    }
+    
+    
+#if UNITY_EDITOR
+    public void OnValidate()
+    {
+        /*
+        if (EditorApplication.isPlaying) return;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+
+        if (selectedObject == null)
+        {
+            Debug.Log("There is no selected Object");
+            return;
+        }
+
+        if (BoundObjectType == BoundObjectType.ThreeDimension)
+        {
+            centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
+            boundBox = selectedObject.GetComponent<BoundBox>();
+            transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
+            presentationObject = selectedObject.GetComponentInChildren<PresentationObject>();
+            if(boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null || presentationObject == null)
+                Debug.Log("Selected Object doesn't have correct components");
+        
+        
+            SetVertex();
+            SetLines();
+            SetLineRenderers();
+            SetLineVertex();
+        } else if (BoundObjectType == BoundObjectType.TwoDimension)
+        {
+            transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
+            if(transformByVertexHandler == null)
+                Debug.Log("Selected Object doesn't have correct components");
+            
+            SetVertex();
+            SetLines();
+            SetLineRenderers();
+            SetLineVertex();
+        }*/
+    }
+#endif
+    
+    
+    
+    void OnEnable()
+    {
+        vertexList = GetComponentsInChildren<VertexHandler>(true);
+        lineList = GetComponentsInChildren<BoundBoxLine>(true);
+        
+        VertexHandler[] lrs = GetComponentsInChildren<VertexHandler>(true);
+        BoundBoxLine[] lls = GetComponentsInChildren<BoundBoxLine>(true);
+        
+        for (int i = 0; i < lrs.Length; i++)
+        {
+            if (!lrs[i].gameObject.activeSelf) DestroyImmediate(lrs[i].gameObject);
+        }
+        for (int i = 0; i < lls.Length; i++)
+        {
+            if (!lls[i].gameObject.activeSelf) DestroyImmediate(lls[i].gameObject);
+        }
+        
+        SetVertex();
+        SetLines();
+        SetLineRenderers();
+        SetLineVertex();
+    }
+    void OnDestroy()
+    {
+        VertexHandler[] lrs = GetComponentsInChildren<VertexHandler>(true);
+        BoundBoxLine[] lls = GetComponentsInChildren<BoundBoxLine>(true);
+        
+        for (int i = 0; i < lrs.Length; i++)
+        {
+            DestroyImmediate(lrs[i].gameObject);
+        }
+        for (int i = 0; i < lls.Length; i++)
+        {
+            DestroyImmediate(lls[i].gameObject);
+        }
+    }
+
+    void OnDisable()
+    {
+        VertexHandler[] lrs = GetComponentsInChildren<VertexHandler>(true);
+        BoundBoxLine[] lls = GetComponentsInChildren<BoundBoxLine>(true);
+
+        for (int i = 0; i < lrs.Length; i++)
+        {
+            lrs[i].enabled = false;
+        }
+
+        for (int i = 0; i < lls.Length; i++)
+        {
+            lls[i].enabled = false;
+        }
+    }
+
+    #endregion
+
+    #region Vertex & Line Handling
+
+    
     private void SetVertex() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
     {
         vertexList = GetComponentsInChildren<VertexHandler>(true);
@@ -123,25 +299,6 @@ public class XRSelector : MonoBehaviour
             vertexList[6].gameObject.SetActive(false);
             vertexList[7].gameObject.SetActive(false);
         }
-    }
-
-    public void Start()
-    {
-        vertexList = GetComponentsInChildren<VertexHandler>(true);
-        lineList = GetComponentsInChildren<BoundBoxLine>(true);
-        
-        for(int i = 0; i < vertexList.Length; i++)
-            vertexList[i].gameObject.SetActive(true);
-        for(int i = 0; i < lineList.Length; i++)
-            lineList[i].gameObject.SetActive(true);
-    }
-
-
-    private void Update()
-    {
-        if(!selectedObject) return; 
-        if(edgeSelected) selectedObject.transform.rotation = transform.rotation;
-        else transform.rotation = selectedObject.transform.rotation;
     }
 
     private void SetLines()
@@ -260,11 +417,6 @@ public class XRSelector : MonoBehaviour
         }
     }
 
-    public BoundObjectType GetBoundObjectType()
-    {
-        return BoundObjectType;
-    }
-
     public VertexHandler[] GetVertexList()
     {
         if (vertexList != null && vertexList.Length == 8)
@@ -277,7 +429,18 @@ public class XRSelector : MonoBehaviour
             return lineList;
         return null;
     }
-        
+    
+    public BoundObjectType GetBoundObjectType()
+    {
+        return BoundObjectType;
+    }
+
+
+    #endregion
+
+    #region Select
+
+    
     public void SetComponent(SelectObject selectObject, BoundObjectType boundObjectType)
     {
         if (selectedObject == null)
@@ -337,113 +500,11 @@ public class XRSelector : MonoBehaviour
 #endif
         }
         BoundObjectType = boundObjectType;
+        
+        NotifyObjectChangeToObservers();
     }
 
-    public void Reset()
-    {
-        if (null == Instance)
-        {
-            Instance = this;
-        }
-    }
+
+    #endregion
     
-    
-#if UNITY_EDITOR
-    public void OnValidate()
-    {
-        /*
-        if (EditorApplication.isPlaying) return;
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-
-        if (selectedObject == null)
-        {
-            Debug.Log("There is no selected Object");
-            return;
-        }
-
-        if (BoundObjectType == BoundObjectType.ThreeDimension)
-        {
-            centerPositionByVertex = selectedObject.GetComponent<CenterPositionByVertex>();
-            boundBox = selectedObject.GetComponent<BoundBox>();
-            transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
-            presentationObject = selectedObject.GetComponentInChildren<PresentationObject>();
-            if(boundBox == null || centerPositionByVertex == null || transformByVertexHandler == null || presentationObject == null)
-                Debug.Log("Selected Object doesn't have correct components");
-        
-        
-            SetVertex();
-            SetLines();
-            SetLineRenderers();
-            SetLineVertex();
-        } else if (BoundObjectType == BoundObjectType.TwoDimension)
-        {
-            transformByVertexHandler = selectedObject.GetComponent<TransformByVertexHandler>();
-            if(transformByVertexHandler == null)
-                Debug.Log("Selected Object doesn't have correct components");
-            
-            SetVertex();
-            SetLines();
-            SetLineRenderers();
-            SetLineVertex();
-        }*/
-    }
-#endif
-    
-    
-    
-    void OnEnable()
-    {
-        vertexList = GetComponentsInChildren<VertexHandler>(true);
-        lineList = GetComponentsInChildren<BoundBoxLine>(true);
-        
-        VertexHandler[] lrs = GetComponentsInChildren<VertexHandler>(true);
-        BoundBoxLine[] lls = GetComponentsInChildren<BoundBoxLine>(true);
-        
-        for (int i = 0; i < lrs.Length; i++)
-        {
-            if (!lrs[i].gameObject.activeSelf) DestroyImmediate(lrs[i].gameObject);
-        }
-        for (int i = 0; i < lls.Length; i++)
-        {
-            if (!lls[i].gameObject.activeSelf) DestroyImmediate(lls[i].gameObject);
-        }
-        
-        SetVertex();
-        SetLines();
-        SetLineRenderers();
-        SetLineVertex();
-    }
-    void OnDestroy()
-    {
-        VertexHandler[] lrs = GetComponentsInChildren<VertexHandler>(true);
-        BoundBoxLine[] lls = GetComponentsInChildren<BoundBoxLine>(true);
-        
-        for (int i = 0; i < lrs.Length; i++)
-        {
-            DestroyImmediate(lrs[i].gameObject);
-        }
-        for (int i = 0; i < lls.Length; i++)
-        {
-            DestroyImmediate(lls[i].gameObject);
-        }
-    }
-
-    void OnDisable()
-    {
-        VertexHandler[] lrs = GetComponentsInChildren<VertexHandler>(true);
-        BoundBoxLine[] lls = GetComponentsInChildren<BoundBoxLine>(true);
-
-        for (int i = 0; i < lrs.Length; i++)
-        {
-            lrs[i].enabled = false;
-        }
-
-        for (int i = 0; i < lls.Length; i++)
-        {
-            lls[i].enabled = false;
-        }
-    }
 }

@@ -13,17 +13,26 @@ public class AnimationSliderButton : SliderButton
     
     [SerializeField] private Usage usage;
     [SerializeField] private Transform sliderLocal;
+    
     private const float SwipeLength = 500f;
     private SlideObjectData _selectedSlideObjectData;
     private Transform _activeTipTransform;
+
+    public int currentSlideNum;
+    public bool canUse = true;
+
+    public void SetSlideObjectData(SlideObjectData slideObjectData, int index)
+    {
+        _selectedSlideObjectData = slideObjectData;
+        currentSlideNum = index;
+    }
     
     public override void InitProperty(PresentationObject selectedObject)
     {
         SelectedObject = selectedObject;
-        _selectedSlideObjectData = selectedObject.animationList[MainSystem.Instance.currentSlideNum].GetPreviousSlideObjectData();
         base.InitProperty(selectedObject);
     }
-    
+
     protected override void SetInitialValue()
     {
         switch (usage)
@@ -58,24 +67,23 @@ public class AnimationSliderButton : SliderButton
         }
     }
 
-    public void SetSlidObjectData()
-    {
-        
-    }
     public override void OnHoverButton() //onHover
     {
+        if (!canUse) return;
         SetHoverColor();
         base.OnHoverButton();
     }
     
     public override void OnUnhoverButton() //onUnhover
     {
+        if (!canUse) return;
         SetDefaultColor();
         base.OnUnhoverButton();
     }
 
     public override void OnSelectButton() //Handle_onSelect
     {
+        if (!canUse) return;
         SetActiveTipTransform();
         base.OnSelectButton();
         
@@ -88,6 +96,7 @@ public class AnimationSliderButton : SliderButton
     
     public override void OnUnselectButton() //Handle_onUnselect
     {
+        if (!canUse) return;
         ResetHandlePosition();
         _activeTipTransform = null;
         base.OnUnselectButton();
@@ -189,7 +198,7 @@ public class AnimationSliderButton : SliderButton
         }
 
         NewSlideObjectData = new SlideObjectData(CurrentSlideObjectData, newPosition, newRotation, newScale);
-        WhenHasModification.Invoke(SelectedObject, NewSlideObjectData);
+        SelectedObject.ApplyDataToSlideWithIndex(NewSlideObjectData, currentSlideNum);
         CurrentSlideObjectData = NewSlideObjectData;
         base.UpdateValue(value);
     }

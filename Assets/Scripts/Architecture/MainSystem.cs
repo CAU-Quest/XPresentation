@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-// 0 - Edit Mode, 1 - Deploy Mode, 2 - Slide Mode, 3 - Animation Mode
+
+
 public class MainSystem : MonoBehaviour, ISubject
 {
+
+    #region Member Variables
+
     public static MainSystem Instance = null;
 
     public List<ISystemObserver> observers = new List<ISystemObserver>();
+    public List<IUserInterfaceObserver> UIObservers = new List<IUserInterfaceObserver>();
 
 
     public enum Mode
@@ -33,33 +38,17 @@ public class MainSystem : MonoBehaviour, ISubject
     
     
     [Header("Functions")]
-
-
-
+    
     public int moved;
     public int count;
     public int into;
 
-    void Awake()
-    {
-        if (null == Instance)
-        {
-            Instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
-
-        mode = Mode.Edit;
-    }
-
-    public void MoveSlide()
-    {
-        MoveSlidesTo(moved, count, into);
-    }
     
+
+    #endregion
+
+    #region Object Observer
+
     public void RegisterObserver(ISystemObserver observer)
     {
         this.observers.Add(observer);
@@ -70,11 +59,7 @@ public class MainSystem : MonoBehaviour, ISubject
         this.observers.Remove(observer);
     }
 
-    public int GetSlideCount()
-    {
-        return slideCount;
-    }
-
+    
     public void NotifyObservers()
     {
         for (int i = 0; i < this.observers.Count; i++)
@@ -94,6 +79,8 @@ public class MainSystem : MonoBehaviour, ISubject
         {
             XRSelector.Instance.vertexList[i].gameObject.SetActive(false);
         }
+        
+        XRSelector.Instance.NotifySlideChangeToObservers();
     }
     
     public void NotifyObserverSaveData()
@@ -124,7 +111,17 @@ public class MainSystem : MonoBehaviour, ISubject
             XRSelector.Instance.vertexList[i].gameObject.SetActive(false);
         }
     }
+
+
+    #endregion
     
+    #region Slide Control
+
+    public int GetSlideCount()
+    {
+        return slideCount;
+    }
+
     public void AddSlide()
     {
         slideCount += 1;
@@ -143,6 +140,14 @@ public class MainSystem : MonoBehaviour, ISubject
         }
     }
 
+
+    public void MoveSlide()
+    {
+        MoveSlidesTo(moved, count, into);
+    }
+
+    
+    
     public void MoveSlideTo(int moved, int into) // moved 위치에 있는 slide를 into 위치로 옮김
     {
         NotifyObserversMoveSlides(moved, 1, into);
@@ -187,6 +192,12 @@ public class MainSystem : MonoBehaviour, ISubject
         }
     }
 
+    
+
+    #endregion
+
+    #region Mode Control
+
     public void ChangeMode(Mode mode)
     {
         if (this.mode != mode)
@@ -211,8 +222,28 @@ public class MainSystem : MonoBehaviour, ISubject
         }
     }
 
+
     
-    // Update is called once per frame
+
+    #endregion
+
+    #region Unity LifeCycle
+
+    void Awake()
+    {
+        if (null == Instance)
+        {
+            Instance = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
+
+        mode = Mode.Edit;
+    }
+    
     void Update()
     {
         if (isPlayingAnimation && slideInterval < 1.0f)
@@ -235,4 +266,6 @@ public class MainSystem : MonoBehaviour, ISubject
             }
         }
     }
+
+    #endregion
 }
