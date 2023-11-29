@@ -79,6 +79,14 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
         }
     }
     
+    public void NotifySlideObjectDataChangeToObservers()
+    {
+        for (int i = 0; i < this.observers.Count; i++)
+        {
+            this.observers[i].ObserverSlideObjectDataUpdate();
+        }
+    }
+    
 
     #endregion
 

@@ -478,7 +478,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     {
         this.slideData[index] = data;
         this.animationList[index].SetPreviousSlideObjectData(data);
-        if(this.currentSlide - 1 >= 0)
+        if(index - 1 >= 0)
             this.animationList[index - 1].SetNextSlideObjectData(data);
     }
 

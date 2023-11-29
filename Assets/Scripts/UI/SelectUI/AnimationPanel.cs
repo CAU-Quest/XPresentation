@@ -30,7 +30,6 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
     private void OnDestroy()
     {
         XRSelector.Instance.RemoveObserver(this);
-        
     }
     
     public void ObserverObjectUpdate(IPresentationObject presentationObject)
@@ -56,7 +55,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = true;
-                    buttons[i].SetSlideObjectData(slideObjectDatas[index], index);
+                    buttons[i].SetSlideObjectDataWithIndex(slideObjectDatas[index], index);
                     buttons[i].InitProperty((PresentationObject)presentationObject);
                 }
             }
@@ -85,8 +84,36 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = true;
-                    buttons[i].SetSlideObjectData(slideObjectDatas[index], index);
+                    buttons[i].SetSlideObjectDataWithIndex(slideObjectDatas[index], index);
                     buttons[i].InitProperty((PresentationObject)selectedObject);
+                }
+            }
+        }
+    }
+    
+    public void ObserverSlideObjectDataUpdate()
+    {
+        if (selectedObject is PresentationObject)
+        {
+            List<SlideObjectData> slideObjectDatas = ((PresentationObject)selectedObject).slideData;
+
+            int index = MainSystem.Instance.currentSlideNum;
+            index += (int)_panelType;
+            if (index < 0 || index >= MainSystem.Instance.GetSlideCount())
+            {
+                cannotUsePanel.SetActive(true);
+                for (int i = 0; i < buttons.Length; i++)
+                {
+                    buttons[i].canUse = false;
+                }
+            }
+            else
+            {
+                cannotUsePanel.SetActive(false);
+                for (int i = 0; i < buttons.Length; i++)
+                {
+                    buttons[i].canUse = true;
+                    buttons[i].SetSlideObjectData(slideObjectDatas[index]);
                 }
             }
         }

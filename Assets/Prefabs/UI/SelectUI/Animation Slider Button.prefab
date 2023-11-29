@@ -116,8 +116,8 @@ MonoBehaviour:
   _whenHover:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SliderButton, Assembly-CSharp
+      - m_Target: {fileID: 2188793002390023863}
+        m_TargetAssemblyTypeName: AnimationSliderButton, Assembly-CSharp
         m_MethodName: OnHoverButton
         m_Mode: 1
         m_Arguments:
@@ -131,8 +131,8 @@ MonoBehaviour:
   _whenUnhover:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SliderButton, Assembly-CSharp
+      - m_Target: {fileID: 2188793002390023863}
+        m_TargetAssemblyTypeName: AnimationSliderButton, Assembly-CSharp
         m_MethodName: OnUnhoverButton
         m_Mode: 1
         m_Arguments:
@@ -146,8 +146,8 @@ MonoBehaviour:
   _whenSelect:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TransformSliderButton, Assembly-CSharp
+      - m_Target: {fileID: 2188793002390023863}
+        m_TargetAssemblyTypeName: AnimationSliderButton, Assembly-CSharp
         m_MethodName: OnSelectButton
         m_Mode: 1
         m_Arguments:
@@ -161,8 +161,8 @@ MonoBehaviour:
   _whenUnselect:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: TransformSliderButton, Assembly-CSharp
+      - m_Target: {fileID: 2188793002390023863}
+        m_TargetAssemblyTypeName: AnimationSliderButton, Assembly-CSharp
         m_MethodName: OnUnselectButton
         m_Mode: 1
         m_Arguments:
@@ -672,6 +672,8 @@ MonoBehaviour:
   handleValueText: {fileID: 4019857683720822486}
   usage: 0
   sliderLocal: {fileID: 227949203873329258}
+  currentSlideNum: 0
+  canUse: 1
 --- !u!1 &2619112006843859776
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,10 +21,15 @@ public class AnimationSliderButton : SliderButton
     public int currentSlideNum;
     public bool canUse = true;
 
-    public void SetSlideObjectData(SlideObjectData slideObjectData, int index)
+    public void SetSlideObjectDataWithIndex(SlideObjectData slideObjectData, int index)
     {
         _selectedSlideObjectData = slideObjectData;
         currentSlideNum = index;
+    }
+    
+    public void SetSlideObjectData(SlideObjectData slideObjectData)
+    {
+        _selectedSlideObjectData = slideObjectData;
     }
     
     public override void InitProperty(PresentationObject selectedObject)
@@ -153,9 +158,9 @@ public class AnimationSliderButton : SliderButton
         var position = _selectedSlideObjectData.position;
         var rotation = _selectedSlideObjectData.rotation.eulerAngles;
         var scale = _selectedSlideObjectData.scale;
-        var newPosition = position; 
-        var newRotation = Quaternion.Euler(rotation);
-        var newScale = scale;
+        var newPosition = _selectedSlideObjectData.position; 
+        var newRotation = _selectedSlideObjectData.rotation;
+        var newScale = _selectedSlideObjectData.scale;
         
         switch (usage)
         {
@@ -197,9 +202,12 @@ public class AnimationSliderButton : SliderButton
                 break;
         }
 
-        NewSlideObjectData = new SlideObjectData(CurrentSlideObjectData, newPosition, newRotation, newScale);
+        NewSlideObjectData = new SlideObjectData(_selectedSlideObjectData, newPosition, newRotation, newScale);
         SelectedObject.ApplyDataToSlideWithIndex(NewSlideObjectData, currentSlideNum);
-        CurrentSlideObjectData = NewSlideObjectData;
+        if(currentSlideNum == MainSystem.Instance.currentSlideNum)
+            SelectedObject.ApplyDataToObject(NewSlideObjectData);
+        _selectedSlideObjectData = NewSlideObjectData;
+        XRSelector.Instance.NotifySlideObjectDataChangeToObservers();
         base.UpdateValue(value);
     }
     
