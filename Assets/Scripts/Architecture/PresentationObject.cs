@@ -136,6 +136,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         {
             saveObjectData.objectPath = GetComponentInParent<SelectObject>().objectPath;
             saveObjectData.imagePath = GetComponentInParent<SelectObject>().imagePath;
+            saveObjectData.objectPath.Replace("\\", "#");
         } else if (deployType == DeployType.ImportImage)
         {
             saveObjectData.imagePath = GetComponentInParent<SelectObject>().imagePath;
