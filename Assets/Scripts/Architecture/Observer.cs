@@ -19,3 +19,20 @@ public interface ISubject
     void NotifyObservers();
     void NotifyObserverSaveData();
 }
+
+
+public interface IUserInterfaceObserver
+{
+    public void ObserverObjectUpdate(IPresentationObject presentationObject);
+    public void ObserverSlideUpdate(int currentSlideNumber);
+    public void ObserverSlideObjectDataUpdate();
+}
+
+public interface IUserInterfaceSubject
+{
+    void RegisterObserver(IUserInterfaceObserver observer);
+    void RemoveObserver(IUserInterfaceObserver observer);
+    void NotifyObjectChangeToObservers();
+    void NotifySlideChangeToObservers();
+    void NotifySlideObjectDataChangeToObservers();
+}

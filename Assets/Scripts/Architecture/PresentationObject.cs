@@ -136,6 +136,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         {
             saveObjectData.objectPath = GetComponentInParent<SelectObject>().objectPath;
             saveObjectData.imagePath = GetComponentInParent<SelectObject>().imagePath;
+            saveObjectData.objectPath.Replace("\\", "#");
         } else if (deployType == DeployType.ImportImage)
         {
             saveObjectData.imagePath = GetComponentInParent<SelectObject>().imagePath;
@@ -471,6 +472,14 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         var data = new SlideObjectData(parent.position, parent.rotation, parent.localScale, color, grabbable, isVisible);
         
         ApplyDataToSlide(data);
+    }
+
+    public void ApplyDataToSlideWithIndex(SlideObjectData data, int index)
+    {
+        this.slideData[index] = data;
+        this.animationList[index].SetPreviousSlideObjectData(data);
+        if(index - 1 >= 0)
+            this.animationList[index - 1].SetNextSlideObjectData(data);
     }
 
     public void ApplyDataToSlide(SlideObjectData data)
