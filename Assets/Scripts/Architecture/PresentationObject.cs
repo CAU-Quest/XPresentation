@@ -513,6 +513,12 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         return slideData[currentSlideIndex];
     }
 
+    public SlideObjectData GetSlideObjectDataByIndex(int index)
+    {
+        if (index < 0 && index >= MainSystem.Instance.GetSlideCount()) 
+            Debug.LogError("Out of bound Index");
+        return slideData[index];
+    }
     public uint GetID()
     {
         return id;

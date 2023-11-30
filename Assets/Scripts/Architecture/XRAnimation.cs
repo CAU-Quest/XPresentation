@@ -13,7 +13,6 @@ public class XRAnimation : XRIAnimation
     public SlideObjectData nextData;
     public AnimationCurve lerpFunction = AnimationCurve.Linear(0, 0, 1, 1);
     
-    
     public void Play()
     {
         float t = lerpFunction.Evaluate(MainSystem.Instance.slideInterval);

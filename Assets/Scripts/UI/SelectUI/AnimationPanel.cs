@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
 
@@ -19,6 +20,9 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
 
     public GameObject cannotUsePanel;
     public IPresentationObject selectedObject;
+
+    public TextMeshProUGUI slideLabel;
+    public SlideToggle slideToggle;
     
     #region Observer Handler
     
@@ -31,7 +35,12 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
     {
         XRSelector.Instance.RemoveObserver(this);
     }
-    
+
+    private void OnEnable()
+    {
+        ObserverSlideUpdate(MainSystem.Instance.currentSlideNum);
+    }
+
     public void ObserverObjectUpdate(IPresentationObject presentationObject)
     {
         selectedObject = presentationObject;
@@ -41,16 +50,29 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
 
             int index = MainSystem.Instance.currentSlideNum;
             index += (int)_panelType;
-            if (index < 0 || index >= MainSystem.Instance.GetSlideCount())
+            if (index >= 0 && index < MainSystem.Instance.GetSlideCount())
+            {
+                slideToggle.gameObject.SetActive(true);
+                slideToggle.presentationObject = (PresentationObject)presentationObject;
+                slideToggle.currentSlideNumber = index;
+            }
+            else
+            {
+                slideToggle.gameObject.SetActive(false);
+            }
+
+            if (index < 0 || index >= MainSystem.Instance.GetSlideCount() || !slideObjectDatas[index].isVisible)
             {
                 cannotUsePanel.SetActive(true);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = false;
                 }
+                slideLabel.text = "";
             }
             else
             {
+                slideToggle.toggle.isOn = slideObjectDatas[index].isVisible;
                 cannotUsePanel.SetActive(false);
                 for (int i = 0; i < buttons.Length; i++)
                 {
@@ -58,7 +80,9 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
                     buttons[i].SetSlideObjectDataWithIndex(slideObjectDatas[index], index);
                     buttons[i].InitProperty((PresentationObject)presentationObject);
                 }
+                slideLabel.text = "Slide " + index;
             }
+
         }
     }
 
@@ -70,16 +94,29 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
 
             int index = currentSlideNumber;
             index += (int)_panelType;
-            if (index < 0 || index >= MainSystem.Instance.GetSlideCount())
+            
+            if (index >= 0 && index < MainSystem.Instance.GetSlideCount())
+            {
+                slideToggle.gameObject.SetActive(true);
+                slideToggle.presentationObject = (PresentationObject)selectedObject;
+                slideToggle.currentSlideNumber = index;
+            }
+            else
+            {
+                slideToggle.gameObject.SetActive(false);
+            }
+            if (index < 0 || index >= MainSystem.Instance.GetSlideCount() || !slideObjectDatas[index].isVisible)
             {
                 cannotUsePanel.SetActive(true);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = false;
                 }
+                slideLabel.text = "";
             }
             else
             {
+                slideToggle.toggle.isOn = slideObjectDatas[index].isVisible;
                 cannotUsePanel.SetActive(false);
                 for (int i = 0; i < buttons.Length; i++)
                 {
@@ -87,6 +124,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
                     buttons[i].SetSlideObjectDataWithIndex(slideObjectDatas[index], index);
                     buttons[i].InitProperty((PresentationObject)selectedObject);
                 }
+                slideLabel.text = "Slide " + index;
             }
         }
     }
@@ -99,22 +137,36 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
 
             int index = MainSystem.Instance.currentSlideNum;
             index += (int)_panelType;
-            if (index < 0 || index >= MainSystem.Instance.GetSlideCount())
+            
+            if (index >= 0 && index < MainSystem.Instance.GetSlideCount())
+            {
+                slideToggle.gameObject.SetActive(true);
+                slideToggle.presentationObject = (PresentationObject)selectedObject;
+                slideToggle.currentSlideNumber = index;
+            }
+            else
+            {
+                slideToggle.gameObject.SetActive(false);
+            }
+            if (index < 0 || index >= MainSystem.Instance.GetSlideCount() || !slideObjectDatas[index].isVisible)
             {
                 cannotUsePanel.SetActive(true);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = false;
                 }
+                slideLabel.text = "";
             }
             else
             {
+                slideToggle.toggle.isOn = slideObjectDatas[index].isVisible;
                 cannotUsePanel.SetActive(false);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = true;
                     buttons[i].SetSlideObjectData(slideObjectDatas[index]);
                 }
+                slideLabel.text = "Slide " + index;
             }
         }
     }
