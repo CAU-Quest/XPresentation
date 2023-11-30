@@ -6,9 +6,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ToggleButton : MonoBehaviour, ISelectedObjectModifier
+public class ToggleButton : MyButton, ISelectedObjectModifier
 {
-    [SerializeField] private Image buttonImage;
     [SerializeField] private TextMeshProUGUI buttonText;
 
     private bool _isOn;
@@ -31,17 +30,17 @@ public class ToggleButton : MonoBehaviour, ISelectedObjectModifier
         selectedObject.ApplyDataToSlide(data);
     }
 
-    public void OnHover()
+    public override void OnHover()
     {
         buttonImage.DOColor((_isOn) ? ColorManager.ToggleSelectedHover : ColorManager.ToggleUnselectedHover, 0.3f);
     }
 
-    public void OnUnhover()
+    public override void OnUnhover()
     {
         buttonImage.DOColor((_isOn) ? ColorManager.ToggleSelected : ColorManager.ToggleUnselected, 0.3f);
     }
     
-    public void Onselect()
+    public override void OnSelect()
     {
         buttonImage.DOColor(ColorManager.ToggleSelect, 0.3f);
         _isOn = !_isOn;

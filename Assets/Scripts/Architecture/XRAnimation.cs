@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 [System.Serializable]
@@ -11,11 +13,11 @@ public class XRAnimation : XRIAnimation
 
     public SlideObjectData previousData;
     public SlideObjectData nextData;
-    public AnimationCurve lerpFunction = AnimationCurve.Linear(0, 0, 1, 1);
+    public Ease ease = Ease.Linear;
     
     public void Play()
     {
-        float t = lerpFunction.Evaluate(MainSystem.Instance.slideInterval);
+        float t = DOVirtual.EasedValue(0f, 1f, MainSystem.Instance.slideInterval, ease);
 
         SlideObjectData lerpData = new SlideObjectData();
         
@@ -25,6 +27,11 @@ public class XRAnimation : XRIAnimation
         lerpData.color = Color.LerpUnclamped(previousData.color, nextData.color, t);
         
         presentationObject.ApplyDataToObject(lerpData);
+    }
+
+    public void SetEase(Ease newEase)
+    {
+        ease = newEase;
     }
 
     public void SetParentObject(PresentationObject presentationObject)

@@ -1,4 +1,5 @@
 using System;
+using DG.Tweening;
 using UnityEngine;
 
 namespace ES3Types
@@ -19,7 +20,7 @@ namespace ES3Types
 			writer.WritePropertyByRef("presentationObject", instance.presentationObject);
 			writer.WriteProperty("previousData", instance.previousData, ES3UserType_SlideObjectData.Instance);
 			writer.WriteProperty("nextData", instance.nextData, ES3UserType_SlideObjectData.Instance);
-			writer.WriteProperty("lerpFunction", instance.lerpFunction, ES3Type_AnimationCurve.Instance);
+			writer.WriteProperty("lerpFunction", instance.ease, ES3Type_AnimationCurve.Instance);
 		}
 
 		protected override void ReadObject<T>(ES3Reader reader, object obj)
@@ -40,7 +41,7 @@ namespace ES3Types
 						instance.nextData = reader.Read<SlideObjectData>(ES3UserType_SlideObjectData.Instance);
 						break;
 					case "lerpFunction":
-						instance.lerpFunction = reader.Read<UnityEngine.AnimationCurve>(ES3Type_AnimationCurve.Instance);
+						//instance.ease = reader.Read<Ease>(ES3Type_AnimationCurve.Instance);
 						break;
 					default:
 						reader.Skip();
