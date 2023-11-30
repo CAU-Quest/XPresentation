@@ -8,13 +8,16 @@ using UnityEngine.Serialization;
 public class EasingButton : MyButton
 {
     [SerializeField] private Transform cubeTransform;
-    [SerializeField] private MeshRenderer cubeRenderer;
-    [SerializeField] private Ease ease;
+    [SerializeField] private MeshRenderer cubeRenderer; 
+    public Ease ease;
     [SerializeField] private Color startColor, endColor;
     private Vector3 _localPosition;
     private Material _material;
     private Sequence _sequence;
 
+    public XRAnimation xrAnimation;
+    public Transform selectOutline;
+    
     private void Awake()
     {
         _localPosition = cubeTransform.localPosition;
@@ -24,9 +27,9 @@ public class EasingButton : MyButton
             {
                 cubeTransform.localPosition = _localPosition;
                 _material.color = startColor;
-            }).Append(cubeTransform.DOLocalMoveX(130f, 1f).SetEase(ease))
-            .Join(_material.DOColor(endColor, 1f).SetEase(ease))
-            .AppendInterval(0.3f)
+            }).Append(cubeTransform.DOLocalMoveX(130f, 1.5f).SetEase(ease))
+            .Join(_material.DOColor(endColor, 1.5f).SetEase(ease))
+            .AppendInterval(0.5f)
             .SetLoops(-1, LoopType.Restart);
     }
 
@@ -42,7 +45,8 @@ public class EasingButton : MyButton
 
     public override void OnSelect()
     {
-        base.OnSelect();
-        
+        //base.OnSelect();
+        xrAnimation.SetEase(ease);
+        selectOutline.position = transform.position;
     }
 }

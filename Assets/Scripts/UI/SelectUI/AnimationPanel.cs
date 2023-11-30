@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public enum PanelType
@@ -16,7 +17,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
 {
     public AnimationSliderButton[] buttons;
 
-    [SerializeField] private PanelType _panelType = PanelType.Current;
+    public PanelType panelType = PanelType.Current;
 
     public GameObject cannotUsePanel;
     public IPresentationObject selectedObject;
@@ -48,7 +49,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
         {
             List<SlideObjectData> slideObjectDatas = ((PresentationObject)presentationObject).slideData;
 
-            int index = MainSystem.Instance.currentSlideNum + (int)_panelType;
+            int index = MainSystem.Instance.currentSlideNum + (int)panelType;
             
             if (index >= 0 && index < MainSystem.Instance.GetSlideCount())
             {
@@ -91,7 +92,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
         {
             List<SlideObjectData> slideObjectDatas = ((PresentationObject)selectedObject).slideData;
 
-            int index = currentSlideNumber + (int)_panelType;
+            int index = currentSlideNumber + (int)panelType;
             
             if (index >= 0 && index < MainSystem.Instance.GetSlideCount())
             {
@@ -133,7 +134,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
         {
             List<SlideObjectData> slideObjectDatas = ((PresentationObject)selectedObject).slideData;
 
-            int index = MainSystem.Instance.currentSlideNum + (int)_panelType;
+            int index = MainSystem.Instance.currentSlideNum + (int)panelType;
             
             if (index >= 0 && index < MainSystem.Instance.GetSlideCount())
             {
