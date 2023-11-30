@@ -48,8 +48,8 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
         {
             List<SlideObjectData> slideObjectDatas = ((PresentationObject)presentationObject).slideData;
 
-            int index = MainSystem.Instance.currentSlideNum;
-            index += (int)_panelType;
+            int index = MainSystem.Instance.currentSlideNum + (int)_panelType;
+            
             if (index >= 0 && index < MainSystem.Instance.GetSlideCount())
             {
                 slideToggle.gameObject.SetActive(true);
@@ -82,7 +82,6 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
                 }
                 slideLabel.text = "Slide " + index;
             }
-
         }
     }
 
@@ -92,8 +91,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
         {
             List<SlideObjectData> slideObjectDatas = ((PresentationObject)selectedObject).slideData;
 
-            int index = currentSlideNumber;
-            index += (int)_panelType;
+            int index = currentSlideNumber + (int)_panelType;
             
             if (index >= 0 && index < MainSystem.Instance.GetSlideCount())
             {
@@ -135,8 +133,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
         {
             List<SlideObjectData> slideObjectDatas = ((PresentationObject)selectedObject).slideData;
 
-            int index = MainSystem.Instance.currentSlideNum;
-            index += (int)_panelType;
+            int index = MainSystem.Instance.currentSlideNum + (int)_panelType;
             
             if (index >= 0 && index < MainSystem.Instance.GetSlideCount())
             {
@@ -165,6 +162,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
                 {
                     buttons[i].canUse = true;
                     buttons[i].SetSlideObjectData(slideObjectDatas[index]);
+                    buttons[i].currentSlideNum = index;
                 }
                 slideLabel.text = "Slide " + index;
             }

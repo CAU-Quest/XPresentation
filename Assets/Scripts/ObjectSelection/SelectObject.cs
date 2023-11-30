@@ -76,11 +76,13 @@ public class SelectObject : MonoBehaviour
             XRSelector.Instance.centerPositionByVertex = centerPositionByVertex;
             XRSelector.Instance.boundBox = boundBox;
             XRSelector.Instance.presentationObject = presentationObject;
+            XRSelector.Instance.selectObject = this;
         }
         else
         {
             XRSelector.Instance.transformByVertexHandler = transformByVertexHandler;
             XRSelector.Instance.presentationObject = presentationObject;
+            XRSelector.Instance.selectObject = this;
         }
         
         XRSelector.Instance.SetComponent(this, BoundObjectType);
@@ -89,31 +91,11 @@ public class SelectObject : MonoBehaviour
 
         if (BoundObjectType == BoundObjectType.ThreeDimension)
         {
-            int lineLength = XRSelector.Instance.lineList.Length;
-            int vertexLength = XRSelector.Instance.vertexList.Length;
-
-            for (int i = 0; i < lineLength; i++)
-            {
-                XRSelector.Instance.lineList[i].gameObject.SetActive(true);
-            }
-            for (int i = 0; i < vertexLength; i++)
-            {
-                XRSelector.Instance.vertexList[i].gameObject.SetActive(true);
-            }
+            XRSelector.Instance.ActivateBoundBox();
         }
         else if(BoundObjectType == BoundObjectType.TwoDimension)
         {
-            int lineLength = XRSelector.Instance.lineList.Length;
-            int vertexLength = XRSelector.Instance.vertexList.Length;
-
-            for (int i = 0; i < lineLength; i++)
-            {
-                XRSelector.Instance.lineList[i].gameObject.SetActive(false);
-            }
-            for (int i = 0; i < vertexLength; i++)
-            {
-                XRSelector.Instance.vertexList[i].gameObject.SetActive(false);
-            }
+            XRSelector.Instance.DeactivateBoundBox();
             
             XRSelector.Instance.lineList[0].gameObject.SetActive(true);
             XRSelector.Instance.lineList[2].gameObject.SetActive(true);

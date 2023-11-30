@@ -68,17 +68,7 @@ public class MainSystem : MonoBehaviour, ISubject
             this.observers[i].ObserverUpdateSlide(currentSlideNum);
         }
         
-        int lineLength = XRSelector.Instance.lineList.Length;
-        int vertexLength = XRSelector.Instance.vertexList.Length;
-
-        for (int i = 0; i < lineLength; i++)
-        {
-            XRSelector.Instance.lineList[i].gameObject.SetActive(false);
-        }
-        for (int i = 0; i < vertexLength; i++)
-        {
-            XRSelector.Instance.vertexList[i].gameObject.SetActive(false);
-        }
+        XRSelector.Instance.DeactivateBoundBox();
         
         XRSelector.Instance.NotifySlideChangeToObservers();
     }
@@ -99,17 +89,7 @@ public class MainSystem : MonoBehaviour, ISubject
             observers[i].ObserverMoveSlides(moved, count, into);
         }
         
-        int lineLength = XRSelector.Instance.lineList.Length;
-        int vertexLength = XRSelector.Instance.vertexList.Length;
-
-        for (int i = 0; i < lineLength; i++)
-        {
-            XRSelector.Instance.lineList[i].gameObject.SetActive(false);
-        }
-        for (int i = 0; i < vertexLength; i++)
-        {
-            XRSelector.Instance.vertexList[i].gameObject.SetActive(false);
-        }
+        XRSelector.Instance.DeactivateBoundBox();
     }
 
 
@@ -209,17 +189,7 @@ public class MainSystem : MonoBehaviour, ISubject
     public void AnimationToggle()
     {
         isPlayingAnimation = true;
-        int lineLength = XRSelector.Instance.lineList.Length;
-        int vertexLength = XRSelector.Instance.vertexList.Length;
-
-        for (int i = 0; i < lineLength; i++)
-        {
-            XRSelector.Instance.lineList[i].gameObject.SetActive(false);
-        }
-        for (int i = 0; i < vertexLength; i++)
-        {
-            XRSelector.Instance.vertexList[i].gameObject.SetActive(false);
-        }
+        XRSelector.Instance.DeactivateBoundBox();
     }
 
 
