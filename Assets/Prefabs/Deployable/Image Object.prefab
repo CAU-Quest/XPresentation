@@ -389,6 +389,8 @@ MonoBehaviour:
   transformByVertexHandler: {fileID: 0}
   boundBox: {fileID: 0}
   centerPositionByVertex: {fileID: 0}
+  objectPath: 
+  imagePath: 
 --- !u!114 &2335378597838688632
 MonoBehaviour:
   m_ObjectHideFlags: 0

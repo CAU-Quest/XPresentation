@@ -63,8 +63,6 @@ public class SelectUI : MonoBehaviour
             }
             parent = parent.parent;
         }
-
-
     }
     
     private void GetSelectedObjectInfo(RayInteractable interactable)

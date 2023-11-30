@@ -501,6 +501,8 @@ MonoBehaviour:
   transformByVertexHandler: {fileID: 0}
   boundBox: {fileID: 0}
   centerPositionByVertex: {fileID: 0}
+  objectPath: 
+  imagePath: 
 --- !u!65 &8647059978164783166
 BoxCollider:
   m_ObjectHideFlags: 0

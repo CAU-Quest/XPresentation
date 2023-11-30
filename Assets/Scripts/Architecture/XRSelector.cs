@@ -48,7 +48,6 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
     #endregion
 
     #region UI Observer Handling
-    
     public void RegisterObserver(IUserInterfaceObserver observer)
     {
         this.observers.Add(observer);
