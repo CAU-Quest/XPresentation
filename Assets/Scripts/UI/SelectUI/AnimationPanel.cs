@@ -1,10 +1,10 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 
 public enum PanelType
@@ -13,7 +13,7 @@ public enum PanelType
     Current = 0,
     Next = 1
 }
-public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
+public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObjectModifierInitializer
 {
     public AnimationSliderButton[] buttons;
 
@@ -41,6 +41,12 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
     {
         ObserverSlideUpdate(MainSystem.Instance.currentSlideNum);
     }
+
+    public void InitProperty(PresentationObject selectedObject)
+    {
+        ObserverObjectUpdate(selectedObject);
+    }
+
 
     public void ObserverObjectUpdate(IPresentationObject presentationObject)
     {
@@ -127,7 +133,12 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
             }
         }
     }
-    
+
+    public void OnDisable()
+    {
+        XRSelector.Instance.DisableAnimationGhost();
+    }
+
     public void ObserverSlideObjectDataUpdate()
     {
         if (selectedObject is PresentationObject)
@@ -136,14 +147,32 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
 
             int index = MainSystem.Instance.currentSlideNum + (int)panelType;
             
+            
             if (index >= 0 && index < MainSystem.Instance.GetSlideCount())
             {
+                if (panelType == PanelType.Previous)
+                {
+                    XRSelector.Instance.beforeAnimationGhost.SetVisible();
+                    XRSelector.Instance.beforeAnimationGhost.ApplySlideObjectData(slideObjectDatas[index]);
+                }
+
+                if (panelType == PanelType.Next)
+                {
+                    XRSelector.Instance.afterAnimationGhost.SetVisible();
+                    XRSelector.Instance.afterAnimationGhost.ApplySlideObjectData(slideObjectDatas[index]);
+                }
+                
                 slideToggle.gameObject.SetActive(true);
                 slideToggle.presentationObject = (PresentationObject)selectedObject;
                 slideToggle.currentSlideNumber = index;
             }
             else
             {
+                if (panelType == PanelType.Previous)
+                    XRSelector.Instance.beforeAnimationGhost.SetInvisible();
+                if (panelType == PanelType.Next)
+                    XRSelector.Instance.afterAnimationGhost.SetInvisible();
+                
                 slideToggle.gameObject.SetActive(false);
             }
             if (index < 0 || index >= MainSystem.Instance.GetSlideCount() || !slideObjectDatas[index].isVisible)
@@ -169,6 +198,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver
             }
         }
     }
+
     #endregion
 
 }

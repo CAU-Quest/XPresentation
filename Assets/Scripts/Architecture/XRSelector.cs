@@ -285,7 +285,8 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
 
     public void Reselect()
     {
-        selectObject.Select();
+        if(selectedObject)
+            selectObject.Select();
     }
     
     private void SetVertex() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
@@ -555,11 +556,18 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
         Mesh mesh = meshFilter.mesh;
         beforeAnimationGhost.initialScale = meshFilter.transform.localScale;
         afterAnimationGhost.initialScale = meshFilter.transform.localScale;
+
+        if (presentationObject is PresentationObject)
+        {
+            beforeAnimationGhost.selectedObject = presentationObject as PresentationObject;
+            afterAnimationGhost.selectedObject = presentationObject as PresentationObject;;
+        }
+        
         beforeAnimationGhost.SetMesh(mesh);
         afterAnimationGhost.SetMesh(mesh);
     }
     
-    public void UnableAnimationGhost()
+    public void DisableAnimationGhost()
     {
         beforeAnimationGhost.gameObject.SetActive(false);
         afterAnimationGhost.gameObject.SetActive(false);

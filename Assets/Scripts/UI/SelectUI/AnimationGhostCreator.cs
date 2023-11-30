@@ -11,7 +11,6 @@ public class AnimationGhostCreator : MonoBehaviour, ISelectedObjectModifierIniti
         Debug.Log("Animation Ghost Creator Init");
         XRSelector.Instance.EnableAnimationGhost();
 
-
         if (selectedObject is PresentationObject)
         {
             List<SlideObjectData> slideObjectDatas = ((PresentationObject)selectedObject).slideData;
