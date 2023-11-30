@@ -13,7 +13,8 @@ public class ColorButton : MonoBehaviour, ISelectedObjectModifierInitializer
     public void InitProperty(PresentationObject selectedObject)
     {
         int index = MainSystem.Instance.currentSlideNum + (int)panelType;
-        image.color = selectedObject.slideData[index].color;
+        if(index >= 0 && index < MainSystem.Instance.GetSlideCount())
+            image.color = selectedObject.slideData[index].color;
         this.selectedObject = selectedObject;
     }
 

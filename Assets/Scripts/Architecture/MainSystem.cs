@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class MainSystem : MonoBehaviour, ISubject
+public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
 {
 
     #region Member Variables
@@ -11,7 +11,7 @@ public class MainSystem : MonoBehaviour, ISubject
     public static MainSystem Instance = null;
 
     public List<ISystemObserver> observers = new List<ISystemObserver>();
-    public List<IUserInterfaceObserver> UIObservers = new List<IUserInterfaceObserver>();
+    public List<ISlideObserver> slideObservers = new List<ISlideObserver>();
 
 
     public enum Mode
@@ -49,6 +49,25 @@ public class MainSystem : MonoBehaviour, ISubject
 
     #region Object Observer
 
+    
+    public void RegisterObserver(ISlideObserver observer)
+    {
+        this.slideObservers.Add(observer);
+    }
+    public void RemoveObserver(ISlideObserver observer)
+    {
+        this.slideObservers.Remove(observer);
+    }
+
+    public void NotifySlideChangeToObservers()
+    {
+        for (int i = 0; i < slideObservers.Count; i++)
+        {
+            slideObservers[i].ObserverUpdateSlide();
+        }
+    }
+    
+    
     public void RegisterObserver(ISystemObserver observer)
     {
         this.observers.Add(observer);
@@ -109,6 +128,8 @@ public class MainSystem : MonoBehaviour, ISubject
         {
             observers[i].ObserverAddSlide();
         }
+
+        NotifySlideChangeToObservers();
     }
     
     public void RemoveSlide()
@@ -118,6 +139,8 @@ public class MainSystem : MonoBehaviour, ISubject
         {
             observers[i].ObserverRemoveSlide(currentSlideNum);
         }
+
+        NotifySlideChangeToObservers();
     }
 
 

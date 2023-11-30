@@ -385,7 +385,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   deployType: 6
-  BoundObjectType: 1
+  BoundObjectType: 0
   transformByVertexHandler: {fileID: 0}
   boundBox: {fileID: 0}
   centerPositionByVertex: {fileID: 0}

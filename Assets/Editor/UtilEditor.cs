@@ -24,22 +24,6 @@ public class CenterPositionByVertexEditor : Editor
     }
 }
 
-[CustomEditor(typeof(ChangeColorWithColorPicker))]
-public class ChangeColorWithColorPickerEditor : Editor
-{
-    public override void OnInspectorGUI()
-    {
-        base.OnInspectorGUI();
-
-        ChangeColorWithColorPicker SelectObject = (ChangeColorWithColorPicker)target;
-        
-        
-        if (GUILayout.Button("Select"))
-        {
-            SelectObject.OpenColorPicker();
-        }
-    }
-}
 
 [CustomEditor(typeof(ObjectCreator))]
 public class ObjectCreatorEditor : Editor

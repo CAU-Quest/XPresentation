@@ -12,8 +12,4 @@ public class ChangeColorWithColorPicker : MonoBehaviour
         renderer = GetComponent<Renderer>();
     }
 
-    public void OpenColorPicker()
-    {
-        XRUIManager.Instance.OpenColorPicker(renderer);
-    }
 }

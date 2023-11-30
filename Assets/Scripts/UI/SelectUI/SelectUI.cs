@@ -94,7 +94,7 @@ public class SelectUI : MonoBehaviour
         _isOpened = true;
     }
 
-    private void CloseUI()
+    public void CloseUI()
     {
         for (int i = 0; i < canvases.Length; i++)
         {

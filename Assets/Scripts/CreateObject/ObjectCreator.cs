@@ -150,7 +150,7 @@ public class ObjectCreator : MonoBehaviour
 			FileBrowserHelpers.CopyFile( FileBrowser.Result[0], destinationPath );
 			
 			
-			loadedObject.GetComponent<SelectObject>().imagePath = destinationPath;
+			loadedObject.GetComponentInParent<SelectObject>().imagePath = destinationPath;
 			Texture2D loadedTexture = new Texture2D(1, 1);
 			loadedTexture.LoadImage(bytes);
 			loadedObject.GetComponentInChildren<MeshRenderer>().material.mainTexture = loadedTexture;

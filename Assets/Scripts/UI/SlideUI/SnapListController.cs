@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
-public class SnapListController : MonoBehaviour
+public class SnapListController : MonoBehaviour, ISlideObserver
 {
     [SerializeField]
     private SlideListSnapPoseDelegate listSnapPoseDelegate;
@@ -38,6 +38,7 @@ public class SnapListController : MonoBehaviour
         //listSnapPoseDelegate = GetComponentInChildren<SlideListSnapPoseDelegate>();
         snapInteractable = GetComponentInChildren<SnapInteractable>();
         beforeSlideNumber = currentSlideNumber;
+        MainSystem.Instance.RegisterObserver(this);
 
         _lastHighlightedCube = SortedList[3];
         totalCount.text = "/" + MainSystem.Instance.GetSlideCount().ToString("0");
@@ -51,6 +52,23 @@ public class SnapListController : MonoBehaviour
         SetInitialNumber();
         RenderAllTexture();
         HighlightCenterIndexSupport(true);
+    }
+
+    public void ObserverUpdateSlide()
+    {
+        SetInitialNumber();
+        RenderAllTexture();
+        HighlightCenterIndexSupport(true);
+    }
+
+    public void AddSlide()
+    {
+        MainSystem.Instance.AddSlide();
+    }
+    
+    public void RemoveSlide()
+    {
+        MainSystem.Instance.RemoveSlide();
     }
 
     public void SetInitialNumber()
@@ -144,21 +162,20 @@ public class SnapListController : MonoBehaviour
         MainSystem.Instance.GoToSlideByIndex(currentSlideNumber);
     }
 
-    /*
+    
     public void GoToSlideByIndex(int index)
     {
         currentSlideNumber = index;
         SetNumberToPreviewCube();
         RenderAllTexture();
     }
-    */
     
-    
+    /*
     public void GoToSlideByIndex(int index)
     {
         StartCoroutine(Swipe(index));
     }
-
+*/
     private IEnumerator Swipe(int index)
     {
         var waitForSeconds = new WaitForSeconds(0.1f);

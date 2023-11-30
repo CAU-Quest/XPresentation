@@ -20,6 +20,17 @@ public interface ISubject
     void NotifyObserverSaveData();
 }
 
+public interface ISlideObserver
+{
+    void ObserverUpdateSlide();
+}
+
+public interface ISlideSubject
+{
+    void RegisterObserver(ISlideObserver observer);
+    void RemoveObserver(ISlideObserver observer);
+    void NotifySlideChangeToObservers();
+}
 
 public interface IUserInterfaceObserver
 {
