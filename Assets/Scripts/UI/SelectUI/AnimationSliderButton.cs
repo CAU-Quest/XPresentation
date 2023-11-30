@@ -173,7 +173,7 @@ public class AnimationSliderButton : SliderButton
                 _selectedSlideObjectData.position = newPosition;
                 break;
             case Usage.PositionZ:
-                newPosition = new Vector3(position.x, value, position.z);
+                newPosition = new Vector3(position.x, position.y, value);
                 _selectedSlideObjectData.position = newPosition;
                 break;
             case Usage.RotationX:
@@ -207,6 +207,13 @@ public class AnimationSliderButton : SliderButton
         if(currentSlideNum == MainSystem.Instance.currentSlideNum)
             SelectedObject.ApplyDataToObject(NewSlideObjectData);
         _selectedSlideObjectData = NewSlideObjectData;
+        if (currentSlideNum < MainSystem.Instance.currentSlideNum)
+        {
+            XRSelector.Instance.beforeAnimationGhost.ApplySlideObjectData(NewSlideObjectData);
+        } else if (currentSlideNum > MainSystem.Instance.currentSlideNum)
+        {
+            XRSelector.Instance.afterAnimationGhost.ApplySlideObjectData(NewSlideObjectData);
+        }
         XRSelector.Instance.NotifySlideObjectDataChangeToObservers();
         base.UpdateValue(value);
     }

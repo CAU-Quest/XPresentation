@@ -155,7 +155,7 @@ public class TransformSliderButton : SliderButton
                 _selectedTransform.position = newPosition;
                 break;
             case Usage.PositionZ:
-                newPosition = new Vector3(position.x, value, position.z);
+                newPosition = new Vector3(position.x, position.y, value);
                 _selectedTransform.position = newPosition;
                 break;
             case Usage.RotationX:

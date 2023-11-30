@@ -43,7 +43,8 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
     [HideInInspector]
     public bool edgeSelected = false;
 
-    
+    public AnimationGhost beforeAnimationGhost;
+    public AnimationGhost afterAnimationGhost;
 
     #endregion
 
@@ -252,6 +253,40 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
 
     #region Vertex & Line Handling
 
+    public void DeactivateBoundBox()
+    {
+        int lineLength = lineList.Length;
+        int vertexLength = vertexList.Length;
+
+        for (int i = 0; i < lineLength; i++)
+        {
+            lineList[i].gameObject.SetActive(false);
+        }
+        for (int i = 0; i < vertexLength; i++)
+        {
+            vertexList[i].gameObject.SetActive(false);
+        }
+    }
+    
+    public void ActivateBoundBox()
+    {
+        int lineLength = lineList.Length;
+        int vertexLength = vertexList.Length;
+
+        for (int i = 0; i < lineLength; i++)
+        {
+            lineList[i].gameObject.SetActive(true);
+        }
+        for (int i = 0; i < vertexLength; i++)
+        {
+            vertexList[i].gameObject.SetActive(true);
+        }
+    }
+
+    public void Reselect()
+    {
+        selectObject.Select();
+    }
     
     private void SetVertex() // { topFrontLeft, topFrontRight, topBackLeft, topBackRight, bottomFrontLeft, bottomFrontRight, bottomBackLeft, bottomBackRight };
     {
@@ -512,6 +547,23 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
     }
 
 
+    public void EnableAnimationGhost()
+    {
+        beforeAnimationGhost.gameObject.SetActive(true);
+        afterAnimationGhost.gameObject.SetActive(true);
+        MeshFilter meshFilter = selectedObject.GetComponentInChildren<MeshFilter>();
+        Mesh mesh = meshFilter.mesh;
+        beforeAnimationGhost.initialScale = meshFilter.transform.localScale;
+        afterAnimationGhost.initialScale = meshFilter.transform.localScale;
+        beforeAnimationGhost.SetMesh(mesh);
+        afterAnimationGhost.SetMesh(mesh);
+    }
+    
+    public void UnableAnimationGhost()
+    {
+        beforeAnimationGhost.gameObject.SetActive(false);
+        afterAnimationGhost.gameObject.SetActive(false);
+    }
     #endregion
     
 }
