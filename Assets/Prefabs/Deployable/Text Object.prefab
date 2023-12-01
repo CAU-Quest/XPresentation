@@ -786,9 +786,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2004587811776512576}
   - component: {fileID: 8970927194696394867}
+  - component: {fileID: 1804108159222707752}
   - component: {fileID: 6131557342612556127}
   - component: {fileID: 3817640920945796805}
   - component: {fileID: 421638790959229364}
+  - component: {fileID: 6142217921088544947}
   m_Layer: 5
   m_Name: Interactable
   m_TagString: Untagged
@@ -828,6 +830,27 @@ MonoBehaviour:
   _addNewPointsToFront: 0
   _forwardElement: {fileID: 0}
   _canvas: {fileID: 1906201661828619074}
+--- !u!114 &1804108159222707752
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7799428871164747662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb86ba9d4c5126e48bfef9b0c9550e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interactorFilters: []
+  _maxInteractors: -1
+  _maxSelectingInteractors: -1
+  _data: {fileID: 0}
+  _pointableElement: {fileID: 8970927194696394867}
+  _surface: {fileID: 1606612490693221525}
+  _selectSurface: {fileID: 0}
+  _movementProvider: {fileID: 0}
+  _tiebreakerScore: 0
 --- !u!114 &6131557342612556127
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -840,7 +863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2f8f6e9e6f3e114b9bf9a57c2160615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _pointable: {fileID: 8970927194696394867}
+  _pointable: {fileID: 1804108159222707752}
   _whenRelease:
     m_PersistentCalls:
       m_Calls: []
@@ -905,7 +928,7 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 0.01}
+  m_Size: {x: 1, y: 1, z: 0.05}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &421638790959229364
 Rigidbody:
@@ -934,6 +957,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &6142217921088544947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7799428871164747662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17170e795e7479f4c8c06dc92472a961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8504124649372209819
 GameObject:
   m_ObjectHideFlags: 0
@@ -982,8 +1017,8 @@ MonoBehaviour:
   _maxInteractors: -1
   _maxSelectingInteractors: -1
   _data: {fileID: 0}
-  _pointableElement: {fileID: 0}
-  _rigidbody: {fileID: 0}
+  _pointableElement: {fileID: 7768302296187627705}
+  _rigidbody: {fileID: 421638790959229364}
   _grabSource: {fileID: 0}
   _useClosestPointAsGrabSource: 0
   _releaseDistance: 0
@@ -1042,7 +1077,7 @@ MonoBehaviour:
   _forwardElement: {fileID: 0}
   _oneGrabTransformer: {fileID: 0}
   _twoGrabTransformer: {fileID: 0}
-  _targetTransform: {fileID: 0}
+  _targetTransform: {fileID: 1738986896696499384}
   _maxGrabPoints: -1
 --- !u!114 &6414561176478825978
 MonoBehaviour:

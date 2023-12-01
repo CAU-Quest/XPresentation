@@ -21,6 +21,8 @@ public enum RendererType
 public class AnimationGhost : MonoBehaviour
 {
     public GhostType ghostType;
+
+    public RendererType rendererType;
     
     [Header("Mesh")]
     public MeshRenderer meshRenderer;
@@ -50,17 +52,29 @@ public class AnimationGhost : MonoBehaviour
         lineRenderer.enabled = false;
     }
 
-    public void SetRendererType(RendererType rendererType)
+    public void SetRenderer(RendererType rendererType)
+    {
+        this.rendererType = rendererType;
+    }
+
+    public void SetColor(Color color)
     {
         switch (rendererType)
         {
             case RendererType.Mesh:
+                meshRenderer.material.color = color;
                 break;
             case RendererType.Image:
+                image.color = color;
                 break;
             case RendererType.Text:
                 break;
         }
+    }
+
+    public void SetImage(Image image)
+    {
+        
     }
     
     public void SetMesh(Mesh mesh)
@@ -85,7 +99,7 @@ public class AnimationGhost : MonoBehaviour
     {
         transform.SetPositionAndRotation(slideObjectData.position, slideObjectData.rotation);
         transform.localScale = Vector3.Scale(slideObjectData.scale, initialScale);
-        if (meshRenderer != null) meshRenderer.material.color = slideObjectData.color;
+        SetColor(slideObjectData.color);
         if (slideObjectData.isVisible)
         {
             meshRenderer.enabled = true;

@@ -282,6 +282,7 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
                         slideInterval = 0;
                         currentSlideNum += 1;
                         isPlayingAnimation = false;
+                        NotifySlideChangeToObservers();
                         NotifyObservers();
                     }
                 }

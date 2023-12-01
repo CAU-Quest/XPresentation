@@ -6,6 +6,7 @@ using Oculus.Interaction;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations;
+using UnityEngine.UI;
 using Object = UnityEngine.Object;
 
 public class XRSelector : MonoBehaviour, IUserInterfaceSubject
@@ -557,6 +558,7 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
                                                        || selectObject.deployType == DeployType.Cylinder ||
                                                        selectObject.deployType == DeployType.ImportModel)
         {
+            beforeAnimationGhost.SetRenderer(RendererType.Mesh);
             MeshFilter meshFilter = selectedObject.GetComponentInChildren<MeshFilter>();
             Mesh mesh = meshFilter.mesh;
             beforeAnimationGhost.initialScale = meshFilter.transform.localScale;
@@ -566,8 +568,20 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
             
         } else if (selectObject.deployType == DeployType.ImportImage || selectObject.deployType == DeployType.Plane)
         {
+            Image image = selectedObject.GetComponentInChildren<Image>(true);
+            beforeAnimationGhost.SetRenderer(RendererType.Image);
+            afterAnimationGhost.SetRenderer(RendererType.Image);
             
-        } else if (selectObject.deployType == DeployType.Plane)
+            beforeAnimationGhost.initialScale = image.transform.localScale;
+            afterAnimationGhost.initialScale = image.transform.localScale;
+            
+            
+
+        } else if (selectObject.deployType == DeployType.Text)
+        {
+            beforeAnimationGhost.SetRenderer(RendererType.Text);
+            
+        }
 
         if (presentationObject is PresentationObject)
         {

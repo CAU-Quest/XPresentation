@@ -255,7 +255,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     {
         isGrabbableInPresentation = boolean;
         
-        if(isGrabbableInPresentation)
+        if(!isGrabbableInPresentation)
             grabbable.MaxGrabPoints = -1;
         else
             grabbable.MaxGrabPoints = 0;
@@ -547,7 +547,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         {
             SetInvisible();
         }
-        SetGrabbable(data.isGrabbable);
+        //SetGrabbable(data.isGrabbable);
     }
 
     public SlideObjectData GetCurrentSlideObjectData()

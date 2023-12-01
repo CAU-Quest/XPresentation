@@ -53,7 +53,7 @@ MonoBehaviour:
   _forwardElement: {fileID: 0}
   _oneGrabTransformer: {fileID: 0}
   _twoGrabTransformer: {fileID: 0}
-  _targetTransform: {fileID: 0}
+  _targetTransform: {fileID: 3529319902538011581}
   _maxGrabPoints: -1
 --- !u!114 &2755299253943820580
 MonoBehaviour:
@@ -329,7 +329,7 @@ MonoBehaviour:
   _maxInteractors: -1
   _maxSelectingInteractors: -1
   _data: {fileID: 0}
-  _pointableElement: {fileID: 0}
+  _pointableElement: {fileID: 7099191692224850072}
   _rigidbody: {fileID: 2677345246566873245}
   _grabSource: {fileID: 0}
   _useClosestPointAsGrabSource: 0
@@ -349,6 +349,7 @@ GameObject:
   - component: {fileID: 6163365108896758228}
   - component: {fileID: 2538764721386835223}
   - component: {fileID: 2677345246566873245}
+  - component: {fileID: 4561411444785093231}
   m_Layer: 5
   m_Name: Interactabale
   m_TagString: Untagged
@@ -432,7 +433,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3804619535538595600}
         m_TargetAssemblyTypeName: SelectObject, Assembly-CSharp
-        m_MethodName: Start
+        m_MethodName: Select
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -502,6 +503,18 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4561411444785093231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2558526731079135719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17170e795e7479f4c8c06dc92472a961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3201190190990589638
 GameObject:
   m_ObjectHideFlags: 0

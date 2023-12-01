@@ -47,6 +47,11 @@ public class SnapListController : MonoBehaviour, ISlideObserver
         StartCoroutine("InitNumber");
     }
 
+    public void PlayAnimation()
+    {
+        MainSystem.Instance.AnimationToggle();
+    }
+
     IEnumerator InitNumber()
     {
         yield return new WaitForSeconds(0.5f);
@@ -57,6 +62,7 @@ public class SnapListController : MonoBehaviour, ISlideObserver
 
     public void ObserverUpdateSlide()
     {
+        currentSlideNumber = MainSystem.Instance.currentSlideNum;
         SetInitialNumber();
         RenderAllTexture();
         HighlightCenterIndexSupport(true);
