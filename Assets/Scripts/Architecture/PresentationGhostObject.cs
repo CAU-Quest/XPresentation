@@ -35,8 +35,11 @@ public class PresentationGhostObject : MonoBehaviour, IPresentationObject
         transformData.position = transform.parent.position;
         transformData.rotation = transform.parent.rotation;
         transformData.scale = transform.parent.localScale;
-        parentObject.slideData[parentObject.GetCurrentSlide() + 1] = transformData;
-        parentObject.animationList[parentObject.GetCurrentSlide() + 1].SetPreviousSlideObjectData(transformData);
+        if (parentObject.GetCurrentSlide() + 1 < MainSystem.Instance.GetSlideCount())
+        {
+            parentObject.slideData[parentObject.GetCurrentSlide() + 1] = transformData;
+            parentObject.animationList[parentObject.GetCurrentSlide() + 1].SetPreviousSlideObjectData(transformData);
+        }
         if(parentObject.GetCurrentSlide() >= 0)
             parentObject.animationList[parentObject.GetCurrentSlide()].SetNextSlideObjectData(transformData);
         
@@ -61,9 +64,16 @@ public class PresentationGhostObject : MonoBehaviour, IPresentationObject
     {
         transform.SetPositionAndRotation(data.position, data.rotation);
         transform.parent.localScale = data.scale;
-        if (data.isVisible)
+        if (MainSystem.Instance.mode == MainSystem.Mode.Animation)
         {
-            gameObject.SetActive(false);
+            if (data.isVisible)
+            {
+                transform.parent.gameObject.SetActive(true);
+            }
+            else
+            {
+                transform.parent.gameObject.SetActive(false);
+            }
         }
     }
 

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d4b97bac-555a-46bb-ac85-54debed060cb" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../Images/RenderTextures/RenderTexture01.renderTexture" beforeDir="false" afterPath="$PROJECT_DIR$/../../Images/RenderTextures/RenderTexture01.renderTexture" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Images/RenderTextures/RenderTexture02.renderTexture" beforeDir="false" afterPath="$PROJECT_DIR$/../../Images/RenderTextures/RenderTexture02.renderTexture" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Images/RenderTextures/RenderTexture03.renderTexture" beforeDir="false" afterPath="$PROJECT_DIR$/../../Images/RenderTextures/RenderTexture03.renderTexture" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Images/RenderTextures/RenderTexture04.renderTexture" beforeDir="false" afterPath="$PROJECT_DIR$/../../Images/RenderTextures/RenderTexture04.renderTexture" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Images/RenderTextures/RenderTexture05.renderTexture" beforeDir="false" afterPath="$PROJECT_DIR$/../../Images/RenderTextures/RenderTexture05.renderTexture" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Images/RenderTextures/RenderTexture06.renderTexture" beforeDir="false" afterPath="$PROJECT_DIR$/../../Images/RenderTextures/RenderTexture06.renderTexture" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Images/RenderTextures/RenderTexture07.renderTexture" beforeDir="false" afterPath="$PROJECT_DIR$/../../Images/RenderTextures/RenderTexture07.renderTexture" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Plugins/Easy Save 3/Resources/ES3/ES3GlobalReferences.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../../Plugins/Easy Save 3/Resources/ES3/ES3GlobalReferences.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Resources/DOTweenSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../../Resources/DOTweenSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Resources/OculusRuntimeSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../../Resources/OculusRuntimeSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Resources/OculusRuntimeSettings.asset.meta" beforeDir="false" afterPath="$PROJECT_DIR$/../../Resources/OculusRuntimeSettings.asset.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Scenes/Main.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../../Scenes/Main.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../../ProjectSettings/ShaderGraphSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../../../ProjectSettings/ShaderGraphSettings.asset" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="2YvY9TXBsoE49zz0ruAyaCNeMQi" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "rider.external.source.directories": [
+      "C:\\Users\\pc03\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\DecompilerCache",
+      "C:\\Users\\pc03\\AppData\\Roaming\\JetBrains\\Rider2023.2\\resharper-host\\SourcesCache",
+      "C:\\Users\\pc03\\AppData\\Local\\Symbols\\src"
+    ]
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d4b97bac-555a-46bb-ac85-54debed060cb" name="Changes" comment="" />
+      <created>1701407369218</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1701407369218</updated>
+      <workItem from="1701407371183" duration="5000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="true" />
+  </component>
+</project>

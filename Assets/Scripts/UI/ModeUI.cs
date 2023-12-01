@@ -14,7 +14,8 @@ public class ModeUI : HoldUI
     protected override void Start()
     {
         base.Start();
-        Select((int)MainSystem.Instance.mode);
+        if(MainSystem.Instance)
+            Select((int)MainSystem.Instance.mode);
     }
 
     protected override void ExecuteSelectedAction()

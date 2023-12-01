@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum GhostType
 {
@@ -10,17 +11,33 @@ public enum GhostType
     Next = 1
 }
 
+public enum RendererType
+{
+    Mesh,
+    Image,
+    Text
+}
+
 public class AnimationGhost : MonoBehaviour
 {
     public GhostType ghostType;
+    
+    [Header("Mesh")]
     public MeshRenderer meshRenderer;
     public MeshFilter meshFilter;
     public LineRenderer lineRenderer;
 
+    [Header("Image")]
+    public Image image;
+    
+    [Header("Text")]
+    public InputField inputField;
+
+    
     public PresentationObject selectedObject;
     public GameObject canvas;
     public TextMeshProUGUI SlideNumberText;
-
+    
     private Mesh mesh;
 
     public Vector3 initialScale = Vector3.one;
@@ -31,6 +48,19 @@ public class AnimationGhost : MonoBehaviour
         meshRenderer = GetComponent<MeshRenderer>();
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.enabled = false;
+    }
+
+    public void SetRendererType(RendererType rendererType)
+    {
+        switch (rendererType)
+        {
+            case RendererType.Mesh:
+                break;
+            case RendererType.Image:
+                break;
+            case RendererType.Text:
+                break;
+        }
     }
     
     public void SetMesh(Mesh mesh)
@@ -71,7 +101,8 @@ public class AnimationGhost : MonoBehaviour
     private void Update()
     {
         int index = MainSystem.Instance.currentSlideNum + (int)ghostType;
-        lineRenderer.enabled = (selectedObject.slideData[MainSystem.Instance.currentSlideNum].isVisible && meshRenderer.enabled);
+        if(selectedObject)
+            lineRenderer.enabled = (selectedObject.slideData[MainSystem.Instance.currentSlideNum].isVisible && meshRenderer.enabled);
         SlideNumberText.text = index.ToString();
         if (selectedObject)
         {

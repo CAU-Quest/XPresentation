@@ -113,6 +113,15 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
 
 
     #endregion
+
+    #region Video Handler
+
+    public void CreateVideoAfterCurrentSlide()
+    {
+        
+    }
+
+    #endregion
     
     #region Slide Control
 
@@ -121,12 +130,31 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
         return slideCount;
     }
 
+    public void AddVideoNextToCurrent()
+    {
+        for (int i = 0; i < observers.Count; i++)
+        {
+            observers[i].ObserverCreateVideo(currentSlideNum);
+        }
+    }
+    
     public void AddSlide()
     {
         slideCount += 1;
         for (int i = 0; i < this.observers.Count; i++)
         {
             observers[i].ObserverAddSlide();
+        }
+
+        NotifySlideChangeToObservers();
+    }
+    
+    public void AddSlideNextToCurrent()
+    {
+        slideCount += 1;
+        for (int i = 0; i < this.observers.Count; i++)
+        {
+            observers[i].ObserverAddSlideNextTo(currentSlideNum);
         }
 
         NotifySlideChangeToObservers();
@@ -226,6 +254,7 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
     {
         if (null == Instance)
         {
+            Debug.Log("MainSystem Load");
             Instance = this;
             DontDestroyOnLoad(this.gameObject);
         }

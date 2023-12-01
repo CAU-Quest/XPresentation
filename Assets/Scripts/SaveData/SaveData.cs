@@ -21,7 +21,7 @@ public class SaveData : MonoBehaviour
 
     public List<SaveObjectData> objects = new List<SaveObjectData>();
 
-    void Awake()
+    void Start()
     {
         if (null == Instance)
         {

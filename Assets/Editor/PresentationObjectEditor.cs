@@ -17,3 +17,19 @@ public class PresentationObjectEditor : Editor
         }
     }
 }
+
+[CustomEditor(typeof(PresentationGhostObject))]
+public class PresentationGhostObjectEditor : Editor
+{
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        PresentationGhostObject presentationObject = (PresentationGhostObject)target;
+        if (GUILayout.Button("Save Transform"))
+        {
+            presentationObject.UpdateCurrentObjectDataInSlide();
+        }
+    }
+}
+

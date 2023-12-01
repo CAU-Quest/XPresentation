@@ -209,7 +209,7 @@ MonoBehaviour:
   id: 1
   animationList: []
   slideData: []
-  deployType: 0
+  deployType: 2
   isGrabbableInPresentation: 1
   isVisible: 1
 --- !u!1 &1870575921869042933

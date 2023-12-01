@@ -34,12 +34,14 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
 
     private void OnDestroy()
     {
-        XRSelector.Instance.RemoveObserver(this);
+        if(XRSelector.Instance)
+            XRSelector.Instance.RemoveObserver(this);
     }
 
     private void OnEnable()
     {
-        ObserverSlideUpdate(MainSystem.Instance.currentSlideNum);
+        if(MainSystem.Instance)
+            ObserverSlideUpdate(MainSystem.Instance.currentSlideNum);
     }
 
     public void InitProperty(PresentationObject selectedObject)
@@ -136,7 +138,8 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
 
     public void OnDisable()
     {
-        XRSelector.Instance.DisableAnimationGhost();
+        if(XRSelector.Instance)
+            XRSelector.Instance.DisableAnimationGhost();
     }
 
     public void ObserverSlideObjectDataUpdate()

@@ -17,7 +17,7 @@ public class XRUIManager : MonoBehaviour
     public GameObject fileBrowser;
     
     public Transform positionSource;
-    void Awake()
+    void Start()
     {
         if (null == Instance)
         {

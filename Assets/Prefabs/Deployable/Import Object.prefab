@@ -268,15 +268,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f20e121e18bb82140ab86ff0c9e4aeeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vertexList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  vertexList: []
 --- !u!114 &3153947059772387740
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -294,28 +286,8 @@ MonoBehaviour:
     m_Center: {x: 0.677, y: 1.0941595, z: 0.9064549}
     m_Extent: {x: 0.100000024, y: 0.100000024, z: 0.100000024}
   meshBoundOffset: {x: 0, y: -0.00000011920929, z: 0}
-  corners:
-  - {x: 0.100000024, y: 0.099999905, z: 0.100000024}
-  - {x: -0.100000024, y: 0.099999905, z: 0.100000024}
-  - {x: -0.100000024, y: 0.099999905, z: -0.100000024}
-  - {x: 0.100000024, y: 0.099999905, z: -0.100000024}
-  - {x: 0.100000024, y: -0.10000014, z: 0.100000024}
-  - {x: -0.100000024, y: -0.10000014, z: 0.100000024}
-  - {x: -0.100000024, y: -0.10000014, z: -0.100000024}
-  - {x: 0.100000024, y: -0.10000014, z: -0.100000024}
-  lineList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  corners: []
+  lineList: []
   startingScale: {x: 1, y: 1, z: 1}
 --- !u!114 &4206726964732780019
 MonoBehaviour:
@@ -330,32 +302,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BoundObjectType: 1
-  vertexList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  vertexList: []
   initialScale: {x: 1, y: 1, z: 1}
-  initialWidth: 0.20000005
-  initialHeight: 0.20000005
-  initialDepth: 0.20000005
-  lineList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  initialWidth: 1
+  initialHeight: 1
+  initialDepth: 1
+  lineList: []
 --- !u!114 &6675205619101499453
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -638,6 +590,6 @@ MonoBehaviour:
   id: 1
   animationList: []
   slideData: []
-  deployType: 0
+  deployType: 7
   isGrabbableInPresentation: 1
   isVisible: 1

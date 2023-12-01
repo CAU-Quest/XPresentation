@@ -18,13 +18,18 @@ public class XRAnimation : XRIAnimation
     public void Play()
     {
         float t = DOVirtual.EasedValue(0f, 1f, MainSystem.Instance.slideInterval, ease);
-
+        Debug.Log("Playing t : " + t);
+        
         SlideObjectData lerpData = new SlideObjectData();
         
         lerpData.position = Vector3.LerpUnclamped(previousData.position, nextData.position, t);
         lerpData.rotation = Quaternion.LerpUnclamped(previousData.rotation, nextData.rotation, t);
         lerpData.scale = Vector3.LerpUnclamped(previousData.scale, nextData.scale, t);
         lerpData.color = Color.LerpUnclamped(previousData.color, nextData.color, t);
+        lerpData.isVisible = nextData.isVisible;
+        lerpData.isGrabbable = nextData.isGrabbable;
+        lerpData.isVideo = false;
+        
         
         presentationObject.ApplyDataToObject(lerpData);
     }

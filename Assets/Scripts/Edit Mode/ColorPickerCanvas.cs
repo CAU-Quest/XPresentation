@@ -7,11 +7,6 @@ public class ColorPickerCanvas : MonoBehaviour
     //private Canvas canvas;
     [SerializeField]
     private Renderer renderer;
-
-    void Start()
-    {
-        //canvas = GetComponent<Canvas>();
-    }
     
     public void SetRenderer(Renderer renderer)
     {

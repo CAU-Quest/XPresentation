@@ -66,7 +66,8 @@ public class SliderButton : MonoBehaviour, ISelectedObjectModifier
     
     public virtual void OnSelectButton()
     {
-        XRSelector.Instance.DeactivateBoundBox();
+        if(XRSelector.Instance)
+            XRSelector.Instance.DeactivateBoundBox();
         transform.SetAsLastSibling();
         SetInitialValue();
         isSelectingHandle = true;
@@ -74,7 +75,8 @@ public class SliderButton : MonoBehaviour, ISelectedObjectModifier
 
     public virtual void OnUnselectButton()
     {
-        XRSelector.Instance.Reselect();
+        if(XRSelector.Instance)
+            XRSelector.Instance.Reselect();
         isSelectingHandle = false;
         if (turnOffWhenUnselect)
         {

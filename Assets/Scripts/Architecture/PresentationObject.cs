@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using DimBoxes;
 using Oculus.Interaction;
+using Oculus.Interaction.PoseDetection;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -17,6 +18,8 @@ public struct SlideObjectData
     public Color color;
     public bool isGrabbable;
     public bool isVisible;
+    public bool isVideo;
+    
 
     public SlideObjectData(Vector3 pos, Quaternion rot, Vector3 scale, Color col, bool grabbable = false,
         bool visible = false)
@@ -27,6 +30,7 @@ public struct SlideObjectData
         color = col;
         isGrabbable = grabbable;
         isVisible = visible;
+        isVideo = false;
     }
     
     public SlideObjectData(SlideObjectData currentData, Vector3 pos, Quaternion rot, Vector3 scale)
@@ -37,6 +41,7 @@ public struct SlideObjectData
         color = currentData.color;
         isGrabbable = currentData.isGrabbable;
         isVisible = currentData.isVisible;
+        isVideo = false;
     }
     
     public SlideObjectData(SlideObjectData currentData, Color col)
@@ -47,6 +52,7 @@ public struct SlideObjectData
         color = col;
         isGrabbable = currentData.isGrabbable;
         isVisible = currentData.isVisible;
+        isVideo = false;
     }
     
     public SlideObjectData(SlideObjectData currentData, bool grabbable)
@@ -57,6 +63,18 @@ public struct SlideObjectData
         color = currentData.color;
         isGrabbable = grabbable;
         isVisible = currentData.isVisible;
+        isVideo = false;
+    }
+    
+    public SlideObjectData(SlideObjectData currentData)
+    {
+        position = currentData.position;
+        rotation = currentData.rotation;
+        scale = currentData.scale;
+        color = currentData.color;
+        isGrabbable = currentData.isGrabbable;
+        isVisible = currentData.isVisible;
+        isVideo = false;
     }
 }
 
@@ -103,10 +121,6 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
                 if (slideData[currentSlide + 1].isVisible)
                 {
                     ghostObject.SetActive(true);
-                    if (isVisible)
-                    {
-                        dottedLine.SetActive(true);
-                    }
                 }
             }
         }
@@ -115,7 +129,6 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
             if(meshRenderer != null)
                 meshRenderer.material = normalModeMaterial;
             ghostObject.SetActive(false);
-            dottedLine.SetActive(false);
         }
     }
 
@@ -159,17 +172,12 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
                 if (slideData[slide + 1].isVisible)
                 {
                     ghostObject.SetActive(true);
-                    if (isVisible)
-                    {
-                        dottedLine.SetActive(true);
-                    }
                 }
                 
             }
             else
             {
                 ghostObject.SetActive(false);
-                dottedLine.SetActive(false);
             }
         }
     }
@@ -184,11 +192,47 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         addSlide();
     }
     
+    public void ObserverCreateVideo(int index)
+    {
+        if (index > 0 && index <= MainSystem.Instance.GetSlideCount())
+        {
+            SlideObjectData objectData = new SlideObjectData(slideData[index - 1]);
+            objectData.isVideo = true;
+            slideData.Insert(index, objectData);
+            XRAnimation animation = new XRAnimation();
+            animation.SetParentObject(this);
+            animation.SetPreviousSlideObjectData(objectData);
+            if(index < MainSystem.Instance.GetSlideCount())
+                animation.SetNextSlideObjectData(slideData[index + 1]);
+            animationList[index - 1].SetNextSlideObjectData(objectData);
+        }
+    }
+    
+    
+    public void ObserverAddSlideNextTo(int index)
+    {
+        if (index > 0 && index <= MainSystem.Instance.GetSlideCount())
+        {
+            SlideObjectData objectData = new SlideObjectData(slideData[index - 1]);
+            slideData.Insert(index, objectData);
+            XRAnimation animation = new XRAnimation();
+            animation.SetParentObject(this);
+            animation.SetPreviousSlideObjectData(objectData);
+            if(index < MainSystem.Instance.GetSlideCount())
+                animation.SetNextSlideObjectData(slideData[index + 1]);
+            animationList[index - 1].SetNextSlideObjectData(objectData);
+        }
+    }
+
+    
     public void removeSlide(int index)
     {
-        animationList.RemoveAt(index);
-        slideData.RemoveAt(index);
-        ApplyDataToObject(slideData[currentSlide]);
+        if (index > 0 && index < MainSystem.Instance.GetSlideCount())
+        {
+            animationList.RemoveAt(index);
+            slideData.RemoveAt(index);
+            ApplyDataToObject(slideData[currentSlide]);
+        }
     }
     
     public void addSlide()
@@ -266,7 +310,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         deployType = GetComponentInParent<SelectObject>().deployType;
         
         meshRenderer = GetComponentInChildren<MeshRenderer>();
-        canvas = GetComponent<Canvas>();
+        canvas = GetComponentInChildren<Canvas>();
         grabbable = GetComponent<Grabbable>();
         if (grabbable == null) grabbable = GetComponentInParent<Grabbable>();
         if(meshRenderer != null)
@@ -329,7 +373,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         }
         
         
-        ghostObject = Instantiate(transform.parent.gameObject);
+        ghostObject = Instantiate(transform.parent.gameObject, transform.parent.parent);
         TransformByVertexHandler tvh = ghostObject.GetComponent<TransformByVertexHandler>();
         CenterPositionByVertex cpv = ghostObject.GetComponent<CenterPositionByVertex>();
         BoundBox bb = ghostObject.GetComponent<BoundBox>();
@@ -368,11 +412,10 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         ghost.parentObject = this;
         ghost.SetID(id);
 
-        dottedLine = Instantiate(MainSystem.Instance.dottedLinePrefab);
+        dottedLine = Instantiate(MainSystem.Instance.dottedLinePrefab, ghostObject.transform);
         dottedLine.GetComponent<XRAnimationLine>().object1 = this;
         dottedLine.GetComponent<XRAnimationLine>().object2 = ghost;
 
-        dottedLine.SetActive(false);
         ghostObject.SetActive(false);
     }
 
@@ -494,7 +537,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     {
         transform.parent.SetPositionAndRotation(data.position, data.rotation);
         transform.parent.localScale = data.scale;
-        if (meshRenderer != null) meshRenderer.material.color = data.color;
+        if (meshRenderer != null && MainSystem.Instance.mode != MainSystem.Mode.Animation) meshRenderer.material.color = data.color;
         
         if (data.isVisible)
         {

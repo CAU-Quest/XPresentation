@@ -11,10 +11,10 @@ using UnityEngine.UIElements;
 public class ObjectCreator : MonoBehaviour
 {
     public static ObjectCreator Instance = null;
-
+    public Transform objectParent = null;
     private Pose SpawnPose;
 
-    void Awake()
+    void Start()
     {
         if (null == Instance)
         {
@@ -39,23 +39,28 @@ public class ObjectCreator : MonoBehaviour
         switch (action)
         {
             case DeployType.Sphere:
-                go =  PresentationObjectPool.Instance.Get(0, position);
+	            if (objectParent) go = PresentationObjectPool.Instance.Get(0, position, objectParent);
+                else go = PresentationObjectPool.Instance.Get(0, position);
                 go.transform.rotation = rotation;
                 break;
             case DeployType.Cube:
-                go = PresentationObjectPool.Instance.Get(1, position);
+	            if (objectParent) go = PresentationObjectPool.Instance.Get(1, position, objectParent);
+	            else go = PresentationObjectPool.Instance.Get(1, position);
                 go.transform.rotation = rotation;
                 break;
             case DeployType.Cylinder:
-                go = PresentationObjectPool.Instance.Get(2, position);
+	            if (objectParent) go = PresentationObjectPool.Instance.Get(2, position, objectParent);
+	            else go = PresentationObjectPool.Instance.Get(2, position);
                 go.transform.rotation = rotation;
                 break;
             case DeployType.Plane:
-                go = PresentationObjectPool.Instance.Get(3, position);
+	            if (objectParent) go = PresentationObjectPool.Instance.Get(3, position, objectParent);
+	            else go = PresentationObjectPool.Instance.Get(3, position);
                 go.transform.rotation = rotation;
                 break;
             case DeployType.Text:
-                go = PresentationObjectPool.Instance.Get(4, position);
+	            if (objectParent) go = PresentationObjectPool.Instance.Get(4, position, objectParent);
+	            else go = PresentationObjectPool.Instance.Get(4, position);
                 go.transform.rotation = rotation;
                 break;
             case DeployType.ImportImage:
@@ -118,8 +123,11 @@ public class ObjectCreator : MonoBehaviour
 
 			string destinationPath = Path.Combine( Application.persistentDataPath, FileBrowserHelpers.GetFilename( FileBrowser.Result[0] ) );
 			FileBrowserHelpers.CopyFile( FileBrowser.Result[0], destinationPath );
+
+			GameObject importObject;
+			if (objectParent) importObject = PresentationObjectPool.Instance.Get(6, SpawnPose.position, objectParent);
+			else importObject = PresentationObjectPool.Instance.Get(6, SpawnPose.position);
 			
-			GameObject importObject = PresentationObjectPool.Instance.Get(6, SpawnPose.position);
 			importObject.transform.rotation = SpawnPose.rotation;
 			GameObject element = importObject.GetComponentInChildren<Grabbable>().gameObject;
 			importObject.GetComponent<SelectObject>().objectPath = FileBrowser.Result[0];
@@ -173,13 +181,16 @@ public class ObjectCreator : MonoBehaviour
 			string destinationPath = Path.Combine( Application.persistentDataPath, FileBrowserHelpers.GetFilename( FileBrowser.Result[0] ) );
 			FileBrowserHelpers.CopyFile( FileBrowser.Result[0], destinationPath );
 
-			GameObject imageObject = PresentationObjectPool.Instance.Get(5, SpawnPose.position);
+			GameObject imageObject;
+			if (objectParent) imageObject = PresentationObjectPool.Instance.Get(5, SpawnPose.position, objectParent);
+			else imageObject = PresentationObjectPool.Instance.Get(5, SpawnPose.position);
 			imageObject.transform.rotation = SpawnPose.rotation;
 			
 			imageObject.GetComponent<SelectObject>().imagePath = FileBrowser.Result[0];
 			Texture2D loadedTexture = new Texture2D(1, 1);
 			loadedTexture.LoadImage(bytes);
 			imageObject.GetComponentInChildren<RawImage>().texture = loadedTexture;
+			if(objectParent) imageObject.transform.SetParent(objectParent);
 		}
 	}
 }

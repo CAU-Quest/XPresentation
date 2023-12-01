@@ -12,7 +12,7 @@ public class PresentationObjectPool : MonoBehaviour
     public GameObject[] prefabs; 
     List<GameObject>[] pools;
 
-    void Awake()
+    void Start()
     {
         if (null == Instance)
         {
@@ -47,6 +47,30 @@ public class PresentationObjectPool : MonoBehaviour
         if (!select)
         {
             select = Instantiate(prefabs[index], position, new quaternion(0, 0, 0, 0));
+            pools[index].Add(select);
+        }
+
+        return select;
+    }
+
+    public GameObject Get(int index, Vector3 position, Transform parent)
+    {
+        GameObject select = null;
+
+        foreach (GameObject item in pools[index])
+        {
+            if (!item.activeSelf)
+            {
+                select = item;
+                select.transform.position = position;
+                select.SetActive(true);
+                break;
+            }
+        }
+
+        if (!select)
+        {
+            select = Instantiate(prefabs[index], position, new quaternion(0, 0, 0, 0), parent);
             pools[index].Add(select);
         }
 

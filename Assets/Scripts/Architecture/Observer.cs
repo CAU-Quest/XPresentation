@@ -10,6 +10,8 @@ public interface ISystemObserver
     void ObserverAddSlide();
     void ObserverMoveSlides(int moved, int count, int into);
     void ObserverUpdateSave();
+    void ObserverAddSlideNextTo(int index);
+    void ObserverCreateVideo(int index);
 }
 
 public interface ISubject

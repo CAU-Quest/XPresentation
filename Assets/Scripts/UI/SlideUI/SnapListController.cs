@@ -28,7 +28,6 @@ public class SnapListController : MonoBehaviour, ISlideObserver
     public Camera previewRenderCamera;
 
     public TextMeshProUGUI totalCount;
-    private bool isInitialized = false;
     private PreviewCube _lastHighlightedCube;
     
     // Start is called before the first frame update
@@ -38,10 +37,12 @@ public class SnapListController : MonoBehaviour, ISlideObserver
         //listSnapPoseDelegate = GetComponentInChildren<SlideListSnapPoseDelegate>();
         snapInteractable = GetComponentInChildren<SnapInteractable>();
         beforeSlideNumber = currentSlideNumber;
-        MainSystem.Instance.RegisterObserver(this);
+        if(MainSystem.Instance)
+            MainSystem.Instance.RegisterObserver(this);
 
         _lastHighlightedCube = SortedList[3];
-        totalCount.text = "/" + MainSystem.Instance.GetSlideCount().ToString("0");
+        if(MainSystem.Instance)
+            totalCount.text = "/" + MainSystem.Instance.GetSlideCount().ToString("0");
         HighlightCenterIndexSupport(true);
         StartCoroutine("InitNumber");
     }
@@ -63,7 +64,7 @@ public class SnapListController : MonoBehaviour, ISlideObserver
 
     public void AddSlide()
     {
-        MainSystem.Instance.AddSlide();
+        MainSystem.Instance.AddSlideNextToCurrent();
     }
     
     public void RemoveSlide()

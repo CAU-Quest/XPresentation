@@ -552,10 +552,22 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
     {
         beforeAnimationGhost.gameObject.SetActive(true);
         afterAnimationGhost.gameObject.SetActive(true);
-        MeshFilter meshFilter = selectedObject.GetComponentInChildren<MeshFilter>();
-        Mesh mesh = meshFilter.mesh;
-        beforeAnimationGhost.initialScale = meshFilter.transform.localScale;
-        afterAnimationGhost.initialScale = meshFilter.transform.localScale;
+
+        if (selectObject.deployType == DeployType.Cube || selectObject.deployType == DeployType.Sphere
+                                                       || selectObject.deployType == DeployType.Cylinder ||
+                                                       selectObject.deployType == DeployType.ImportModel)
+        {
+            MeshFilter meshFilter = selectedObject.GetComponentInChildren<MeshFilter>();
+            Mesh mesh = meshFilter.mesh;
+            beforeAnimationGhost.initialScale = meshFilter.transform.localScale;
+            afterAnimationGhost.initialScale = meshFilter.transform.localScale;
+            beforeAnimationGhost.SetMesh(mesh);
+            afterAnimationGhost.SetMesh(mesh);
+            
+        } else if (selectObject.deployType == DeployType.ImportImage || selectObject.deployType == DeployType.Plane)
+        {
+            
+        } else if (selectObject.deployType == DeployType.Plane)
 
         if (presentationObject is PresentationObject)
         {
@@ -563,8 +575,6 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
             afterAnimationGhost.selectedObject = presentationObject as PresentationObject;;
         }
         
-        beforeAnimationGhost.SetMesh(mesh);
-        afterAnimationGhost.SetMesh(mesh);
     }
     
     public void DisableAnimationGhost()
