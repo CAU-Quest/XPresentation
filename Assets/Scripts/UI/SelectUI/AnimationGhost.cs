@@ -30,7 +30,7 @@ public class AnimationGhost : MonoBehaviour
     public LineRenderer lineRenderer;
 
     [Header("Image")]
-    public Image image;
+    public RawImage image;
     
     [Header("Text")]
     public InputField inputField;
@@ -72,9 +72,9 @@ public class AnimationGhost : MonoBehaviour
         }
     }
 
-    public void SetImage(Image image)
+    public void SetImage(Texture texture)
     {
-        
+        this.image.texture = texture;
     }
     
     public void SetMesh(Mesh mesh)
@@ -85,13 +85,26 @@ public class AnimationGhost : MonoBehaviour
 
     public void SetVisible()
     {
-        meshRenderer.enabled = true;
+        switch (rendererType)
+        {
+            case RendererType.Mesh:
+                meshRenderer.enabled = true;
+                image.enabled = false;
+                break;
+            case RendererType.Image:
+                meshRenderer.enabled = false;
+                image.enabled = true;
+                break;
+            case RendererType.Text:
+                break;
+        }
         canvas.SetActive(true);
     }
     
     public void SetInvisible()
     {
         meshRenderer.enabled = false;
+        image.enabled = false;
         canvas.SetActive(false);
     }
     
@@ -102,12 +115,12 @@ public class AnimationGhost : MonoBehaviour
         SetColor(slideObjectData.color);
         if (slideObjectData.isVisible)
         {
-            meshRenderer.enabled = true;
+            SetVisible();
             canvas.SetActive(true);
         }
         else
         {
-            meshRenderer.enabled = false;
+            SetInvisible();
             canvas.SetActive(false);
         }
     }

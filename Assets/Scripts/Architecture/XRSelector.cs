@@ -568,14 +568,15 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
             
         } else if (selectObject.deployType == DeployType.ImportImage || selectObject.deployType == DeployType.Plane)
         {
-            Image image = selectedObject.GetComponentInChildren<Image>(true);
+            RawImage image = selectedObject.GetComponentInChildren<RawImage>(true);
             beforeAnimationGhost.SetRenderer(RendererType.Image);
             afterAnimationGhost.SetRenderer(RendererType.Image);
             
             beforeAnimationGhost.initialScale = image.transform.localScale;
             afterAnimationGhost.initialScale = image.transform.localScale;
             
-            
+            beforeAnimationGhost.SetImage(image.texture);
+            afterAnimationGhost.SetImage(image.texture);
 
         } else if (selectObject.deployType == DeployType.Text)
         {
