@@ -17,8 +17,8 @@ public class AnimationPlayButton : MonoBehaviour
                 MainSystem.Instance.currentSlideNum - 1];
 
 
-            var prevTrans = XRSelector.Instance.BeforeAnimationGhost.transform;
-            var prevMat = prevTrans.GetComponentInChildren<MeshRenderer>();
+            var prevTrans = XRSelector.Instance.beforeAnimationGhost.transform;
+            var prevMat = prevTrans.GetComponentInChildren<MeshRenderer>().material;
 
             if (_isOn) xrAnimation.PlayPreview(prevTrans, prevMat);
             else xrAnimation.StopPreview();
@@ -28,8 +28,8 @@ public class AnimationPlayButton : MonoBehaviour
             var xrAnimation = ((PresentationObject)animationPanel.selectedObject).animationList[
                 MainSystem.Instance.currentSlideNum];
 
-            var prevTrans = animationPanel.selectedObject.transform;
-            var prevMat = prevTrans.GetComponentInChildren<MeshRenderer>();
+            var prevTrans = ((PresentationObject)animationPanel.selectedObject).transform;
+            var prevMat = prevTrans.GetComponentInChildren<MeshRenderer>().material;
 
             if (_isOn) xrAnimation.PlayPreview(prevTrans, prevMat);
             else xrAnimation.StopPreview();

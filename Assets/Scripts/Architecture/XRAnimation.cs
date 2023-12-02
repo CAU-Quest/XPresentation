@@ -26,12 +26,12 @@ public class XRAnimation : XRIAnimation
         {
             _previousTransform.position = previousData.position;
             _previousTransform.rotation = previousData.rotation;
-            _previousTransform.localScale = previousData.localScale;
+            _previousTransform.localScale = previousData.scale;
             _previousMaterial.color = previousData.color;
         })
         .Append(_previousTransform.DOMove(nextData.position, 1f).SetEase(ease))
-        .Join(_previousTransform.DORotate(nextData.rotation, 1f).SetEase(ease))
-        .Join(_previousTransform.DOLocalScale(nextData.localScale, 1f).SetEase(ease))
+        .Join(_previousTransform.DORotateQuaternion(nextData.rotation, 1f).SetEase(ease))
+        .Join(_previousTransform.DOScale(nextData.scale, 1f).SetEase(ease))
         .Join(_previousMaterial.DOColor(nextData.color, 1f).SetEase(ease))
         .AppendInterval(0.7f)
         .SetLoops(-1, LoopType.Restart);
@@ -68,7 +68,7 @@ public class XRAnimation : XRIAnimation
     {
         _previousTransform.position = previousData.position;
         _previousTransform.rotation = previousData.rotation;
-        _previousTransform.localScale = previousData.localScale;
+        _previousTransform.localScale = previousData.scale;
         _previousMaterial.color = previousData.color;
         _sequence.Kill();
     }
