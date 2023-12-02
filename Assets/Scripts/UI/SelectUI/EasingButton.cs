@@ -17,6 +17,7 @@ public class EasingButton : MonoBehaviour
     private Material _material;
     private Sequence _sequence;
 
+    public Action<Ease> onSelect;
     public XRAnimation xrAnimation;
     public Transform selectOutline;
     
@@ -66,6 +67,7 @@ public class EasingButton : MonoBehaviour
         panelImage.DOColor(ColorManager.PanelSelect, 0.3f);
         
         xrAnimation.SetEase(ease);
+        onSelect?.Invoke(ease);
         selectOutline.position = transform.position;
     }
 }

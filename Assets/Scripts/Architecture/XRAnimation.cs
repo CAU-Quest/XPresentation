@@ -20,10 +20,21 @@ public class XRAnimation : XRIAnimation
     private Transform _previousTransform;
     private Material _previousMaterial;
 
+    public XRAnimation()
+    {
+        presentationObject = null;
+        previousData = new SlideObjectData();
+        nextData = new SlideObjectData();
+        ease = Ease.Linear;
+        _sequence = null;
+        _isInitialized = false;
+        _previousTransform = null;
+        _previousMaterial = null;
+    }
+
     public void Play()
     {
         float t = DOVirtual.EasedValue(0f, 1f, MainSystem.Instance.slideInterval, ease);
-        Debug.Log("Playing t : " + t);
 
         SlideObjectData lerpData = new SlideObjectData();
 
@@ -83,10 +94,10 @@ public class XRAnimation : XRIAnimation
                 _previousTransform.localScale = previousData.scale;
                 _previousMaterial.color = previousData.color;
             })
-            .Append(_previousTransform.DOMove(nextData.position, 1f).SetEase(ease))
-            .Join(_previousTransform.DORotateQuaternion(nextData.rotation, 1f).SetEase(ease))
-            .Join(_previousTransform.DOScale(nextData.scale, 1f).SetEase(ease))
-            .Join(_previousMaterial.DOColor(nextData.color, 1f).SetEase(ease))
+            .Append(_previousTransform.DOMove(nextData.position, 1.5f).SetEase(ease))
+            .Join(_previousTransform.DORotateQuaternion(nextData.rotation, 1.5f).SetEase(ease))
+            .Join(_previousTransform.DOScale(nextData.scale, 1.5f).SetEase(ease))
+            .Join(_previousMaterial.DOColor(nextData.color, 1.5f).SetEase(ease))
             .AppendInterval(0.7f)
             .SetLoops(-1, LoopType.Restart);
     }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.PlasticSCM.Editor.WebApi;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 
 public enum PanelType
@@ -21,11 +22,11 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
 
     public GameObject cannotUsePanel;
     public SelectEasingButton selectEasingButton;
-    public GameObject animationPlayToggle;
+    public GameObject animationPlayToggleButton;
     public IPresentationObject selectedObject;
 
     public TextMeshProUGUI slideLabel;
-    public SlideToggle slideToggle;
+    public ToggleSlideButton toggleSlideButton;
     
     
     #region Observer Handler
@@ -33,6 +34,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
     void Start()
     {
         XRSelector.Instance.RegisterObserver(this);
+        toggleSlideButton.selectEasingButton = selectEasingButton;
     }
 
     private void OnDestroy()
@@ -65,20 +67,20 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
             
             if (index >= 0 && index < MainSystem.Instance.GetSlideCount())
             {
-                slideToggle.gameObject.SetActive(true);
-                slideToggle.presentationObject = (PresentationObject)presentationObject;
-                slideToggle.currentSlideNumber = index;
+                toggleSlideButton.gameObject.SetActive(true);
+                toggleSlideButton.presentationObject = (PresentationObject)presentationObject;
+                toggleSlideButton.currentSlideNumber = index;
             }
             else
             {
-                slideToggle.gameObject.SetActive(false);
+                toggleSlideButton.gameObject.SetActive(false);
             }
 
             if (index < 0 || index >= MainSystem.Instance.GetSlideCount() || !slideObjectDatas[index].isVisible)
             {
                 cannotUsePanel.SetActive(true);
                 if(selectEasingButton) selectEasingButton.gameObject.SetActive(false);
-                if(animationPlayToggle) animationPlayToggle.SetActive(false);
+                if(animationPlayToggleButton) animationPlayToggleButton.SetActive(false);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = false;
@@ -87,10 +89,14 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
             }
             else
             {
-                slideToggle.toggle.isOn = slideObjectDatas[index].isVisible;
+                toggleSlideButton.SetActive(slideObjectDatas[index].isVisible);
                 cannotUsePanel.SetActive(false);
-                if(selectEasingButton) selectEasingButton.gameObject.SetActive(true);
-                if(animationPlayToggle) animationPlayToggle.SetActive(true);
+                if (selectEasingButton)
+                {
+                    selectEasingButton.gameObject.SetActive(true);
+                    selectEasingButton.InitProperty((PresentationObject)selectedObject);
+                }
+                if(animationPlayToggleButton) animationPlayToggleButton.SetActive(true);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = true;
@@ -112,19 +118,19 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
             
             if (index >= 0 && index < MainSystem.Instance.GetSlideCount())
             {
-                slideToggle.gameObject.SetActive(true);
-                slideToggle.presentationObject = (PresentationObject)selectedObject;
-                slideToggle.currentSlideNumber = index;
+                toggleSlideButton.gameObject.SetActive(true);
+                toggleSlideButton.presentationObject = (PresentationObject)selectedObject;
+                toggleSlideButton.currentSlideNumber = index;
             }
             else
             {
-                slideToggle.gameObject.SetActive(false);
+                toggleSlideButton.gameObject.SetActive(false);
             }
             if (index < 0 || index >= MainSystem.Instance.GetSlideCount() || !slideObjectDatas[index].isVisible)
             {
                 cannotUsePanel.SetActive(true);
                 if(selectEasingButton) selectEasingButton.gameObject.SetActive(false);
-                if(animationPlayToggle) animationPlayToggle.SetActive(false);
+                if(animationPlayToggleButton) animationPlayToggleButton.SetActive(false);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = false;
@@ -133,10 +139,14 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
             }
             else
             {
-                slideToggle.toggle.isOn = slideObjectDatas[index].isVisible;
+                toggleSlideButton.SetActive(slideObjectDatas[index].isVisible);
                 cannotUsePanel.SetActive(false);
-                if(selectEasingButton) selectEasingButton.gameObject.SetActive(true);
-                if(animationPlayToggle) animationPlayToggle.SetActive(true);
+                if (selectEasingButton)
+                {
+                    selectEasingButton.gameObject.SetActive(true);
+                    selectEasingButton.InitProperty((PresentationObject)selectedObject);
+                }
+                if(animationPlayToggleButton) animationPlayToggleButton.SetActive(true);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = true;
@@ -177,9 +187,9 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
                     XRSelector.Instance.afterAnimationGhost.ApplySlideObjectData(slideObjectDatas[index]);
                 }
                 
-                slideToggle.gameObject.SetActive(true);
-                slideToggle.presentationObject = (PresentationObject)selectedObject;
-                slideToggle.currentSlideNumber = index;
+                toggleSlideButton.gameObject.SetActive(true);
+                toggleSlideButton.presentationObject = (PresentationObject)selectedObject;
+                toggleSlideButton.currentSlideNumber = index;
             }
             else
             {
@@ -188,13 +198,13 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
                 if (panelType == PanelType.Next)
                     XRSelector.Instance.afterAnimationGhost.SetInvisible();
                 
-                slideToggle.gameObject.SetActive(false);
+                toggleSlideButton.gameObject.SetActive(false);
             }
             if (index < 0 || index >= MainSystem.Instance.GetSlideCount() || !slideObjectDatas[index].isVisible)
             {
                 cannotUsePanel.SetActive(true);
                 if(selectEasingButton) selectEasingButton.gameObject.SetActive(false);
-                if(animationPlayToggle) animationPlayToggle.SetActive(false);
+                if(animationPlayToggleButton) animationPlayToggleButton.SetActive(false);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = false;
@@ -203,10 +213,14 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
             }
             else
             {
-                slideToggle.toggle.isOn = slideObjectDatas[index].isVisible;
+                toggleSlideButton.SetActive(slideObjectDatas[index].isVisible);
                 cannotUsePanel.SetActive(false);
-                if(selectEasingButton) selectEasingButton.gameObject.SetActive(true);
-                if(animationPlayToggle) animationPlayToggle.SetActive(true);
+                if (selectEasingButton)
+                {
+                    selectEasingButton.gameObject.SetActive(true);
+                    selectEasingButton.InitProperty((PresentationObject)selectedObject);
+                }
+                if(animationPlayToggleButton) animationPlayToggleButton.SetActive(true);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = true;

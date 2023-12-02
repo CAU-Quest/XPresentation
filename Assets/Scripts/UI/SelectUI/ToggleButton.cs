@@ -23,7 +23,7 @@ public class ToggleButton : MonoBehaviour, ISelectedObjectModifier
     {
         SelectedObject = selectedObject;
         buttonImage.DOColor((isOn) ? ColorManager.ToggleSelected : ColorManager.ToggleUnselected, 0.3f);
-        icon.sprite = (isOn) ? whenOn : whenOff;
+        ToggleSprite();
     }
 
     public void UpdateSelectedObjectData(PresentationObject selectedObject, SlideObjectData data)
@@ -45,6 +45,11 @@ public class ToggleButton : MonoBehaviour, ISelectedObjectModifier
     {
         buttonImage.DOColor(ColorManager.ToggleSelect, 0.3f);
         isOn = !isOn;
+        ToggleSprite();
+    }
+
+    protected void ToggleSprite()
+    {
         icon.sprite = (isOn) ? whenOn : whenOff;
     }
 }

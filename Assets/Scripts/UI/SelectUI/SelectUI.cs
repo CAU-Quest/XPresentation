@@ -30,9 +30,9 @@ public class SelectUI : MonoBehaviour
         
         for (int i = 0; i < canvases.Length; i++)
         {
-            _initializers[i] = canvases[i].GetComponentsInChildren<ISelectedObjectModifierInitializer>();
+            _initializers[i] = canvases[i].GetComponentsInChildren<ISelectedObjectModifierInitializer>(true);
             
-            _modifiers[i] = canvases[i].GetComponentsInChildren<ISelectedObjectModifier>();
+            _modifiers[i] = canvases[i].GetComponentsInChildren<ISelectedObjectModifier>(true);
             foreach (var modifier in _modifiers[i])
             {
                 modifier.WhenHasModification += modifier.UpdateSelectedObjectData;

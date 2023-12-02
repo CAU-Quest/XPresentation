@@ -2044,7 +2044,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3005300428651597375}
         m_TargetAssemblyTypeName: SlideToggle, Assembly-CSharp
-        m_MethodName: Toggle
+        m_MethodName: OnSelect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2268,7 +2268,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 3831227153644917952}
         m_TargetAssemblyTypeName: SlideToggle, Assembly-CSharp
-        m_MethodName: Toggle
+        m_MethodName: OnSelect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5652,7 +5652,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 506079714712857570}
         m_TargetAssemblyTypeName: SlideToggle, Assembly-CSharp
-        m_MethodName: Toggle
+        m_MethodName: OnSelect
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
