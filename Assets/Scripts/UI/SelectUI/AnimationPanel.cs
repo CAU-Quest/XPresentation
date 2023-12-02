@@ -20,10 +20,13 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
     public PanelType panelType = PanelType.Current;
 
     public GameObject cannotUsePanel;
+    public SelectEasingButton selectEasingButton;
+    public GameObject animationPlayToggle;
     public IPresentationObject selectedObject;
 
     public TextMeshProUGUI slideLabel;
     public SlideToggle slideToggle;
+    
     
     #region Observer Handler
     
@@ -47,6 +50,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
     public void InitProperty(PresentationObject selectedObject)
     {
         ObserverObjectUpdate(selectedObject);
+        if (selectEasingButton) selectEasingButton.OnCanvasClose();
     }
 
 
@@ -73,23 +77,27 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
             if (index < 0 || index >= MainSystem.Instance.GetSlideCount() || !slideObjectDatas[index].isVisible)
             {
                 cannotUsePanel.SetActive(true);
+                if(selectEasingButton) selectEasingButton.gameObject.SetActive(false);
+                if(animationPlayToggle) animationPlayToggle.SetActive(false);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = false;
                 }
-                slideLabel.text = "";
+                slideLabel.text = (index < 0 || index >= MainSystem.Instance.GetSlideCount()) ? "(Slide not exists)" : "(No object in this Slide)";
             }
             else
             {
                 slideToggle.toggle.isOn = slideObjectDatas[index].isVisible;
                 cannotUsePanel.SetActive(false);
+                if(selectEasingButton) selectEasingButton.gameObject.SetActive(true);
+                if(animationPlayToggle) animationPlayToggle.SetActive(true);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = true;
                     buttons[i].SetSlideObjectDataWithIndex(slideObjectDatas[index], index);
                     buttons[i].InitProperty((PresentationObject)presentationObject);
                 }
-                slideLabel.text = "Slide " + index;
+                slideLabel.text = "(Slide " + index + ")";
             }
         }
     }
@@ -115,23 +123,27 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
             if (index < 0 || index >= MainSystem.Instance.GetSlideCount() || !slideObjectDatas[index].isVisible)
             {
                 cannotUsePanel.SetActive(true);
+                if(selectEasingButton) selectEasingButton.gameObject.SetActive(false);
+                if(animationPlayToggle) animationPlayToggle.SetActive(false);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = false;
                 }
-                slideLabel.text = "";
+                slideLabel.text = (index < 0 || index >= MainSystem.Instance.GetSlideCount()) ? "(Slide not exists)" : "(No object in this Slide)";
             }
             else
             {
                 slideToggle.toggle.isOn = slideObjectDatas[index].isVisible;
                 cannotUsePanel.SetActive(false);
+                if(selectEasingButton) selectEasingButton.gameObject.SetActive(true);
+                if(animationPlayToggle) animationPlayToggle.SetActive(true);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = true;
                     buttons[i].SetSlideObjectDataWithIndex(slideObjectDatas[index], index);
                     buttons[i].InitProperty((PresentationObject)selectedObject);
                 }
-                slideLabel.text = "Slide " + index;
+                slideLabel.text = "(Slide " + index + ")";
             }
         }
     }
@@ -181,23 +193,27 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
             if (index < 0 || index >= MainSystem.Instance.GetSlideCount() || !slideObjectDatas[index].isVisible)
             {
                 cannotUsePanel.SetActive(true);
+                if(selectEasingButton) selectEasingButton.gameObject.SetActive(false);
+                if(animationPlayToggle) animationPlayToggle.SetActive(false);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = false;
                 }
-                slideLabel.text = "";
+                slideLabel.text = (index < 0 || index >= MainSystem.Instance.GetSlideCount()) ? "(Slide not exists)" : "(No object in this Slide)";
             }
             else
             {
                 slideToggle.toggle.isOn = slideObjectDatas[index].isVisible;
                 cannotUsePanel.SetActive(false);
+                if(selectEasingButton) selectEasingButton.gameObject.SetActive(true);
+                if(animationPlayToggle) animationPlayToggle.SetActive(true);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = true;
                     buttons[i].SetSlideObjectData(slideObjectDatas[index]);
                     buttons[i].currentSlideNum = index;
                 }
-                slideLabel.text = "Slide " + index;
+                slideLabel.text = "(Slide " + index + ")";
             }
         }
     }

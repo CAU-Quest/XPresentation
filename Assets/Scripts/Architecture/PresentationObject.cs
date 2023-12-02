@@ -8,6 +8,7 @@ using Oculus.Interaction.PoseDetection;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 [System.Serializable]
 public struct SlideObjectData
@@ -101,11 +102,13 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     private PresentationGhostObject ghost;
 
     private MeshRenderer meshRenderer;
+    private RawImage image;
     private Grabbable grabbable;
 
 
     public Transform Transform => transform.parent;
     public Material Material => (meshRenderer) ? meshRenderer.material : null;
+    public RawImage Image => image;
     public bool isGrabbableInPresentation = true;
     public bool isVisible = true;
 
@@ -114,8 +117,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         this.mode = mode;
         if (mode == MainSystem.Mode.Animation)
         {
-            if(meshRenderer != null)
-                meshRenderer.material = MainSystem.Instance.beforeSlideMaterial;
+            if(meshRenderer) meshRenderer.material = MainSystem.Instance.beforeSlideMaterial;
             if (currentSlide + 1 < MainSystem.Instance.GetSlideCount())
             {
                 if (slideData[currentSlide + 1].isVisible)
@@ -126,8 +128,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         }
         else
         {
-            if(meshRenderer != null)
-                meshRenderer.material = normalModeMaterial;
+            if(meshRenderer) meshRenderer.material = normalModeMaterial;
             ghostObject.SetActive(false);
         }
     }
@@ -272,7 +273,6 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         {
             meshRenderer.enabled = true;
         }
-
         if (canvas)
         {
             canvas.enabled = true;
@@ -310,11 +310,13 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         deployType = GetComponentInParent<SelectObject>().deployType;
         
         meshRenderer = GetComponentInChildren<MeshRenderer>();
+
+        transform.GetChild(1).TryGetComponent(out RawImage image);
+        
         canvas = GetComponentInChildren<Canvas>();
         grabbable = GetComponent<Grabbable>();
         if (grabbable == null) grabbable = GetComponentInParent<Grabbable>();
-        if(meshRenderer != null)
-            normalModeMaterial = meshRenderer.material;
+        if(meshRenderer != null) normalModeMaterial = meshRenderer.material;
         MainSystem.Instance.RegisterObserver(this);
 
         if (slideData.Count == 0 && animationList.Count == 0)

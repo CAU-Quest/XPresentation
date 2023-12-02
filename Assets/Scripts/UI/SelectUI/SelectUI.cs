@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class SelectUI : MonoBehaviour
 {
-    public enum Mode { Transform = 1, Color, Animation, Etc }
+    public enum Mode { Transform = 1, Color, Animation, Etc, Close }
     private Mode _mode;
 
     [SerializeField] private GameObject[] canvases;
@@ -136,9 +136,14 @@ public class SelectUI : MonoBehaviour
     {
         _mode = mode;
         var modeIndex = (int)mode - 1;
+        
+        for (int i = 1; i < canvases.Length; i++)
+        { 
+            canvases[i].SetActive(i - 1 == modeIndex);
+        }
+
         for (int i = 0; i < buttons.Length; i++)
         {
-            canvases[i + 1].SetActive(i == modeIndex);
             buttons[i].transform.DOScale((i == modeIndex) ? 1f : 0.8f, 0.3f);
             buttons[i].DOColor((i == modeIndex) ? ColorManager.Select : ColorManager.Default, 0.3f);
             labelPanels[i].DOColor((i == modeIndex) ? ColorManager.Select : ColorManager.Default, 0.3f);

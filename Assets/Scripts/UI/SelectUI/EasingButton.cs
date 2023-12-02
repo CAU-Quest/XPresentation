@@ -4,12 +4,14 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
-public class EasingButton : MyButton
+public class EasingButton : MonoBehaviour
 {
     [SerializeField] private Transform cubeTransform;
     [SerializeField] private MeshRenderer cubeRenderer; 
     public Ease ease;
+    [SerializeField] protected Image buttonImage, panelImage;
     [SerializeField] private Color startColor, endColor;
     private Vector3 _localPosition;
     private Material _material;
@@ -27,25 +29,42 @@ public class EasingButton : MyButton
             {
                 cubeTransform.localPosition = _localPosition;
                 _material.color = startColor;
-            }).Append(cubeTransform.DOLocalMoveX(130f, 1.5f).SetEase(ease))
+            })
+            .AppendInterval(0.3f)
+            .Append(cubeTransform.DOLocalMoveX(130f, 1.5f).SetEase(ease))
             .Join(_material.DOColor(endColor, 1.5f).SetEase(ease))
-            .AppendInterval(0.5f)
+            .AppendInterval(0.3f)
             .SetLoops(-1, LoopType.Restart);
     }
 
-    private void OnEnable()
+    public void InitButton(XRAnimation newXrAnimation)
     {
-        _sequence.Play();
+        xrAnimation = newXrAnimation;
+        _sequence.Restart();
     }
 
-    private void OnDisable()
+    public void CloseButton()
     {
-        _sequence.Kill();
+        _sequence.Pause();
     }
 
-    public override void OnSelect()
+    public void OnHover()
     {
-        //base.OnSelect();
+        buttonImage.DOColor(ColorManager.SliderHover, 0.3f);
+        panelImage.DOColor(ColorManager.PanelHover, 0.3f);
+    }
+
+    public void OnUnhover()
+    {
+        buttonImage.DOColor(ColorManager.SliderDefault, 0.3f);
+        panelImage.DOColor(ColorManager.PanelDefault, 0.3f);
+    }
+
+    public void OnSelect()
+    {
+        buttonImage.DOColor(ColorManager.SliderSelect, 0.3f);
+        panelImage.DOColor(ColorManager.PanelSelect, 0.3f);
+        
         xrAnimation.SetEase(ease);
         selectOutline.position = transform.position;
     }

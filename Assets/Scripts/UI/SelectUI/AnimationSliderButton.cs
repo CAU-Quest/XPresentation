@@ -17,9 +17,15 @@ public class AnimationSliderButton : SliderButton
     private const float SwipeLength = 500f;
     private SlideObjectData _selectedSlideObjectData;
     private Transform _activeTipTransform;
+    private AnimationPanel _animationPanel;
 
     public int currentSlideNum;
     public bool canUse = true;
+
+    private void Awake()
+    {
+        _animationPanel = GetComponentInParent<AnimationPanel>();
+    }
 
     public void SetSlideObjectDataWithIndex(SlideObjectData slideObjectData, int index)
     {
@@ -91,6 +97,7 @@ public class AnimationSliderButton : SliderButton
         if (!canUse) return;
         SetActiveTipTransform();
         base.OnSelectButton();
+        _animationPanel.transform.SetAsLastSibling();
         
         SetSelectColor();
         DOKill();
@@ -133,17 +140,14 @@ public class AnimationSliderButton : SliderButton
 
         if (tipLocalPosX - initialHandleLocalPos.x > SwipeLength)
         {
-            Debug.Log("A");
             handle.localPosition = new Vector3(initialHandleLocalPos.x + SwipeLength, initialHandleLocalPos.y, initialHandleLocalPos.z);
         }
         else if(tipLocalPosX - initialHandleLocalPos.x < -SwipeLength)
         {
-            Debug.Log("B");
             handle.localPosition = new Vector3(initialHandleLocalPos.x - SwipeLength, initialHandleLocalPos.y, initialHandleLocalPos.z);
         }
         else
         {
-            Debug.Log("C");
             handle.localPosition = new Vector3(tipLocalPosX, initialHandleLocalPos.y, initialHandleLocalPos.z);
         }
         return handle.localPosition.x;

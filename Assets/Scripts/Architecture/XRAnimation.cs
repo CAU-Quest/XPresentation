@@ -13,29 +13,12 @@ public class XRAnimation : XRIAnimation
 
     public SlideObjectData previousData;
     public SlideObjectData nextData;
-    public Ease ease = Ease.Linear;
+    public Ease ease;
+    
     private Sequence _sequence;
-
+    private bool _isInitialized;
     private Transform _previousTransform;
     private Material _previousMaterial;
-
-    public XRAnimation() 
-    {
-        _sequence = DOTween.Sequence().SetAutoKill(false)
-        .OnStart(() =>
-        {
-            _previousTransform.position = previousData.position;
-            _previousTransform.rotation = previousData.rotation;
-            _previousTransform.localScale = previousData.scale;
-            _previousMaterial.color = previousData.color;
-        })
-        .Append(_previousTransform.DOMove(nextData.position, 1f).SetEase(ease))
-        .Join(_previousTransform.DORotateQuaternion(nextData.rotation, 1f).SetEase(ease))
-        .Join(_previousTransform.DOScale(nextData.scale, 1f).SetEase(ease))
-        .Join(_previousMaterial.DOColor(nextData.color, 1f).SetEase(ease))
-        .AppendInterval(0.7f)
-        .SetLoops(-1, LoopType.Restart);
-    }
 
     public void Play()
     {
@@ -58,10 +41,16 @@ public class XRAnimation : XRIAnimation
 
     public void PlayPreview(Transform prevTrans, Material prevMat)
     {
-        _previousTransform= prevTrans;
-        _previousMaterial= prevMat;
-
-        _sequence.Play();
+        _previousTransform = prevTrans;
+        _previousMaterial = prevMat;
+        
+        if (!_isInitialized)
+        {
+            SetEase(Ease.Linear);
+            _isInitialized = true;
+        }
+        
+        _sequence.Restart();
     }
 
     public void StopPreview() 
@@ -70,12 +59,36 @@ public class XRAnimation : XRIAnimation
         _previousTransform.rotation = previousData.rotation;
         _previousTransform.localScale = previousData.scale;
         _previousMaterial.color = previousData.color;
-        _sequence.Kill();
+        _sequence.Pause();
     }
 
     public void SetEase(Ease newEase)
     {
         ease = newEase;
+
+        if (_isInitialized)
+        {
+            _previousTransform.position = previousData.position;
+            _previousTransform.rotation = previousData.rotation;
+            _previousTransform.localScale = previousData.scale;
+            _previousMaterial.color = previousData.color;
+            _sequence.Kill();
+        }
+
+        _sequence = DOTween.Sequence().SetAutoKill(false)
+            .OnStart(() =>
+            {
+                _previousTransform.position = previousData.position;
+                _previousTransform.rotation = previousData.rotation;
+                _previousTransform.localScale = previousData.scale;
+                _previousMaterial.color = previousData.color;
+            })
+            .Append(_previousTransform.DOMove(nextData.position, 1f).SetEase(ease))
+            .Join(_previousTransform.DORotateQuaternion(nextData.rotation, 1f).SetEase(ease))
+            .Join(_previousTransform.DOScale(nextData.scale, 1f).SetEase(ease))
+            .Join(_previousMaterial.DOColor(nextData.color, 1f).SetEase(ease))
+            .AppendInterval(0.7f)
+            .SetLoops(-1, LoopType.Restart);
     }
 
     public void SetParentObject(PresentationObject presentationObject)

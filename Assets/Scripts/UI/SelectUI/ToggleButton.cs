@@ -6,23 +6,24 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ToggleButton : MyButton, ISelectedObjectModifier
+public class ToggleButton : MonoBehaviour, ISelectedObjectModifier
 {
-    [SerializeField] private TextMeshProUGUI buttonText;
+    [SerializeField] protected Image buttonImage;
+    [SerializeField] private Image icon;
+    [SerializeField] private Sprite whenOn, whenOff;
 
-    private bool _isOn;
+    protected bool isOn;
     
     public PresentationObject SelectedObject { get; set; }
     public SlideObjectData CurrentSlideObjectData { get; set; }
     public SlideObjectData NewSlideObjectData { get; set; }
     public Action<PresentationObject, SlideObjectData> WhenHasModification { get; set; }
     
-    public void InitProperty(PresentationObject selectedObject)
+    public virtual void InitProperty(PresentationObject selectedObject)
     {
         SelectedObject = selectedObject;
-        _isOn = selectedObject.isGrabbableInPresentation;
-        buttonImage.DOColor((_isOn) ? ColorManager.ToggleSelected : ColorManager.ToggleUnselected, 0.3f);
-        buttonText.text = (_isOn) ? "V" : "";
+        buttonImage.DOColor((isOn) ? ColorManager.ToggleSelected : ColorManager.ToggleUnselected, 0.3f);
+        icon.sprite = (isOn) ? whenOn : whenOff;
     }
 
     public void UpdateSelectedObjectData(PresentationObject selectedObject, SlideObjectData data)
@@ -30,25 +31,20 @@ public class ToggleButton : MyButton, ISelectedObjectModifier
         selectedObject.ApplyDataToSlide(data);
     }
 
-    public override void OnHover()
+    public virtual void OnHover()
     {
-        buttonImage.DOColor((_isOn) ? ColorManager.ToggleSelectedHover : ColorManager.ToggleUnselectedHover, 0.3f);
+        buttonImage.DOColor((isOn) ? ColorManager.ToggleSelectedHover : ColorManager.ToggleUnselectedHover, 0.3f);
     }
 
-    public override void OnUnhover()
+    public virtual void OnUnhover()
     {
-        buttonImage.DOColor((_isOn) ? ColorManager.ToggleSelected : ColorManager.ToggleUnselected, 0.3f);
+        buttonImage.DOColor((isOn) ? ColorManager.ToggleSelected : ColorManager.ToggleUnselected, 0.3f);
     }
     
-    public override void OnSelect()
+    public virtual void OnSelect()
     {
         buttonImage.DOColor(ColorManager.ToggleSelect, 0.3f);
-        _isOn = !_isOn;
-        buttonText.text = (_isOn) ? "V" : "";
-        
-        SelectedObject.isGrabbableInPresentation = _isOn;
-        NewSlideObjectData = new SlideObjectData(CurrentSlideObjectData, _isOn);
-        WhenHasModification.Invoke(SelectedObject, NewSlideObjectData);
-        CurrentSlideObjectData = NewSlideObjectData;
+        isOn = !isOn;
+        icon.sprite = (isOn) ? whenOn : whenOff;
     }
 }

@@ -18,6 +18,8 @@ public class ColorSliderButton : SliderButton
     [SerializeField] private RawImage graduationImageA, graduationImageB;
         
     private Material _selectedMaterial;
+    private RawImage _selectedImage;
+    private DeployType _deployType;
     
     private void Start()
     {
@@ -28,7 +30,9 @@ public class ColorSliderButton : SliderButton
     public override void InitProperty(PresentationObject selectedObject)
     {
         SelectedObject = selectedObject;
-        _selectedMaterial = selectedObject.Material;
+        _deployType = selectedObject.deployType;
+        if(_deployType is DeployType.ImportImage or DeployType.Plane) _selectedImage = selectedObject.Image;
+        else _selectedMaterial = selectedObject.Material;
         
         SetHandleValuePanel(false);
         SetGraduation(false);
@@ -104,7 +108,8 @@ public class ColorSliderButton : SliderButton
     {
         base.UpdateValue(value);
         value /= 255f;
-        var color = _selectedMaterial.color;
+        var color = (_deployType is DeployType.ImportImage or DeployType.Plane) ? _selectedImage.color : _selectedMaterial.color;
+
         var newColor = color;
         
         switch (usage)
@@ -122,7 +127,9 @@ public class ColorSliderButton : SliderButton
                 newColor = new Color(color.r, color.g, color.b, value);
                 break;
         }
-        _selectedMaterial.color = newColor;
+
+        if(_deployType is DeployType.ImportImage or DeployType.Plane) _selectedImage.color = newColor;
+        else _selectedMaterial.color = newColor;
         
         NewSlideObjectData = new SlideObjectData(CurrentSlideObjectData, newColor);
         WhenHasModification.Invoke(SelectedObject, NewSlideObjectData);

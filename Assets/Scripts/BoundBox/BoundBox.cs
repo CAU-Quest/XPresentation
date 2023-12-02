@@ -147,7 +147,7 @@ namespace DimBoxes
 
         public virtual void SetLines()
         {
-            Debug.Log("BB-lr");
+            //Debug.Log("BB-lr");
             if (XRSelector.Instance.GetLineList() != null)
                 lineList = XRSelector.Instance.GetLineList();
             XRSelector.Instance.transformByVertexHandler.Init();
