@@ -17,11 +17,11 @@ public class TransformSliderButton : SliderButton
     private Transform _selectedTransform;
     private Transform _activeTipTransform;
     
-    public override void InitProperty(PresentationObject selectedObject)
+    public override void InitializeProperty(PresentationObject selectedObject)
     {
         SelectedObject = selectedObject;
         _selectedTransform = selectedObject.Transform;
-        base.InitProperty(selectedObject);
+        base.InitializeProperty(selectedObject);
     }
     
     protected override void SetInitialValue()

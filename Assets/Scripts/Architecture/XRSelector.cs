@@ -32,6 +32,7 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
     public TransformByVertexHandler transformByVertexHandler;
     public SelectObject selectObject;
     public IPresentationObject presentationObject;
+    public SelectUI selectUI;
     
     [Header("Line Properties")]
     

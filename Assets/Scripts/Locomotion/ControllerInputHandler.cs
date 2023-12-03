@@ -11,6 +11,8 @@ public class ControllerInputHandler : MonoBehaviour
     private ControllerTurn _turn;
     private bool _lastActiveL, _lastActiveR;
     private GrabInteractor _leftGrabInteractor, _rightGrabInteractor;
+    [SerializeField] private bool _isOnSelect;
+    private PresentationObject _selectedObject;
     
     //Switch Slider
     [SerializeField] private SnapListController snapListController;
@@ -26,7 +28,22 @@ public class ControllerInputHandler : MonoBehaviour
     {
         _leftGrabInteractor = PlayerManager.Instance.leftGrabInteractor;
         _rightGrabInteractor = PlayerManager.Instance.rightGrabInteractor;
+        XRSelector.Instance.selectUI.onOpen += EnableSwitchSlide;
+        XRSelector.Instance.selectUI.onClose += DisableSwitchSlide;
     }
+
+    private void EnableSwitchSlide()
+    {
+        _isOnSelect = true;
+        _selectedObject = (PresentationObject)XRSelector.Instance.presentationObject;
+    }
+    
+    private void DisableSwitchSlide()
+    {
+        _isOnSelect = false;
+        _selectedObject = null;
+    }
+
 
     private void Update()
     {
@@ -59,18 +76,40 @@ public class ControllerInputHandler : MonoBehaviour
             _isReadyToSwitch = true;
             return;
         }
-
         if (!_isReadyToSwitch) return;
-        
-        if (Vector2.Dot(axis.normalized, Vector2.left) > 0.5f)
+
+        if (_isOnSelect)
         {
-            snapListController.SwipeToLeft();
-            _isReadyToSwitch = false;
+            /*
+            var index = MainSystem.Instance.currentSlideNum;
+            if (Vector2.Dot(axis.normalized, Vector2.left) > 0.5f)
+            {
+                if(index - 1 < 0) return;
+                if (!_selectedObject.animationList[index].previousData.isVisible) return;
+                snapListController.SwipeToLeft();
+                _isReadyToSwitch = false;
+            }
+            else if (Vector2.Dot(axis.normalized, Vector2.right) > 0.5f)
+            {
+                if(index + 1 >= MainSystem.Instance.GetSlideCount()) return;
+                if (!_selectedObject.animationList[index].nextData.isVisible) return;
+                snapListController.SwipeToRight();
+                _isReadyToSwitch = false;
+            }
+            */
         }
-        else if (Vector2.Dot(axis.normalized, Vector2.right) > 0.5f)
+        else
         {
-            snapListController.SwipeToRight();
-            _isReadyToSwitch = false;
+            if (Vector2.Dot(axis.normalized, Vector2.left) > 0.5f)
+            {
+                snapListController.SwipeToLeft();
+                _isReadyToSwitch = false;
+            }
+            else if (Vector2.Dot(axis.normalized, Vector2.right) > 0.5f)
+            {
+                snapListController.SwipeToRight();
+                _isReadyToSwitch = false;
+            }
         }
     }
 }

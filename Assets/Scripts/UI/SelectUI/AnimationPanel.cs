@@ -49,11 +49,13 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
             ObserverSlideUpdate(MainSystem.Instance.currentSlideNum);
     }
 
-    public void InitProperty(PresentationObject selectedObject)
+    public void InitializeProperty(PresentationObject selectedObject)
     {
         ObserverObjectUpdate(selectedObject);
-        if (selectEasingButton) selectEasingButton.OnCanvasClose();
+        if (selectEasingButton) selectEasingButton.CloseCanvas();
     }
+
+    public void FinalizeProperty() { }
 
 
     public void ObserverObjectUpdate(IPresentationObject presentationObject)
@@ -73,6 +75,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
             }
             else
             {
+                toggleSlideButton.SetActive(false);
                 toggleSlideButton.gameObject.SetActive(false);
             }
 
@@ -85,6 +88,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
                 {
                     buttons[i].canUse = false;
                 }
+                toggleSlideButton.SetActive(false);
                 slideLabel.text = (index < 0 || index >= MainSystem.Instance.GetSlideCount()) ? "(Slide not exists)" : "(No object in this Slide)";
             }
             else
@@ -94,14 +98,14 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
                 if (selectEasingButton)
                 {
                     selectEasingButton.gameObject.SetActive(true);
-                    selectEasingButton.InitProperty((PresentationObject)selectedObject);
+                    selectEasingButton.InitializeProperty((PresentationObject)selectedObject);
                 }
                 if(animationPlayToggleButton) animationPlayToggleButton.SetActive(true);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = true;
                     buttons[i].SetSlideObjectDataWithIndex(slideObjectDatas[index], index);
-                    buttons[i].InitProperty((PresentationObject)presentationObject);
+                    buttons[i].InitializeProperty((PresentationObject)presentationObject);
                 }
                 slideLabel.text = "(Slide " + index + ")";
             }
@@ -135,6 +139,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
                 {
                     buttons[i].canUse = false;
                 }
+                toggleSlideButton.SetActive(false);
                 slideLabel.text = (index < 0 || index >= MainSystem.Instance.GetSlideCount()) ? "(Slide not exists)" : "(No object in this Slide)";
             }
             else
@@ -144,14 +149,14 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
                 if (selectEasingButton)
                 {
                     selectEasingButton.gameObject.SetActive(true);
-                    selectEasingButton.InitProperty((PresentationObject)selectedObject);
+                    selectEasingButton.InitializeProperty((PresentationObject)selectedObject);
                 }
                 if(animationPlayToggleButton) animationPlayToggleButton.SetActive(true);
                 for (int i = 0; i < buttons.Length; i++)
                 {
                     buttons[i].canUse = true;
                     buttons[i].SetSlideObjectDataWithIndex(slideObjectDatas[index], index);
-                    buttons[i].InitProperty((PresentationObject)selectedObject);
+                    buttons[i].InitializeProperty((PresentationObject)selectedObject);
                 }
                 slideLabel.text = "(Slide " + index + ")";
             }
@@ -209,6 +214,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
                 {
                     buttons[i].canUse = false;
                 }
+                toggleSlideButton.SetActive(false);
                 slideLabel.text = (index < 0 || index >= MainSystem.Instance.GetSlideCount()) ? "(Slide not exists)" : "(No object in this Slide)";
             }
             else
@@ -218,7 +224,7 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
                 if (selectEasingButton)
                 {
                     selectEasingButton.gameObject.SetActive(true);
-                    selectEasingButton.InitProperty((PresentationObject)selectedObject);
+                    selectEasingButton.InitializeProperty((PresentationObject)selectedObject);
                 }
                 if(animationPlayToggleButton) animationPlayToggleButton.SetActive(true);
                 for (int i = 0; i < buttons.Length; i++)

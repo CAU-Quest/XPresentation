@@ -45,28 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   selectedObject: {fileID: 0}
-  lineList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  vertexList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  lineList: []
+  vertexList: []
   linePrefab: {fileID: 5370678042930809666, guid: 60850739d9b32fc4e9f07781b47f6985,
     type: 3}
   vertexPrefab: {fileID: 4364084840784150526, guid: 15f7cc2a2be3de345b3a809eb97fae3e,
@@ -75,8 +55,11 @@ MonoBehaviour:
   boundBox: {fileID: 0}
   transformByVertexHandler: {fileID: 0}
   selectObject: {fileID: 0}
-  lineMaterial: {fileID: 2100000, guid: f001cd4316999e947ad51c079dcf17fc, type: 2}
-  lineWidth: 0.0184
-  lineColor: {r: 1, g: 1, b: 1, a: 1}
+  selectUI: {fileID: 0}
+  lineMaterial: {fileID: 2100000, guid: f00eacb03e686f3488b9ce77bb72d16e, type: 2}
+  lineWidth: 0.008
+  lineColor: {r: 0.8352941, g: 0.8509804, b: 1, a: 1}
   numCapVertices: 0
   edgeSelected: 0
+  beforeAnimationGhost: {fileID: 0}
+  afterAnimationGhost: {fileID: 0}

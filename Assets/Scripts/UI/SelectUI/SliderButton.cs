@@ -25,13 +25,15 @@ public class SliderButton : MonoBehaviour, ISelectedObjectModifier
     public SlideObjectData NewSlideObjectData { get; set; }
     public Action<PresentationObject, SlideObjectData> WhenHasModification { get; set; }
 
-    public virtual void InitProperty(PresentationObject selectedObject)
+    public virtual void InitializeProperty(PresentationObject selectedObject)
     {
         SetInitialValue();
         CurrentSlideObjectData = selectedObject.GetCurrentSlideObjectData();
         valueText.text = initialValue.ToString("0.0");
         handleValueText.text = initialValue.ToString("0.0");
     }
+
+    public void FinalizeProperty() { }
 
     public void UpdateSelectedObjectData(PresentationObject selectedObject, SlideObjectData data)
     {

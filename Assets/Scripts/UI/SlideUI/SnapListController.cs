@@ -29,6 +29,8 @@ public class SnapListController : MonoBehaviour, ISlideObserver
 
     public TextMeshProUGUI totalCount;
     private PreviewCube _lastHighlightedCube;
+
+    public GameObject[] visuals;
     
     // Start is called before the first frame update
     
@@ -45,6 +47,26 @@ public class SnapListController : MonoBehaviour, ISlideObserver
             totalCount.text = "/" + MainSystem.Instance.GetSlideCount().ToString("0");
         HighlightCenterIndexSupport(true);
         StartCoroutine("InitNumber");
+
+        //XRSelector.Instance.onSelect += SetVisualActive;
+        XRSelector.Instance.selectUI.onOpen += SetVisualInactive;
+        XRSelector.Instance.selectUI.onClose += SetVisualActive;
+    }
+
+    private void SetVisualActive()
+    {
+        foreach (var visual in visuals)
+        {
+            visual.SetActive(true);
+        }
+    }
+    
+    private void SetVisualInactive()
+    {
+        foreach (var visual in visuals)
+        {
+            visual.SetActive(false);
+        }
     }
 
     public void PlayAnimation()

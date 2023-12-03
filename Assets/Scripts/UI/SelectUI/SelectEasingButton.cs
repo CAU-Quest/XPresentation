@@ -15,7 +15,7 @@ public class SelectEasingButton : BTypeButton, ISelectedObjectModifierInitialize
 
     private bool _isButtonsFirstInitialized = true;
     
-    public void InitProperty(PresentationObject selectedObject)
+    public void InitializeProperty(PresentationObject selectedObject)
     {
         if (MainSystem.Instance.currentSlideNum - 1 < 0 && animationPanel.panelType == PanelType.Previous ||
             MainSystem.Instance.currentSlideNum > MainSystem.Instance.GetSlideCount() && animationPanel.panelType == PanelType.Next) return;
@@ -31,6 +31,8 @@ public class SelectEasingButton : BTypeButton, ISelectedObjectModifierInitialize
 
         UpdateText(selectedEase);
     }
+
+    public void FinalizeProperty() { }
 
     public void UpdateText(Ease ease)
     {
@@ -66,7 +68,7 @@ public class SelectEasingButton : BTypeButton, ISelectedObjectModifierInitialize
         animationPanel.transform.SetAsLastSibling();
     }
 
-    public void OnCanvasClose()
+    public void CloseCanvas()
     {
         canvas.SetActive(false);
         foreach (var button in buttons)

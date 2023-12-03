@@ -6,7 +6,7 @@ public class AnimationGhostCreator : MonoBehaviour, ISelectedObjectModifierIniti
 {
 
 
-    public void InitProperty(PresentationObject selectedObject)
+    public void InitializeProperty(PresentationObject selectedObject)
     { 
         Debug.Log("Animation Ghost Creator Init");
         XRSelector.Instance.EnableAnimationGhost();
@@ -25,4 +25,6 @@ public class AnimationGhostCreator : MonoBehaviour, ISelectedObjectModifierIniti
                 XRSelector.Instance.afterAnimationGhost.SetInvisible();
         }
     }
+
+    public void FinalizeProperty() { }
 }

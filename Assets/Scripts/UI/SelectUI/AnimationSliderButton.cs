@@ -38,10 +38,10 @@ public class AnimationSliderButton : SliderButton
         _selectedSlideObjectData = slideObjectData;
     }
     
-    public override void InitProperty(PresentationObject selectedObject)
+    public override void InitializeProperty(PresentationObject selectedObject)
     {
         SelectedObject = selectedObject;
-        base.InitProperty(selectedObject);
+        base.InitializeProperty(selectedObject);
     }
 
     protected override void SetInitialValue()

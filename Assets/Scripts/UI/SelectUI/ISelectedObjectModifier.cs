@@ -5,7 +5,8 @@ using UnityEngine;
 
 public interface ISelectedObjectModifierInitializer
 {
-    void InitProperty(PresentationObject selectedObject);
+    void InitializeProperty(PresentationObject selectedObject);
+    void FinalizeProperty();
 }
 
 public interface ISelectedObjectModifier : ISelectedObjectModifierInitializer

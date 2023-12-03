@@ -53,10 +53,12 @@ public class ColorPicker : MonoBehaviour, ISelectedObjectModifierInitializer
         aComponent.onValueChanged.AddListener(SetA);
     }
     
-    public void InitProperty(PresentationObject selectedObject)
+    public void InitializeProperty(PresentationObject selectedObject)
     {
         Create(selectedObject.Material.color, "", null, null);
     }
+
+    public void FinalizeProperty() { }
 
     /// <summary>
     /// Creates a new Colorpicker

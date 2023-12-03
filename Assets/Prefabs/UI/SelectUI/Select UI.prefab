@@ -5914,6 +5914,7 @@ MonoBehaviour:
   whenOff: {fileID: 21300000, guid: 4c826502468371d41a2fc0d9fa598fd3, type: 3}
   presentationObject: {fileID: 0}
   currentSlideNumber: 0
+  selectEasingButton: {fileID: 0}
 --- !u!114 &8867564440017104233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6328,6 +6329,7 @@ MonoBehaviour:
   whenOff: {fileID: 21300000, guid: 4c826502468371d41a2fc0d9fa598fd3, type: 3}
   presentationObject: {fileID: 0}
   currentSlideNumber: 0
+  selectEasingButton: {fileID: 0}
 --- !u!114 &8610833631414724012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12928,7 +12930,7 @@ MonoBehaviour:
   panelType: 1
   cannotUsePanel: {fileID: 3416653079817733380}
   selectEasingButton: {fileID: 4328516593359251750}
-  animationPlayToggle: {fileID: 6504955841845433471}
+  animationPlayToggleButton: {fileID: 6504955841845433471}
   slideLabel: {fileID: 883169457952229617}
   toggleSlideButton: {fileID: 3284233083596252949}
 --- !u!1 &4328866497147169253
@@ -13166,6 +13168,7 @@ MonoBehaviour:
   whenOff: {fileID: 21300000, guid: 4c826502468371d41a2fc0d9fa598fd3, type: 3}
   presentationObject: {fileID: 0}
   currentSlideNumber: 0
+  selectEasingButton: {fileID: 0}
 --- !u!114 &2146744179000667627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17622,7 +17625,7 @@ MonoBehaviour:
   panelType: -1
   cannotUsePanel: {fileID: 1188235289890293903}
   selectEasingButton: {fileID: 4415168226675690108}
-  animationPlayToggle: {fileID: 2418138346858514554}
+  animationPlayToggleButton: {fileID: 2418138346858514554}
   slideLabel: {fileID: 3023381241938304207}
   toggleSlideButton: {fileID: 6605689399857577192}
 --- !u!1 &5793074701498921549
@@ -22465,7 +22468,7 @@ MonoBehaviour:
   panelType: 0
   cannotUsePanel: {fileID: 2089035914556664686}
   selectEasingButton: {fileID: 0}
-  animationPlayToggle: {fileID: 0}
+  animationPlayToggleButton: {fileID: 0}
   slideLabel: {fileID: 7516292169473427389}
   toggleSlideButton: {fileID: 7467141506971980356}
 --- !u!1 &7183325103100327100

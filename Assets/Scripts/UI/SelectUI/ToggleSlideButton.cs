@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ToggleSlideButton : ToggleButton
+public class ToggleSlideButton : ATypeToggleButton
 {
     [HideInInspector] public PresentationObject presentationObject;
     [HideInInspector] public int currentSlideNumber;
@@ -18,7 +18,7 @@ public class ToggleSlideButton : ToggleButton
         presentationObject.ApplyDataToSlideWithIndex(so, currentSlideNumber);
         XRSelector.Instance.NotifySlideObjectDataChangeToObservers();
 
-        if (isOn) selectEasingButton.InitProperty(presentationObject);
+        if (isOn) selectEasingButton.InitializeProperty(presentationObject);
     }
 
     public void SetActive(bool isActive)

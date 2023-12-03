@@ -27,7 +27,7 @@ public class ColorSliderButton : SliderButton
         slider.gameObject.SetActive(false);
     }
 
-    public override void InitProperty(PresentationObject selectedObject)
+    public override void InitializeProperty(PresentationObject selectedObject)
     {
         SelectedObject = selectedObject;
         _deployType = selectedObject.deployType;
@@ -39,7 +39,7 @@ public class ColorSliderButton : SliderButton
         SetValuePanel(true);
         handle.gameObject.SetActive(false);
         
-        base.InitProperty(selectedObject);
+        base.InitializeProperty(selectedObject);
     }
     
     protected override void SetInitialValue()

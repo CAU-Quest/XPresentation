@@ -2,12 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ToggleGrabbable : ToggleButton
+public class ToggleGrabbable : ATypeToggleButton
 {
-    public override void InitProperty(PresentationObject selectedObject)
+    public override void InitializeProperty(PresentationObject selectedObject)
     {
         isOn = selectedObject.isGrabbableInPresentation;
-        base.InitProperty(selectedObject);
+        base.InitializeProperty(selectedObject);
     }
     
     public override void OnSelect()

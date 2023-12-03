@@ -22,6 +22,7 @@ public class SelectUI : MonoBehaviour
     private ISelectedObjectModifierInitializer[][] _initializers;
     private ISelectedObjectModifier[][] _modifiers;
     private bool _isOpened;
+    public Action onOpen, onClose;
     
     private void Awake()
     {
@@ -46,6 +47,7 @@ public class SelectUI : MonoBehaviour
         PlayerManager.Instance.rightGrabInteractor.onSelect += GetSelectedObjectInfo;
         PlayerManager.Instance.leftRayInteractor.onSelect += GetSelectedObjectInfo;
         PlayerManager.Instance.rightRayInteractor.onSelect += GetSelectedObjectInfo;
+        onClose += XRSelector.Instance.DeactivateBoundBox;
         
         CloseUI();
     }
@@ -88,10 +90,11 @@ public class SelectUI : MonoBehaviour
 
         foreach (var component in _initializers[(int)Mode.Transform])
         {
-            component.InitProperty(selectedObject);
+            component.InitializeProperty(selectedObject);
         }
 
         _isOpened = true;
+        onOpen?.Invoke();
     }
 
     public void CloseUI()
@@ -103,6 +106,7 @@ public class SelectUI : MonoBehaviour
 
         selectedObject = null;
         _isOpened = false;
+        onClose?.Invoke();
     }
 
     public void OnHover(int index)
@@ -134,6 +138,11 @@ public class SelectUI : MonoBehaviour
 
     private void Select(Mode mode)
     {
+        foreach (var component in _initializers[(int)_mode])
+        {
+            component.FinalizeProperty();
+        }
+        
         _mode = mode;
         var modeIndex = (int)mode - 1;
         
@@ -153,7 +162,7 @@ public class SelectUI : MonoBehaviour
 
         foreach (var component in _initializers[(int)mode])
         {
-            component.InitProperty(selectedObject);
+            component.InitializeProperty(selectedObject);
         }
     }
 }
