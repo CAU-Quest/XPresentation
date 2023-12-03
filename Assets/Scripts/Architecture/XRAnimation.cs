@@ -16,7 +16,7 @@ public class XRAnimation : XRIAnimation
     public Ease ease;
     
     private Sequence _sequence;
-    private bool _isInitialized;
+    private bool _isInitialized, _isPreviewPlaying;
     private Transform _previousTransform;
     private Material _previousMaterial;
 
@@ -52,16 +52,16 @@ public class XRAnimation : XRIAnimation
 
     public void PlayPreview(Transform prevTrans, Material prevMat)
     {
+        UpdateData(prevTrans, prevMat);
+        GenerateSequence();
+        _sequence.Restart();
+        _isPreviewPlaying = true;
+    }
+
+    public void UpdateData(Transform prevTrans, Material prevMat)
+    {
         _previousTransform = prevTrans;
         _previousMaterial = prevMat;
-        
-        if (!_isInitialized)
-        {
-            SetEase(Ease.Linear);
-            _isInitialized = true;
-        }
-        
-        _sequence.Restart();
     }
 
     public void StopPreview() 
@@ -71,13 +71,23 @@ public class XRAnimation : XRIAnimation
         _previousTransform.localScale = previousData.scale;
         _previousMaterial.color = previousData.color;
         _sequence.Pause();
+        _isPreviewPlaying = false;
     }
 
     public void SetEase(Ease newEase)
     {
         ease = newEase;
+        GenerateSequence();
+    }
 
-        if (_isInitialized)
+    public void GenerateSequence()
+    {
+        if (!_isInitialized)
+        {
+            ease = Ease.Linear;
+            _isInitialized = true;
+        }
+        else
         {
             _previousTransform.position = previousData.position;
             _previousTransform.rotation = previousData.rotation;
@@ -85,7 +95,7 @@ public class XRAnimation : XRIAnimation
             _previousMaterial.color = previousData.color;
             _sequence.Kill();
         }
-
+        
         _sequence = DOTween.Sequence().SetAutoKill(false)
             .OnStart(() =>
             {
@@ -100,6 +110,8 @@ public class XRAnimation : XRIAnimation
             .Join(_previousMaterial.DOColor(nextData.color, 1.5f).SetEase(ease))
             .AppendInterval(0.7f)
             .SetLoops(-1, LoopType.Restart);
+        
+        if(_isPreviewPlaying) _sequence.Restart();
     }
 
     public void SetParentObject(PresentationObject presentationObject)

@@ -62,7 +62,6 @@ public class SelectObject : MonoBehaviour
         {
             XRSelector.Instance.vertexList[i].gameObject.SetActive(false);
         }
-        XRSelector.Instance.onSelect?.Invoke(false);
     }
     public void Select()
     {
@@ -109,6 +108,5 @@ public class SelectObject : MonoBehaviour
             XRSelector.Instance.vertexList[4].gameObject.SetActive(true);
             XRSelector.Instance.vertexList[5].gameObject.SetActive(true);
         }
-        XRSelector.Instance.onSelect?.Invoke(true);
     }
 }

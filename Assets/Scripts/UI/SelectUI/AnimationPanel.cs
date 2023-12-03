@@ -27,7 +27,8 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
 
     public TextMeshProUGUI slideLabel;
     public ToggleSlideButton toggleSlideButton;
-    
+
+    public XRAnimation xrAnimation;
     
     #region Observer Handler
     
@@ -49,10 +50,18 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
             ObserverSlideUpdate(MainSystem.Instance.currentSlideNum);
     }
 
-    public void InitializeProperty(PresentationObject selectedObject)
+    public void InitializeProperty(PresentationObject newSelectedObject)
     {
-        ObserverObjectUpdate(selectedObject);
+        ObserverObjectUpdate(newSelectedObject);
         if (selectEasingButton) selectEasingButton.CloseCanvas();
+        if (panelType == PanelType.Previous)
+        {
+            if(MainSystem.Instance.currentSlideNum - 1 >= 0) xrAnimation = newSelectedObject.animationList[MainSystem.Instance.currentSlideNum - 1];
+        } 
+        else if (panelType == PanelType.Next)
+        {
+            if(MainSystem.Instance.currentSlideNum < MainSystem.Instance.GetSlideCount()) xrAnimation = newSelectedObject.animationList[MainSystem.Instance.currentSlideNum];
+        }
     }
 
     public void FinalizeProperty() { }

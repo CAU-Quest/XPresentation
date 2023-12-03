@@ -31,6 +31,9 @@ public class AnimationSliderButton : SliderButton
     {
         _selectedSlideObjectData = slideObjectData;
         currentSlideNum = index;
+
+        SetInitialValue();
+        base.UpdateValue(initialValue);
     }
     
     public void SetSlideObjectData(SlideObjectData slideObjectData)
@@ -211,14 +214,18 @@ public class AnimationSliderButton : SliderButton
         if(currentSlideNum == MainSystem.Instance.currentSlideNum)
             SelectedObject.ApplyDataToObject(NewSlideObjectData);
         _selectedSlideObjectData = NewSlideObjectData;
+        
+        
         if (currentSlideNum < MainSystem.Instance.currentSlideNum)
         {
             XRSelector.Instance.beforeAnimationGhost.ApplySlideObjectData(NewSlideObjectData);
-        } else if (currentSlideNum > MainSystem.Instance.currentSlideNum)
+        } 
+        else if (currentSlideNum > MainSystem.Instance.currentSlideNum)
         {
             XRSelector.Instance.afterAnimationGhost.ApplySlideObjectData(NewSlideObjectData);
         }
         XRSelector.Instance.NotifySlideObjectDataChangeToObservers();
+        
         base.UpdateValue(value);
     }
     

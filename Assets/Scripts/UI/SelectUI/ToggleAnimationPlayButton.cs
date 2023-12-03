@@ -1,23 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class ToggleAnimationPlayButton : ATypeToggleButton
 {
-    [SerializeField] private AnimationPanel animationPanel;
+    [SerializeField] private AnimationPanel myAnimationPanel;
+    [SerializeField] private AnimationPanel[] otherAnimationPanels;
+    [SerializeField] private GameObject cannotUsePanel;
+    private bool _canUse;
+    [SerializeField] private ToggleAnimationPlayButton otherToggle;
+
+    public void SetUsable(bool isUsable)
+    {
+        _canUse = isUsable;
+        cannotUsePanel.SetActive(!isUsable);
+    }
+
+    public override void OnHover()
+    {
+        if(!_canUse) return;
+        base.OnHover();
+    }
+
+    public override void OnUnhover()
+    {
+        if(!_canUse) return;
+        base.OnUnhover();
+    }
     
     public override void OnSelect()
     {
+        if(!_canUse) return;
         base.OnSelect();
         
-        if (animationPanel.panelType == PanelType.Previous)
+        if (myAnimationPanel.panelType == PanelType.Previous)
         {
-            var xrAnimation = ((PresentationObject)animationPanel.selectedObject).animationList[
+            var xrAnimation = ((PresentationObject)myAnimationPanel.selectedObject).animationList[
                 MainSystem.Instance.currentSlideNum - 1];
             
             var prevTrans = XRSelector.Instance.beforeAnimationGhost.transform;
-            var prevMat = prevTrans.GetComponentInChildren<MeshRenderer>().material;
+            var prevMat = XRSelector.Instance.beforeAnimationGhost.meshRenderer.material;
 
             if (isOn)
             {
@@ -30,13 +54,13 @@ public class ToggleAnimationPlayButton : ATypeToggleButton
                 XRSelector.Instance.ActivateBoundBox();
             }
         }
-        else if (animationPanel.panelType == PanelType.Next)
+        else if (myAnimationPanel.panelType == PanelType.Next)
         {
-            var xrAnimation = ((PresentationObject)animationPanel.selectedObject).animationList[
+            var xrAnimation = ((PresentationObject)myAnimationPanel.selectedObject).animationList[
                 MainSystem.Instance.currentSlideNum];
 
-            var prevTrans = ((PresentationObject)animationPanel.selectedObject).transform;
-            var prevMat = prevTrans.GetComponentInChildren<MeshRenderer>().material;
+            var prevTrans = ((PresentationObject)myAnimationPanel.selectedObject).transform.parent;
+            var prevMat = ((PresentationObject)myAnimationPanel.selectedObject).Material;
 
             if (isOn)
             {
@@ -49,6 +73,24 @@ public class ToggleAnimationPlayButton : ATypeToggleButton
                 XRSelector.Instance.ActivateBoundBox();
             }
         }
+        
+        
+        for (int i = 0; i < myAnimationPanel.buttons.Length; i++)
+        {
+            myAnimationPanel.cannotUsePanel.SetActive(isOn);
+            myAnimationPanel.buttons[i].canUse = !isOn;
+        }
+
+        foreach (var animationPanel in otherAnimationPanels)
+        {
+            for (int i = 0; i < animationPanel.buttons.Length; i++)
+            {
+                myAnimationPanel.cannotUsePanel.SetActive(isOn);
+                animationPanel.buttons[i].canUse = !isOn;
+            }
+        }
+        
+        otherToggle.SetUsable(!isOn);
     }
 
     public override void FinalizeProperty()

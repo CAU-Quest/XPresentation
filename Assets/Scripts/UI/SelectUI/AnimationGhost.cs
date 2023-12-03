@@ -46,8 +46,8 @@ public class AnimationGhost : MonoBehaviour
 
     public void Start()
     {
-        meshFilter = GetComponent<MeshFilter>();
-        meshRenderer = GetComponent<MeshRenderer>();
+        meshFilter = GetComponentInChildren<MeshFilter>();
+        meshRenderer = GetComponentInChildren<MeshRenderer>();
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.enabled = false;
     }
@@ -111,7 +111,7 @@ public class AnimationGhost : MonoBehaviour
     public void ApplySlideObjectData(SlideObjectData slideObjectData)
     {
         transform.SetPositionAndRotation(slideObjectData.position, slideObjectData.rotation);
-        transform.localScale = Vector3.Scale(slideObjectData.scale, initialScale);
+        transform.localScale = slideObjectData.scale;
         SetColor(slideObjectData.color);
         if (slideObjectData.isVisible)
         {

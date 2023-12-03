@@ -4468,7 +4468,7 @@ RectTransform:
   m_Father: {fileID: 3779057007560620338}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 4, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -6683,6 +6683,7 @@ RectTransform:
   m_Children:
   - {fileID: 5092378210464098830}
   - {fileID: 1637485481369450737}
+  - {fileID: 1338819180161024817}
   m_Father: {fileID: 6388644718363590951}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -6850,7 +6851,12 @@ MonoBehaviour:
   icon: {fileID: 6762417745401340262}
   whenOn: {fileID: 21300000, guid: 42d35fd1efda1864dab0c58f123cdbcf, type: 3}
   whenOff: {fileID: 21300000, guid: 5c555d1bdc3316a4a98cdbc1354b13d1, type: 3}
-  animationPanel: {fileID: 2221699332749396395}
+  myAnimationPanel: {fileID: 2221699332749396395}
+  otherAnimationPanels:
+  - {fileID: 3449956759398153195}
+  - {fileID: 8091198750621102195}
+  cannotUsePanel: {fileID: 8336305748980104333}
+  otherToggle: {fileID: 167224963474503586}
 --- !u!1 &2445536385656986256
 GameObject:
   m_ObjectHideFlags: 0
@@ -12933,6 +12939,25 @@ MonoBehaviour:
   animationPlayToggleButton: {fileID: 6504955841845433471}
   slideLabel: {fileID: 883169457952229617}
   toggleSlideButton: {fileID: 3284233083596252949}
+  xrAnimation:
+    presentationObject: {fileID: 0}
+    previousData:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 0}
+      scale: {x: 0, y: 0, z: 0}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      isGrabbable: 0
+      isVisible: 0
+      isVideo: 0
+    nextData:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 0}
+      scale: {x: 0, y: 0, z: 0}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      isGrabbable: 0
+      isVisible: 0
+      isVideo: 0
+    ease: 1
 --- !u!1 &4328866497147169253
 GameObject:
   m_ObjectHideFlags: 0
@@ -14464,6 +14489,81 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &4779943128355539177
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8356232000892422843}
+  - component: {fileID: 2697635466692480430}
+  - component: {fileID: 4965300189319128067}
+  m_Layer: 5
+  m_Name: CannotUse Pannel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &8356232000892422843
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779943128355539177}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0000745058}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 5540135071391722913}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.00012207031, y: 0.00024414062}
+  m_SizeDelta: {x: 240, y: 240}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &2697635466692480430
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779943128355539177}
+  m_CullTransparentMesh: 1
+--- !u!114 &4965300189319128067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4779943128355539177}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.8509804, g: 0.8509804, b: 0.93333334, a: 0.45490196}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 9b52e1e88a0c40d4da85bc70d0757efb, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &4873343825296888002
 GameObject:
   m_ObjectHideFlags: 0
@@ -17628,6 +17728,25 @@ MonoBehaviour:
   animationPlayToggleButton: {fileID: 2418138346858514554}
   slideLabel: {fileID: 3023381241938304207}
   toggleSlideButton: {fileID: 6605689399857577192}
+  xrAnimation:
+    presentationObject: {fileID: 0}
+    previousData:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 0}
+      scale: {x: 0, y: 0, z: 0}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      isGrabbable: 0
+      isVisible: 0
+      isVideo: 0
+    nextData:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 0}
+      scale: {x: 0, y: 0, z: 0}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      isGrabbable: 0
+      isVisible: 0
+      isVideo: 0
+    ease: 1
 --- !u!1 &5793074701498921549
 GameObject:
   m_ObjectHideFlags: 0
@@ -20098,6 +20217,7 @@ RectTransform:
   m_Children:
   - {fileID: 2426786954177010384}
   - {fileID: 284885511398796101}
+  - {fileID: 8356232000892422843}
   m_Father: {fileID: 2406087477898053329}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -20265,7 +20385,12 @@ MonoBehaviour:
   icon: {fileID: 5608145062384072260}
   whenOn: {fileID: 21300000, guid: 42d35fd1efda1864dab0c58f123cdbcf, type: 3}
   whenOff: {fileID: 21300000, guid: 5c555d1bdc3316a4a98cdbc1354b13d1, type: 3}
-  animationPanel: {fileID: 8091198750621102195}
+  myAnimationPanel: {fileID: 8091198750621102195}
+  otherAnimationPanels:
+  - {fileID: 3449956759398153195}
+  - {fileID: 2221699332749396395}
+  cannotUsePanel: {fileID: 4779943128355539177}
+  otherToggle: {fileID: 9067306109873086168}
 --- !u!1 &6505862309396531970
 GameObject:
   m_ObjectHideFlags: 0
@@ -22471,6 +22596,25 @@ MonoBehaviour:
   animationPlayToggleButton: {fileID: 0}
   slideLabel: {fileID: 7516292169473427389}
   toggleSlideButton: {fileID: 7467141506971980356}
+  xrAnimation:
+    presentationObject: {fileID: 0}
+    previousData:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 0}
+      scale: {x: 0, y: 0, z: 0}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      isGrabbable: 0
+      isVisible: 0
+      isVideo: 0
+    nextData:
+      position: {x: 0, y: 0, z: 0}
+      rotation: {x: 0, y: 0, z: 0, w: 0}
+      scale: {x: 0, y: 0, z: 0}
+      color: {r: 0, g: 0, b: 0, a: 0}
+      isGrabbable: 0
+      isVisible: 0
+      isVideo: 0
+    ease: 1
 --- !u!1 &7183325103100327100
 GameObject:
   m_ObjectHideFlags: 0
@@ -25967,6 +26111,81 @@ MonoBehaviour:
   slider: {fileID: 3780013792288630227}
   graduationImageA: {fileID: 7034805500233679245}
   graduationImageB: {fileID: 3313254801060621815}
+--- !u!1 &8336305748980104333
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1338819180161024817}
+  - component: {fileID: 302369469507291761}
+  - component: {fileID: 379771273888599972}
+  m_Layer: 5
+  m_Name: CannotUse Pannel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1338819180161024817
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8336305748980104333}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.0001117587}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 6742463484161522288}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -0.00018310547}
+  m_SizeDelta: {x: 240, y: 240}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &302369469507291761
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8336305748980104333}
+  m_CullTransparentMesh: 1
+--- !u!114 &379771273888599972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8336305748980104333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.8509804, g: 0.8509804, b: 0.93333334, a: 0.45490196}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 9b52e1e88a0c40d4da85bc70d0757efb, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
 --- !u!1 &8354474083305045846
 GameObject:
   m_ObjectHideFlags: 0

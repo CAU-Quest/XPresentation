@@ -115,17 +115,14 @@ public class TransformSliderButton : SliderButton
 
         if (tipLocalPosX - initialHandleLocalPos.x > SwipeLength)
         {
-            Debug.Log("A");
             handle.localPosition = new Vector3(initialHandleLocalPos.x + SwipeLength, initialHandleLocalPos.y, initialHandleLocalPos.z);
         }
         else if(tipLocalPosX - initialHandleLocalPos.x < -SwipeLength)
         {
-            Debug.Log("B");
             handle.localPosition = new Vector3(initialHandleLocalPos.x - SwipeLength, initialHandleLocalPos.y, initialHandleLocalPos.z);
         }
         else
         {
-            Debug.Log("C");
             handle.localPosition = new Vector3(tipLocalPosX, initialHandleLocalPos.y, initialHandleLocalPos.z);
         }
         return handle.localPosition.x;
