@@ -37,7 +37,7 @@ namespace ES3Types
 						instance.id = reader.Read<System.UInt32>(ES3Type_uint.Instance);
 						break;
 					case "deployType":
-						instance.deployType = reader.Read<DeployType>(ES3Type_enum.Instance);
+						instance.deployType = reader.Read<DeployType>();
 						break;
 					case "slideObjectDatas":
 						instance.slideObjectDatas = reader.Read<System.Collections.Generic.List<SlideObjectData>>();

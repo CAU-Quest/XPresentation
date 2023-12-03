@@ -497,7 +497,8 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
         if (boundObjectType == BoundObjectType.ThreeDimension)
         {
             transform.rotation = selectedObject.transform.rotation;
-        
+            
+            boundBox.UpdateBounds();
             centerPositionByVertex.SetVertex();
             boundBox.SetLines();
             transformByVertexHandler.SetVertex();

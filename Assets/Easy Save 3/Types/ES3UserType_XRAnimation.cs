@@ -1,11 +1,10 @@
 using System;
-using DG.Tweening;
 using UnityEngine;
 
 namespace ES3Types
 {
 	[UnityEngine.Scripting.Preserve]
-	[ES3PropertiesAttribute("presentationObject", "previousData", "nextData", "lerpFunction")]
+	[ES3PropertiesAttribute("previousData", "nextData", "ease")]
 	public class ES3UserType_XRAnimation : ES3ObjectType
 	{
 		public static ES3Type Instance = null;
@@ -17,10 +16,9 @@ namespace ES3Types
 		{
 			var instance = (XRAnimation)obj;
 			
-			writer.WritePropertyByRef("presentationObject", instance.presentationObject);
 			writer.WriteProperty("previousData", instance.previousData, ES3UserType_SlideObjectData.Instance);
 			writer.WriteProperty("nextData", instance.nextData, ES3UserType_SlideObjectData.Instance);
-			writer.WriteProperty("lerpFunction", instance.ease, ES3Type_AnimationCurve.Instance);
+			writer.WriteProperty("ease", instance.ease, ES3Internal.ES3TypeMgr.GetOrCreateES3Type(typeof(DG.Tweening.Ease)));
 		}
 
 		protected override void ReadObject<T>(ES3Reader reader, object obj)
@@ -31,17 +29,14 @@ namespace ES3Types
 				switch(propertyName)
 				{
 					
-					case "presentationObject":
-						instance.presentationObject = reader.Read<PresentationObject>();
-						break;
 					case "previousData":
 						instance.previousData = reader.Read<SlideObjectData>(ES3UserType_SlideObjectData.Instance);
 						break;
 					case "nextData":
 						instance.nextData = reader.Read<SlideObjectData>(ES3UserType_SlideObjectData.Instance);
 						break;
-					case "lerpFunction":
-						//instance.ease = reader.Read<Ease>(ES3Type_AnimationCurve.Instance);
+					case "ease":
+						instance.ease = reader.Read<DG.Tweening.Ease>();
 						break;
 					default:
 						reader.Skip();

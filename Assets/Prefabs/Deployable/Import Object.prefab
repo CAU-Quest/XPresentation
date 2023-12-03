@@ -438,7 +438,6 @@ GameObject:
   - component: {fileID: 6409312923809360494}
   - component: {fileID: 1964430995738792171}
   - component: {fileID: 7881047878927054293}
-  - component: {fileID: 8975159071017548124}
   m_Layer: 8
   m_Name: Element
   m_TagString: Untagged
@@ -557,7 +556,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 8975159071017548124}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: PresentationObject, Assembly-CSharp
         m_MethodName: UpdateCurrentObjectDataInSlide
         m_Mode: 1
@@ -575,21 +574,3 @@ MonoBehaviour:
   _whenCancel:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &8975159071017548124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7003941448682061235}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e880f35209e766e41805117c4218a92d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: 1
-  animationList: []
-  slideData: []
-  deployType: 7
-  isGrabbableInPresentation: 1
-  isVisible: 1

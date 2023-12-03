@@ -156,7 +156,8 @@ public class ObjectCreator : MonoBehaviour
 
 			string destinationPath = Path.Combine( Application.persistentDataPath, FileBrowserHelpers.GetFilename( FileBrowser.Result[0] ) );
 			FileBrowserHelpers.CopyFile( FileBrowser.Result[0], destinationPath );
-			
+
+			string savePath = destinationPath;
 			
 			loadedObject.GetComponentInParent<SelectObject>().imagePath = destinationPath;
 			Texture2D loadedTexture = new Texture2D(1, 1);

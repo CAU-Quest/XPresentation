@@ -150,10 +150,12 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         {
             saveObjectData.objectPath = GetComponentInParent<SelectObject>().objectPath;
             saveObjectData.imagePath = GetComponentInParent<SelectObject>().imagePath;
-            saveObjectData.objectPath.Replace("\\", "#");
+            saveObjectData.objectPath = saveObjectData.objectPath.Replace("\\", "#");
+            saveObjectData.imagePath = saveObjectData.imagePath.Replace("\\", "#");
         } else if (deployType == DeployType.ImportImage)
         {
             saveObjectData.imagePath = GetComponentInParent<SelectObject>().imagePath;
+            saveObjectData.imagePath = saveObjectData.imagePath.Replace("\\", "#");
         }
         Debug.Log(saveObjectData.imagePath);
         
@@ -311,7 +313,8 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         
         meshRenderer = GetComponentInChildren<MeshRenderer>();
 
-        transform.GetChild(1).TryGetComponent(out RawImage image);
+        image = GetComponentInChildren<RawImage>();
+        //transform.GetChild(1).TryGetComponent(out RawImage image);
         
         canvas = GetComponentInChildren<Canvas>();
         grabbable = GetComponent<Grabbable>();
@@ -341,6 +344,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
                 slideObjectData.isVisible = nextSlideData.isVisible;
                 slideObjectData.isGrabbable = nextSlideData.isGrabbable;
                 if (meshRenderer != null) slideObjectData.color = meshRenderer.material.color;
+                if (Image != null) slideObjectData.color = Image.color;
                 
                 nextSlideData = new SlideObjectData();
                 nextSlideData.position = Vector3.zero;
@@ -356,6 +360,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
                     slideObjectData.rotation = transform.parent.rotation;
                     slideObjectData.scale = transform.parent.localScale;
                     if (meshRenderer != null) slideObjectData.color = meshRenderer.material.color;
+                    if (Image != null) slideObjectData.color = Image.color;
                     slideObjectData.isVisible = true;
                     slideObjectData.isGrabbable = true;
                 }
@@ -513,7 +518,11 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     public void UpdateCurrentObjectDataInSlide()
     {
         var parent = transform.parent;
-        var color = (meshRenderer != null) ? meshRenderer.material.color : Color.white;
+        Color color = Color.white;
+        if (meshRenderer != null)
+            color = meshRenderer.material.color;
+        if (Image != null)
+            color = Image.color;
         var data = new SlideObjectData(parent.position, parent.rotation, parent.localScale, color, grabbable, isVisible);
         
         ApplyDataToSlide(data);
@@ -540,7 +549,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         transform.parent.SetPositionAndRotation(data.position, data.rotation);
         transform.parent.localScale = data.scale;
         if (meshRenderer != null && MainSystem.Instance.mode != MainSystem.Mode.Animation) meshRenderer.material.color = data.color;
-        
+        if (Image != null && MainSystem.Instance.mode != MainSystem.Mode.Animation) Image.color = data.color;
         if (data.isVisible)
         {
             SetVisible();
