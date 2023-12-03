@@ -32,10 +32,10 @@ public class ControllerInputHandler : MonoBehaviour
         XRSelector.Instance.selectUI.onClose += DisableSwitchSlide;
     }
 
-    private void EnableSwitchSlide()
+    private void EnableSwitchSlide(PresentationObject selectedObject)
     {
         _isOnSelect = true;
-        _selectedObject = (PresentationObject)XRSelector.Instance.presentationObject;
+        _selectedObject = selectedObject;
     }
     
     private void DisableSwitchSlide()
@@ -80,7 +80,7 @@ public class ControllerInputHandler : MonoBehaviour
 
         if (_isOnSelect)
         {
-            /*
+            
             var index = MainSystem.Instance.currentSlideNum;
             if (Vector2.Dot(axis.normalized, Vector2.left) > 0.5f)
             {
@@ -96,7 +96,7 @@ public class ControllerInputHandler : MonoBehaviour
                 snapListController.SwipeToRight();
                 _isReadyToSwitch = false;
             }
-            */
+            
         }
         else
         {

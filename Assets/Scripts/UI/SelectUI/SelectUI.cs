@@ -22,7 +22,8 @@ public class SelectUI : MonoBehaviour
     private ISelectedObjectModifierInitializer[][] _initializers;
     private ISelectedObjectModifier[][] _modifiers;
     private bool _isOpened;
-    public Action onOpen, onClose;
+    public Action<PresentationObject> onOpen;
+    public Action onClose;
     
     private void Awake()
     {
@@ -94,7 +95,7 @@ public class SelectUI : MonoBehaviour
         }
 
         _isOpened = true;
-        onOpen?.Invoke();
+        onOpen?.Invoke(selectedObject);
     }
 
     public void CloseUI()

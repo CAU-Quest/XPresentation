@@ -61,7 +61,7 @@ public class SnapListController : MonoBehaviour, ISlideObserver
         }
     }
     
-    private void SetVisualInactive()
+    private void SetVisualInactive(PresentationObject selectedObject)
     {
         foreach (var visual in visuals)
         {
