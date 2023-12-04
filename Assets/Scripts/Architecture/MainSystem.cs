@@ -118,11 +118,15 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
 
     #region Video Handler
 
-    public void CreateVideoAfterCurrentSlide()
+    public void AddVideoAsSlideByIndex(int index)
     {
-        
+        slideCount++;
+        for (int i = 0; i < observers.Count; i++)
+        {
+            observers[i].ObserverCreateVideo(index);
+        }
+        NotifySlideChangeToObservers();
     }
-
     #endregion
     
     #region Slide Control
@@ -132,13 +136,6 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
         return slideCount;
     }
 
-    public void AddVideoNextToCurrent()
-    {
-        for (int i = 0; i < observers.Count; i++)
-        {
-            observers[i].ObserverCreateVideo(currentSlideNum);
-        }
-    }
     
     public void AddSlide()
     {

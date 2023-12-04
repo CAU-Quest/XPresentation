@@ -138,6 +138,27 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         return currentSlide;
     }
 
+    public void SetNextSlideObjectDataSameAsCurrent()
+    {
+        if (MainSystem.Instance.currentSlideNum + 1 < MainSystem.Instance.GetSlideCount())
+        {
+            SlideObjectData so = slideData[MainSystem.Instance.currentSlideNum];
+            animationList[MainSystem.Instance.currentSlideNum].SetNextSlideObjectData(so);
+            animationList[MainSystem.Instance.currentSlideNum + 1].SetPreviousSlideObjectData(so);
+            slideData[MainSystem.Instance.currentSlideNum + 1] = so;
+        }
+    }
+    
+    public void SetPreviousSlideObjectDataSameAsCurrent()
+    {
+        if (MainSystem.Instance.currentSlideNum - 1 > 0)
+        {
+            SlideObjectData so = slideData[MainSystem.Instance.currentSlideNum];
+            animationList[MainSystem.Instance.currentSlideNum - 1].SetNextSlideObjectData(so);
+            animationList[MainSystem.Instance.currentSlideNum].SetPreviousSlideObjectData(so);
+            slideData[MainSystem.Instance.currentSlideNum - 1] = so;
+        }
+    }
 
     public void ObserverUpdateSave()
     {

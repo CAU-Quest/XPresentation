@@ -11,9 +11,22 @@ public class PresentationObjectEditor : Editor
         base.OnInspectorGUI();
 
         PresentationObject presentationObject = (PresentationObject)target;
-        if (GUILayout.Button("Save Transform"))
+        
+        
+        GUILayout.Space(10);
+        EditorGUILayout.LabelField("기능", EditorStyles.boldLabel);
+        
+        if (GUILayout.Button("현재 슬라이드 데이터 저장"))
         {
             presentationObject.UpdateCurrentObjectDataInSlide();
+        }
+        if (GUILayout.Button("현재 슬라이드와 동일한 값으로 다음 슬라이드 초기화"))
+        {
+            presentationObject.SetNextSlideObjectDataSameAsCurrent();
+        }
+        if (GUILayout.Button("현재 슬라이드와 동일한 값으로 이전 슬라이드 초기화"))
+        {
+            presentationObject.SetPreviousSlideObjectDataSameAsCurrent();
         }
     }
 }

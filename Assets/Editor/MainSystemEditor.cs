@@ -11,41 +11,54 @@ public class MainSystemEditor : Editor
         base.OnInspectorGUI();
 
         MainSystem mainSystem = (MainSystem)target;
-        if (GUILayout.Button("Previous Slide"))
+        
+        if (GUILayout.Button("슬라이드 이동하기"))
         {
-            mainSystem.GoToPreviousSlide();
+            mainSystem.MoveSlide();
         }
-        if (GUILayout.Button("Next Slide"))
-        {
-            mainSystem.GoToNextSlide();
-        }
-        if (GUILayout.Button("Start Animation"))
+        
+        GUILayout.Space(10); // 각 섹션 사이에 여백 추가
+        EditorGUILayout.LabelField("기능", EditorStyles.boldLabel);
+        
+        if (GUILayout.Button("애니메이션 실행"))
         {
             mainSystem.AnimationToggle();
         }
-        if (GUILayout.Button("Main Mode"))
+        
+        GUILayout.Space(10);
+        EditorGUILayout.LabelField("Slide 관리", EditorStyles.boldLabel);
+
+        if (GUILayout.Button("이전 슬라이드로"))
         {
-            mainSystem.ChangeMode(MainSystem.Mode.Edit);
+            mainSystem.GoToPreviousSlide();
         }
-        if (GUILayout.Button("Preview Mode"))
+        if (GUILayout.Button("다음 슬라이드로"))
         {
-            mainSystem.ChangeMode(MainSystem.Mode.Preview);
+            mainSystem.GoToNextSlide();
         }
-        if (GUILayout.Button("Animation Mode"))
-        {
-            mainSystem.ChangeMode(MainSystem.Mode.Animation);
-        }
-        if (GUILayout.Button("Add Slide"))
+        if (GUILayout.Button("다음 슬라이드에 복제된 슬라이드 추가하기"))
         {
             mainSystem.AddSlide();
         }
-        if (GUILayout.Button("Remove Slide"))
+        if (GUILayout.Button("현재 슬라이드 삭제하기"))
         {
             mainSystem.RemoveSlide();
         }
-        if (GUILayout.Button("Move Slide"))
+        
+        GUILayout.Space(10); // 각 섹션 사이에 여백 추가
+        EditorGUILayout.LabelField("Mode 변경", EditorStyles.boldLabel);
+
+        if (GUILayout.Button("메인 모드로 변경"))
         {
-            mainSystem.MoveSlide();
+            mainSystem.ChangeMode(MainSystem.Mode.Edit);
+        }
+        if (GUILayout.Button("미리보기 모드로 변경"))
+        {
+            mainSystem.ChangeMode(MainSystem.Mode.Preview);
+        }
+        if (GUILayout.Button("애니메이션 모드로 변경"))
+        {
+            mainSystem.ChangeMode(MainSystem.Mode.Animation);
         }
         
     }

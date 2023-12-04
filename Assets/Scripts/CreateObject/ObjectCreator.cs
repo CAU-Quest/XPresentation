@@ -26,6 +26,47 @@ public class ObjectCreator : MonoBehaviour
             Destroy(this.gameObject);
         }
     }
+
+    public void ImportImage(string imagePath)
+    {
+	    GameObject imageObject;
+	    if (objectParent) imageObject = PresentationObjectPool.Instance.Get(5, SpawnPose.position, objectParent);
+	    else imageObject = PresentationObjectPool.Instance.Get(5, SpawnPose.position);
+	    imageObject.transform.rotation = SpawnPose.rotation;
+	    imageObject.GetComponentInChildren<RawImage>().texture = LoadTexture(imagePath);
+	    if (objectParent) imageObject.transform.SetParent(objectParent);
+    }
+    
+    public void ImportObject(string objectPath, string imagePath)
+    {
+	    Debug.Log("Object 불러오기 성공");
+	    GameObject go = PresentationObjectPool.Instance.Get(6, SpawnPose.position, objectParent);
+	    GameObject element = go.GetComponentInChildren<Grabbable>().gameObject;
+	    GameObject model = new OBJLoader().Load(objectPath);
+	    model.transform.SetParent(element.transform);
+
+	    Debug.Log("Texture 불러오기 성공");
+	    model.GetComponentInChildren<MeshRenderer>().material.mainTexture = LoadTexture(imagePath);
+	    element.AddComponent<PresentationObject>();
+    }
+    
+    Texture2D LoadTexture(string path)
+    {
+	    byte[] fileData = System.IO.File.ReadAllBytes(path);
+
+	    Texture2D texture = new Texture2D(2, 2);
+	    bool success = texture.LoadImage(fileData);
+
+	    if (success)
+	    {
+		    return texture;
+	    }
+	    else
+	    {
+		    return null;
+	    }
+    }
+    
     public void CreateObject(DeployType action)
     {
         Vector3 direction = XRUIManager.Instance.positionSource.forward;
@@ -78,7 +119,7 @@ public class ObjectCreator : MonoBehaviour
         }
     }
     
-    
+    [HideInInspector]
 	public GameObject loadedObject;
 	
 	public void LoadObjFile()

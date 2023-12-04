@@ -9,6 +9,29 @@ public class UtilEditor : MonoBehaviour
     
 }
 
+
+[CustomEditor(typeof(VideoManager))]
+public class VideoManagerEditor : Editor
+{
+    public string videoPath;
+    public override void OnInspectorGUI()
+    {
+        base.OnInspectorGUI();
+
+        VideoManager videoManager = (VideoManager)target;
+        
+        GUILayout.Space(10);
+        EditorGUILayout.LabelField("360 Video 추가하기", EditorStyles.boldLabel);
+        
+        videoPath = EditorGUILayout.TextField("영상 주소", videoPath);
+        if (GUILayout.Button("다음 슬라이드에 해당 360 영상 넣기"))
+        {
+            videoManager.Add360Video(videoPath);
+        }
+    }
+}
+
+
 [CustomEditor(typeof(CenterPositionByVertex))]
 public class CenterPositionByVertexEditor : Editor
 {
@@ -28,6 +51,8 @@ public class CenterPositionByVertexEditor : Editor
 [CustomEditor(typeof(ObjectCreator))]
 public class ObjectCreatorEditor : Editor
 {
+    private string _imagePath = "";
+    private string objectPath = "";
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -35,33 +60,44 @@ public class ObjectCreatorEditor : Editor
         ObjectCreator CreateObject = (ObjectCreator)target;
         
         
-        if (GUILayout.Button("Create Cube"))
+        GUILayout.Space(10);
+        EditorGUILayout.LabelField("Primitive 생성", EditorStyles.boldLabel);
+        if (GUILayout.Button("Cube 생성"))
         {
             CreateObject.CreateObject(DeployType.Cube);
         }
-        if (GUILayout.Button("Create Sphere"))
+        if (GUILayout.Button("Sphere 생성"))
         {
             CreateObject.CreateObject(DeployType.Sphere);
         }
-        if (GUILayout.Button("Create Cylinder"))
+        if (GUILayout.Button("Cylinder 생성"))
         {
             CreateObject.CreateObject(DeployType.Cylinder);
         }
-        if (GUILayout.Button("Create Plane"))
+        if (GUILayout.Button("Plane 생성"))
         {
             CreateObject.CreateObject(DeployType.Plane);
         }
-        if (GUILayout.Button("Create Text"))
+        if (GUILayout.Button("Text 생성"))
         {
             CreateObject.CreateObject(DeployType.Text);
         }
-        if (GUILayout.Button("Import Image Plane"))
+        
+        
+        GUILayout.Space(10);
+        EditorGUILayout.LabelField("파일 불러오기", EditorStyles.boldLabel);
+        
+        _imagePath = EditorGUILayout.TextField("이미지 주소", _imagePath);
+       
+        objectPath = EditorGUILayout.TextField("obj 파일 주소", objectPath);
+
+        if (GUILayout.Button("이미지 불러오기"))
         {
-            CreateObject.CreateObject(DeployType.ImportImage);
+            CreateObject.ImportImage(_imagePath);
         }
-        if (GUILayout.Button("Import Model"))
+        if (GUILayout.Button("모델(obj 파일) 불러오기"))
         {
-            CreateObject.CreateObject(DeployType.ImportModel);
+            CreateObject.ImportObject(objectPath, _imagePath);
         }
     }
 }

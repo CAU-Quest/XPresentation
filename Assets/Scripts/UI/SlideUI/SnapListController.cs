@@ -31,8 +31,44 @@ public class SnapListController : MonoBehaviour, ISlideObserver
     private PreviewCube _lastHighlightedCube;
 
     public GameObject[] visuals;
+
+    #region Observer Handling
+    public void ObserverUpdateSlide()
+    {
+        currentSlideNumber = MainSystem.Instance.currentSlideNum;
+        SetInitialNumber();
+        RenderAllTexture();
+        HighlightCenterIndexSupport(true);
+    }
+    #endregion
+
+    #region Functionalities
+
+    public void PlayAnimation()
+    {
+        MainSystem.Instance.AnimationToggle();
+    }
+
+
+    public void AddSlide()
+    {
+        MainSystem.Instance.AddSlideNextToCurrent();
+    }
     
-    // Start is called before the first frame update
+    public void RemoveSlide()
+    {
+        MainSystem.Instance.RemoveSlide();
+    }
+
+    public void Add360Video()
+    {
+        VideoManager.Instance.GetURL(MainSystem.Instance.currentSlideNum + 1);
+    }
+
+    #endregion
+    
+    #region Unity Life Cycle
+
     
     void Start()
     {
@@ -53,27 +89,6 @@ public class SnapListController : MonoBehaviour, ISlideObserver
         XRSelector.Instance.selectUI.onClose += SetVisualActive;
     }
 
-    private void SetVisualActive()
-    {
-        foreach (var visual in visuals)
-        {
-            visual.SetActive(true);
-        }
-    }
-    
-    private void SetVisualInactive(PresentationObject selectedObject)
-    {
-        foreach (var visual in visuals)
-        {
-            visual.SetActive(false);
-        }
-    }
-
-    public void PlayAnimation()
-    {
-        MainSystem.Instance.AnimationToggle();
-    }
-
     IEnumerator InitNumber()
     {
         yield return new WaitForSeconds(0.5f);
@@ -81,25 +96,11 @@ public class SnapListController : MonoBehaviour, ISlideObserver
         RenderAllTexture();
         HighlightCenterIndexSupport(true);
     }
+    #endregion
 
-    public void ObserverUpdateSlide()
-    {
-        currentSlideNumber = MainSystem.Instance.currentSlideNum;
-        SetInitialNumber();
-        RenderAllTexture();
-        HighlightCenterIndexSupport(true);
-    }
+    #region Slide Index Handling
 
-    public void AddSlide()
-    {
-        MainSystem.Instance.AddSlideNextToCurrent();
-    }
     
-    public void RemoveSlide()
-    {
-        MainSystem.Instance.RemoveSlide();
-    }
-
     public void SetInitialNumber()
     {
         int count = 0;
@@ -205,29 +206,6 @@ public class SnapListController : MonoBehaviour, ISlideObserver
         StartCoroutine(Swipe(index));
     }
 */
-    private IEnumerator Swipe(int index)
-    {
-        var waitForSeconds = new WaitForSeconds(0.1f);
-
-        Debug.Log("START");
-        while (currentSlideNumber + 1 < index || currentSlideNumber - 1 > index)
-        {
-            Debug.Log(currentSlideNumber +","+index);
-            if (currentSlideNumber > index)
-            {
-                SwipeToLeft();
-            }
-            else
-            {
-                SwipeToRight();
-            }
-            SetNumberToPreviewCube();
-            RenderAllTexture();
-            yield return waitForSeconds;
-        }
-        Debug.Log(currentSlideNumber +","+index+"FIN");
-    }
-
 
     public void SwipeToLeft()
     {
@@ -274,11 +252,6 @@ public class SnapListController : MonoBehaviour, ISlideObserver
         }
 
         if(!selectingPreviewCube) HighlightCenterIndexSupport(true);
-    }
-
-    public void SetSelectingPreviewCube(PreviewCube cube)
-    {
-        selectingPreviewCube = cube;
     }
 
     public void SwipeToRight()
@@ -328,6 +301,55 @@ public class SnapListController : MonoBehaviour, ISlideObserver
         if(!selectingPreviewCube) HighlightCenterIndexSupport(true);
     }
 
+    #endregion
+
+    #region Polishing
+
+    private void SetVisualActive()
+    {
+        foreach (var visual in visuals)
+        {
+            visual.SetActive(true);
+        }
+    }
+    
+    private void SetVisualInactive(PresentationObject selectedObject)
+    {
+        foreach (var visual in visuals)
+        {
+            visual.SetActive(false);
+        }
+    }
+
+    private IEnumerator Swipe(int index)
+    {
+        var waitForSeconds = new WaitForSeconds(0.1f);
+
+        Debug.Log("START");
+        while (currentSlideNumber + 1 < index || currentSlideNumber - 1 > index)
+        {
+            Debug.Log(currentSlideNumber +","+index);
+            if (currentSlideNumber > index)
+            {
+                SwipeToLeft();
+            }
+            else
+            {
+                SwipeToRight();
+            }
+            SetNumberToPreviewCube();
+            RenderAllTexture();
+            yield return waitForSeconds;
+        }
+        Debug.Log(currentSlideNumber +","+index+"FIN");
+    }
+
+
+    public void SetSelectingPreviewCube(PreviewCube cube)
+    {
+        selectingPreviewCube = cube;
+    }
+
     public void HighlightCenterIndexSupport(bool isTrue)
     {
         totalCount.DOFade(0f, 0.2f);
@@ -342,4 +364,8 @@ public class SnapListController : MonoBehaviour, ISlideObserver
             
         _lastHighlightedCube = SortedList[3];
     }
+
+    #endregion
+    
+    
 }
