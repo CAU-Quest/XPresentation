@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 
 public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
@@ -35,7 +36,8 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
     public Material beforeSlideMaterial;
     public Material afterSlideMaterial;
     public GameObject dottedLinePrefab;
-    
+
+    public UnityAction onSelct;
     
     [Header("Functions")]
     

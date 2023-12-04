@@ -31,9 +31,9 @@ public class AnimationGhost : MonoBehaviour
 
     [Header("Image")]
     public RawImage image;
-    
-    [Header("Text")]
-    public InputField inputField;
+
+    [Header("Text")] 
+    public TextMeshProUGUI textUI;
 
     
     public PresentationObject selectedObject;
@@ -68,8 +68,14 @@ public class AnimationGhost : MonoBehaviour
                 image.color = color;
                 break;
             case RendererType.Text:
+                textUI.color = color;
                 break;
         }
+    }
+
+    public void SetText(string text)
+    {
+        this.textUI.text = text;
     }
 
     public void SetImage(Texture texture)
@@ -90,12 +96,17 @@ public class AnimationGhost : MonoBehaviour
             case RendererType.Mesh:
                 meshRenderer.enabled = true;
                 image.enabled = false;
+                textUI.enabled = false;
                 break;
             case RendererType.Image:
                 meshRenderer.enabled = false;
                 image.enabled = true;
+                textUI.enabled = false;
                 break;
             case RendererType.Text:
+                meshRenderer.enabled = false;
+                image.enabled = false;
+                textUI.enabled = true;
                 break;
         }
         canvas.SetActive(true);
@@ -105,6 +116,7 @@ public class AnimationGhost : MonoBehaviour
     {
         meshRenderer.enabled = false;
         image.enabled = false;
+        textUI.enabled = false;
         canvas.SetActive(false);
     }
     
@@ -128,8 +140,12 @@ public class AnimationGhost : MonoBehaviour
     private void Update()
     {
         int index = MainSystem.Instance.currentSlideNum + (int)ghostType;
-        if(selectedObject)
-            lineRenderer.enabled = (selectedObject.slideData[MainSystem.Instance.currentSlideNum].isVisible && meshRenderer.enabled);
+        if (selectedObject)
+        {
+            bool isVisible = selectedObject.slideData[MainSystem.Instance.currentSlideNum].isVisible;
+            bool checkRenderer = isVisible && (meshRenderer.enabled || textUI.enabled || image.enabled);
+            lineRenderer.enabled = checkRenderer;
+        }
         SlideNumberText.text = index.ToString();
         if (selectedObject)
         {

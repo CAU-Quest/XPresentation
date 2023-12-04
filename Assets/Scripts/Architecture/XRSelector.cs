@@ -48,6 +48,7 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
     public AnimationGhost beforeAnimationGhost;
     public AnimationGhost afterAnimationGhost;
 
+
     #endregion
 
     #region UI Observer Handling
@@ -493,11 +494,11 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
             Debug.Log("There is no selected Object");
             return;
         }
-
+        
         if (boundObjectType == BoundObjectType.ThreeDimension)
         {
             transform.rotation = selectedObject.transform.rotation;
-            
+            Debug.Log("Selected Object.localScale = " + selectedObject.transform.localScale);
             boundBox.UpdateBounds();
             centerPositionByVertex.SetVertex();
             boundBox.SetLines();
@@ -536,7 +537,7 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
                 Debug.Log("Selected Object doesn't have correct components");
                 return;
             }
-            XRSelector.Instance.transformByVertexHandler.Init();
+            transformByVertexHandler.Init();
             
 #if UNITY_EDITOR
             lineList[0].UpdateLine();
@@ -546,6 +547,7 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
 #endif
         }
         BoundObjectType = boundObjectType;
+
         
         NotifyObjectChangeToObservers();
     }

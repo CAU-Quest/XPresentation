@@ -41,8 +41,6 @@ namespace DimBoxes
         private Vector3 bottomBackLeft;
         private Vector3 bottomBackRight;
 
-        [HideInInspector]
-        public Vector3 startingScale;
         
         public Vector3[] GetCorner()
         {
@@ -59,7 +57,6 @@ namespace DimBoxes
 
         void Start()
         {
-            startingScale = transform.localScale;
             Init();
         }
 
@@ -111,7 +108,6 @@ namespace DimBoxes
 
         void SetPoints()
         {
-
             if (boundSource == BoundSource.boxCollider)
             {
                 BoxCollider bc = GetComponent<BoxCollider>();
@@ -130,8 +126,8 @@ namespace DimBoxes
                 bound = meshBound;
                 boundOffset = meshBoundOffset;
             }
-            bound.size = new Vector3(bound.size.x * transform.localScale.x / startingScale.x, bound.size.y * transform.localScale.y / startingScale.y, bound.size.z * transform.localScale.z / startingScale.z);
-            boundOffset = new Vector3(boundOffset.x * transform.localScale.x / startingScale.x, boundOffset.y * transform.localScale.y / startingScale.y, boundOffset.z * transform.localScale.z / startingScale.z);
+            bound.size = new Vector3(bound.size.x * transform.localScale.x, bound.size.y * transform.localScale.y, bound.size.z * transform.localScale.z);
+            boundOffset = new Vector3(boundOffset.x * transform.localScale.x, boundOffset.y * transform.localScale.y, boundOffset.z * transform.localScale.z);
 
             topFrontRight = boundOffset + Vector3.Scale(bound.extents, new Vector3(1, 1, 1));
             topFrontLeft = boundOffset + Vector3.Scale(bound.extents, new Vector3(-1, 1, 1));
@@ -141,7 +137,7 @@ namespace DimBoxes
             bottomFrontLeft = boundOffset + Vector3.Scale(bound.extents, new Vector3(-1, -1, 1));
             bottomBackLeft = boundOffset + Vector3.Scale(bound.extents, new Vector3(-1, -1, -1));
             bottomBackRight = boundOffset + Vector3.Scale(bound.extents, new Vector3(1, -1, -1));
-
+            
             corners = new Vector3[] { topFrontRight, topFrontLeft, topBackLeft, topBackRight, bottomFrontRight, bottomFrontLeft, bottomBackLeft, bottomBackRight };
         }
 

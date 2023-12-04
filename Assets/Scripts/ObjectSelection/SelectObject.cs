@@ -84,6 +84,7 @@ public class SelectObject : MonoBehaviour
             XRSelector.Instance.presentationObject = presentationObject;
             XRSelector.Instance.selectObject = this;
         }
+
         
         XRSelector.Instance.SetComponent(this, BoundObjectType);
         
