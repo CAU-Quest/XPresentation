@@ -524,8 +524,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3529319902538011581}
-  - component: {fileID: 6491209748428209685}
   - component: {fileID: 3804619535538595600}
+  - component: {fileID: 6491209748428209685}
   m_Layer: 5
   m_Name: Plane Object
   m_TagString: Untagged
@@ -550,25 +550,6 @@ Transform:
   - {fileID: 647948904395443747}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6491209748428209685
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3201190190990589638}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: da7feb5baa00b5e4c8a774c3046c7052, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BoundObjectType: 0
-  vertexList: []
-  initialScale: {x: 1, y: 1, z: 1}
-  initialWidth: 1
-  initialHeight: 1
-  initialDepth: 1
-  lineList: []
 --- !u!114 &3804619535538595600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -588,6 +569,25 @@ MonoBehaviour:
   centerPositionByVertex: {fileID: 0}
   objectPath: 
   imagePath: 
+--- !u!114 &6491209748428209685
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3201190190990589638}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da7feb5baa00b5e4c8a774c3046c7052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BoundObjectType: 0
+  vertexList: []
+  initialScale: {x: 1, y: 1, z: 1}
+  initialWidth: 1
+  initialHeight: 1
+  initialDepth: 1
+  lineList: []
 --- !u!1 &4258948996170089243
 GameObject:
   m_ObjectHideFlags: 0

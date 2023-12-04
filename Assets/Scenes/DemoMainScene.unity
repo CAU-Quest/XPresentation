@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4341302, g: 0.41183975, b: 0.4457681, a: 1}
+  m_IndirectSpecularColor: {r: 0.4341302, g: 0.41183978, b: 0.445768, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -458,6 +458,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c2f4477fb26334c4fb5d2fbf3e1fefea,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4579284735627691270, guid: c2f4477fb26334c4fb5d2fbf3e1fefea,
         type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
@@ -4483,11 +4488,14 @@ MonoBehaviour:
   boundBox: {fileID: 0}
   transformByVertexHandler: {fileID: 0}
   selectObject: {fileID: 0}
+  selectUI: {fileID: 0}
   lineMaterial: {fileID: 2100000, guid: f001cd4316999e947ad51c079dcf17fc, type: 2}
   lineWidth: 0.0184
   lineColor: {r: 1, g: 1, b: 1, a: 1}
   numCapVertices: 0
   edgeSelected: 0
+  beforeAnimationGhost: {fileID: 0}
+  afterAnimationGhost: {fileID: 0}
 --- !u!4 &1344958631
 Transform:
   m_ObjectHideFlags: 0

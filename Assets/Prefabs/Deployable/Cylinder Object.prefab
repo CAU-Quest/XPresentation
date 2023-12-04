@@ -228,9 +228,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1888481985798211713}
+  - component: {fileID: 7199310059950815280}
   - component: {fileID: 5701002310683030770}
   - component: {fileID: 4905952218906298255}
-  - component: {fileID: 7199310059950815280}
   m_Layer: 8
   m_Name: Element
   m_TagString: Untagged
@@ -255,6 +255,24 @@ Transform:
   - {fileID: 529921035791472972}
   m_Father: {fileID: 5728388387541635690}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7199310059950815280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5407016956924360009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e880f35209e766e41805117c4218a92d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 1
+  animationList: []
+  slideData: []
+  deployType: 0
+  isGrabbableInPresentation: 1
+  isVisible: 1
 --- !u!114 &5701002310683030770
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,24 +386,6 @@ MonoBehaviour:
   _whenCancel:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &7199310059950815280
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5407016956924360009}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e880f35209e766e41805117c4218a92d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  id: 1
-  animationList: []
-  slideData: []
-  deployType: 0
-  isGrabbableInPresentation: 1
-  isVisible: 1
 --- !u!1 &7782047687446347052
 GameObject:
   m_ObjectHideFlags: 0
@@ -533,10 +533,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5728388387541635690}
+  - component: {fileID: 5264710337991471713}
   - component: {fileID: 1501524681247529562}
   - component: {fileID: 5395355323511556896}
   - component: {fileID: 1297031008327257595}
-  - component: {fileID: 5264710337991471713}
   m_Layer: 8
   m_Name: Cylinder Object
   m_TagString: Untagged
@@ -561,6 +561,25 @@ Transform:
   - {fileID: 2310256359142800550}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5264710337991471713
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8761310892770999305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef478e0a292d7b840997d4dd8c79025d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deployType: 3
+  BoundObjectType: 1
+  transformByVertexHandler: {fileID: 0}
+  boundBox: {fileID: 0}
+  centerPositionByVertex: {fileID: 0}
+  objectPath: 
+  imagePath: 
 --- !u!114 &1501524681247529562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -621,7 +640,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  startingScale: {x: 1, y: 1, z: 1}
 --- !u!114 &1297031008327257595
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -661,25 +679,6 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
---- !u!114 &5264710337991471713
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8761310892770999305}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ef478e0a292d7b840997d4dd8c79025d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  deployType: 3
-  BoundObjectType: 1
-  transformByVertexHandler: {fileID: 0}
-  boundBox: {fileID: 0}
-  centerPositionByVertex: {fileID: 0}
-  objectPath: 
-  imagePath: 
 --- !u!1 &8851319525856384192
 GameObject:
   m_ObjectHideFlags: 0
