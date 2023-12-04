@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DimBoxes;
 using Oculus.Interaction;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Animations;
@@ -555,6 +556,8 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
 
     public void EnableAnimationGhost()
     {
+        if (!(presentationObject is PresentationObject)) return;
+        
         beforeAnimationGhost.gameObject.SetActive(true);
         afterAnimationGhost.gameObject.SetActive(true);
 
@@ -585,15 +588,14 @@ public class XRSelector : MonoBehaviour, IUserInterfaceSubject
         } else if (selectObject.deployType == DeployType.Text)
         {
             beforeAnimationGhost.SetRenderer(RendererType.Text);
-            
+            afterAnimationGhost.SetRenderer(RendererType.Text);
+
+            beforeAnimationGhost.selectedText = ((PresentationObject)presentationObject).GetComponent<TMP_InputField>();
+            afterAnimationGhost.selectedText = ((PresentationObject)presentationObject).GetComponent<TMP_InputField>();
         }
 
-        if (presentationObject is PresentationObject)
-        {
-            beforeAnimationGhost.selectedObject = presentationObject as PresentationObject;
-            afterAnimationGhost.selectedObject = presentationObject as PresentationObject;;
-        }
-        
+        beforeAnimationGhost.selectedObject = presentationObject as PresentationObject;
+        afterAnimationGhost.selectedObject = presentationObject as PresentationObject;;
     }
     
     public void DisableAnimationGhost()

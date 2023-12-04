@@ -35,10 +35,13 @@ public class AnimationGhost : MonoBehaviour
     [Header("Text")] 
     public TextMeshProUGUI textUI;
 
-    
-    public PresentationObject selectedObject;
+    [Header("UI")] 
     public GameObject canvas;
     public TextMeshProUGUI SlideNumberText;
+    
+    [Header("Setter ")] 
+    public PresentationObject selectedObject;
+    public TMP_InputField selectedText;
     
     private Mesh mesh;
 
@@ -51,6 +54,7 @@ public class AnimationGhost : MonoBehaviour
         lineRenderer = GetComponent<LineRenderer>();
         lineRenderer.enabled = false;
     }
+
 
     public void SetRenderer(RendererType rendererType)
     {
@@ -146,6 +150,12 @@ public class AnimationGhost : MonoBehaviour
             bool checkRenderer = isVisible && (meshRenderer.enabled || textUI.enabled || image.enabled);
             lineRenderer.enabled = checkRenderer;
         }
+
+        if (textUI.enabled)
+        {
+            textUI.text = selectedText.text;
+        }
+        
         SlideNumberText.text = index.ToString();
         if (selectedObject)
         {
