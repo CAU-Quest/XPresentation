@@ -29,11 +29,17 @@ public class ObjectCreator : MonoBehaviour
 
     public void ImportImage(string imagePath)
     {
+	    if (!File.Exists(imagePath))
+	    {
+		    Debug.Log("잘못된 주소입니다.");
+		    return;
+	    }
 	    GameObject imageObject;
 	    if (objectParent) imageObject = PresentationObjectPool.Instance.Get(5, SpawnPose.position, objectParent);
 	    else imageObject = PresentationObjectPool.Instance.Get(5, SpawnPose.position);
 	    imageObject.transform.rotation = SpawnPose.rotation;
 	    imageObject.GetComponentInChildren<RawImage>().texture = LoadTexture(imagePath);
+	    imageObject.GetComponent<SelectObject>().imagePath = imagePath;
 	    if (objectParent) imageObject.transform.SetParent(objectParent);
     }
     
@@ -43,10 +49,23 @@ public class ObjectCreator : MonoBehaviour
 	    GameObject go = PresentationObjectPool.Instance.Get(6, SpawnPose.position, objectParent);
 	    GameObject element = go.GetComponentInChildren<Grabbable>().gameObject;
 	    GameObject model = new OBJLoader().Load(objectPath);
+	    
+	    go.GetComponent<SelectObject>().objectPath = objectPath;
+
 	    model.transform.SetParent(element.transform);
 
-	    Debug.Log("Texture 불러오기 성공");
-	    model.GetComponentInChildren<MeshRenderer>().material.mainTexture = LoadTexture(imagePath);
+	    
+	    if (!File.Exists(imagePath))
+	    {
+		    Debug.Log("잘못된 주소입니다.");
+	    }
+	    else
+	    {
+		    Debug.Log("Texture 불러오기 성공");
+		    model.GetComponentInChildren<MeshRenderer>().material.mainTexture = LoadTexture(imagePath);
+	    
+		    go.GetComponent<SelectObject>().imagePath = imagePath;
+	    }
 	    element.AddComponent<PresentationObject>();
     }
     

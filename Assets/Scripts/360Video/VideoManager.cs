@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using SimpleFileBrowser;
 using UnityEngine;
 using UnityEngine.Video;
@@ -124,7 +125,26 @@ public class VideoManager : MonoBehaviour, ISystemObserver
             }
         }
     }
-    public void ObserverUpdateSave(){}
+
+    public void ObserverUpdateSave()
+    {
+        for (int i = 0; i < videoDataList.Count; i++)
+        {
+            SaveData.Instance.videoDatas.Add(videoDataList[i]);
+        }
+    }
+
+    public void ObserverDuplicateSlideNextTo(int index)
+    {
+        for (int i = 0; i < videoDataList.Count; i++)
+        {
+            var videoData = videoDataList[i];
+            if (videoData.slideNumber > MainSystem.Instance.currentSlideNum)
+            {
+                videoData.slideNumber += 1;
+            }
+        }
+    }
 
     public void ObserverCreateVideo(int index)
     {

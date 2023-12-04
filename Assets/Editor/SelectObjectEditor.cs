@@ -6,32 +6,39 @@ using UnityEngine;
 
 
 
-[CustomEditor(typeof(SelectObject))]
+[CustomEditor(typeof(SelectObject)), CanEditMultipleObjects]
 public class SelectObjectEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
 
-        SelectObject selectObject = (SelectObject)target;
+        SelectObject[] selectedObjects = new SelectObject[targets.Length];
+        PresentationObject[] presentationObjects = new PresentationObject[targets.Length];
+        
+        for (int i = 0; i < targets.Length; i++)
+        {
+            selectedObjects[i] = (SelectObject)targets[i];
+            presentationObjects[i] = selectedObjects[i].GetComponentInChildren<PresentationObject>(true);
+        }
         
         EditorGUILayout.Separator();
-        if (selectObject.BoundObjectType == BoundObjectType.ThreeDimension)
+        if (selectedObjects[0].BoundObjectType == BoundObjectType.ThreeDimension)
         {
             EditorGUI.indentLevel++;
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel("TransformByVertexHandler");
-            EditorGUILayout.ObjectField(selectObject.transformByVertexHandler, typeof(TransformByVertexHandler), true);
+            EditorGUILayout.ObjectField(selectedObjects[0].transformByVertexHandler, typeof(TransformByVertexHandler), true);
             EditorGUILayout.EndHorizontal();
             
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel("CenterPositionByVertex");
-            EditorGUILayout.ObjectField(selectObject.centerPositionByVertex, typeof(CenterPositionByVertex), true);
+            EditorGUILayout.ObjectField(selectedObjects[0].centerPositionByVertex, typeof(CenterPositionByVertex), true);
             EditorGUILayout.EndHorizontal();
             
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel("BoundBox");
-            EditorGUILayout.ObjectField(selectObject.boundBox, typeof(BoundBox), true);
+            EditorGUILayout.ObjectField(selectedObjects[0].boundBox, typeof(BoundBox), true);
             EditorGUILayout.EndHorizontal();
             
             EditorGUI.indentLevel--;
@@ -41,16 +48,45 @@ public class SelectObjectEditor : Editor
             EditorGUI.indentLevel++;
             EditorGUILayout.BeginHorizontal();
             EditorGUILayout.PrefixLabel("TransformByVertexHandler");
-            EditorGUILayout.ObjectField(selectObject.transformByVertexHandler, typeof(TransformByVertexHandler), true);
+            EditorGUILayout.ObjectField(selectedObjects[0].transformByVertexHandler, typeof(TransformByVertexHandler), true);
             EditorGUILayout.EndHorizontal();
             
             EditorGUI.indentLevel--;
         }
         
+        
         if (GUILayout.Button("Select"))
         {
-            selectObject.Select();
+            foreach (SelectObject selectObject in selectedObjects)
+            {
+                selectObject.Select();
+            }
         }
-
+        
+        GUILayout.Space(10);
+        EditorGUILayout.LabelField("Presentation Object 기능", EditorStyles.boldLabel);
+        
+        
+        if (GUILayout.Button("현재 슬라이드 데이터 저장"))
+        {
+            foreach (PresentationObject presentationObject in presentationObjects)
+            {
+                presentationObject.UpdateCurrentObjectDataInSlide();
+            }
+        }
+        if (GUILayout.Button("현재 슬라이드와 동일한 값으로 다음 슬라이드 초기화"))
+        {
+            foreach (PresentationObject presentationObject in presentationObjects)
+            {
+                presentationObject.SetNextSlideObjectDataSameAsCurrent();
+            }
+        }
+        if (GUILayout.Button("현재 슬라이드와 동일한 값으로 이전 슬라이드 초기화"))
+        {
+            foreach (PresentationObject presentationObject in presentationObjects)
+            {
+                presentationObject.SetPreviousSlideObjectDataSameAsCurrent();
+            }
+        }
     }
 }

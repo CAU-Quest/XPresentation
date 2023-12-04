@@ -23,9 +23,13 @@ public class VideoManagerEditor : Editor
         GUILayout.Space(10);
         EditorGUILayout.LabelField("360 Video 추가하기", EditorStyles.boldLabel);
         
-        videoPath = EditorGUILayout.TextField("영상 주소", videoPath);
         if (GUILayout.Button("다음 슬라이드에 해당 360 영상 넣기"))
         {
+            videoPath = EditorUtility.OpenFilePanel("Select Image File", "", "");
+            if (!string.IsNullOrEmpty(videoPath))
+            {
+                Debug.Log("Selected File Path: " + videoPath);
+            }
             videoManager.Add360Video(videoPath);
         }
     }
@@ -44,6 +48,7 @@ public class CenterPositionByVertexEditor : Editor
         {
             presentationObject.CenterPosition();
         }
+        
     }
 }
 
@@ -53,6 +58,7 @@ public class ObjectCreatorEditor : Editor
 {
     private string _imagePath = "";
     private string objectPath = "";
+    
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
@@ -87,16 +93,29 @@ public class ObjectCreatorEditor : Editor
         GUILayout.Space(10);
         EditorGUILayout.LabelField("파일 불러오기", EditorStyles.boldLabel);
         
-        _imagePath = EditorGUILayout.TextField("이미지 주소", _imagePath);
-       
-        objectPath = EditorGUILayout.TextField("obj 파일 주소", objectPath);
-
-        if (GUILayout.Button("이미지 불러오기"))
+        if (GUILayout.Button("이미지 파일 불러오기"))
         {
+            _imagePath = EditorUtility.OpenFilePanel("Select Image File", "", "");
+            if (!string.IsNullOrEmpty(_imagePath))
+            {
+                Debug.Log("Selected File Path: " + _imagePath);
+            }
             CreateObject.ImportImage(_imagePath);
         }
-        if (GUILayout.Button("모델(obj 파일) 불러오기"))
+
+        if (GUILayout.Button("Obj 파일 불러오기"))
         {
+            objectPath = EditorUtility.OpenFilePanel("Select Obj File", "", "");
+            if (!string.IsNullOrEmpty(objectPath))
+            {
+                Debug.Log("Selected File Path: " + objectPath);
+            }
+            
+            _imagePath = EditorUtility.OpenFilePanel("Select Image File", "", "");
+            if (!string.IsNullOrEmpty(_imagePath))
+            {
+                Debug.Log("Selected File Path: " + _imagePath);
+            }
             CreateObject.ImportObject(objectPath, _imagePath);
         }
     }

@@ -10,7 +10,6 @@ public class SlideUICollider : MonoBehaviour
     public float cooldown = 0f;
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log("STAY");
         if(snapListController.selectingPreviewCube == null) return;
         if (other.gameObject.name == "PreviewCube")
         {

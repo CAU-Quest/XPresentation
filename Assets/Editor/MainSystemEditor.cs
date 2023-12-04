@@ -38,7 +38,7 @@ public class MainSystemEditor : Editor
         }
         if (GUILayout.Button("다음 슬라이드에 복제된 슬라이드 추가하기"))
         {
-            mainSystem.AddSlide();
+            mainSystem.AddSlideNextToCurrent();
         }
         if (GUILayout.Button("현재 슬라이드 삭제하기"))
         {

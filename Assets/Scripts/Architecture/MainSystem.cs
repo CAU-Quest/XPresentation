@@ -136,6 +136,11 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
         return slideCount;
     }
 
+    public void SetSlideCount(int count)
+    {
+        slideCount = count;
+    }
+
     
     public void AddSlide()
     {
@@ -153,7 +158,18 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
         slideCount += 1;
         for (int i = 0; i < this.observers.Count; i++)
         {
-            observers[i].ObserverAddSlideNextTo(currentSlideNum);
+            observers[i].ObserverAddSlideNextTo(currentSlideNum + 1);
+        }
+
+        NotifySlideChangeToObservers();
+    }
+    
+    public void DuplicateSlideNextToCurrent()
+    {
+        slideCount += 1;
+        for (int i = 0; i < this.observers.Count; i++)
+        {
+            observers[i].ObserverDuplicateSlideNextTo(currentSlideNum);
         }
 
         NotifySlideChangeToObservers();

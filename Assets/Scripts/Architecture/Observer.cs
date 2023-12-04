@@ -12,6 +12,7 @@ public interface ISystemObserver
     void ObserverUpdateSave();
     void ObserverAddSlideNextTo(int index);
     void ObserverCreateVideo(int index);
+    void ObserverDuplicateSlideNextTo(int index);
 }
 
 public interface ISubject

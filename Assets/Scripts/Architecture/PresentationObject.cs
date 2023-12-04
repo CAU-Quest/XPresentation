@@ -133,6 +133,21 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         }
     }
 
+    public void ObserverDuplicateSlideNextTo(int index)
+    {
+        if (index > 0 && index <= MainSystem.Instance.GetSlideCount())
+        {
+            SlideObjectData objectData = new SlideObjectData(slideData[index - 1]);
+            slideData.Insert(index, objectData);
+            XRAnimation animation = new XRAnimation();
+            animation.SetParentObject(this);
+            animation.SetPreviousSlideObjectData(objectData);
+            if(index < MainSystem.Instance.GetSlideCount())
+                animation.SetNextSlideObjectData(slideData[index + 1]);
+            animationList[index - 1].SetNextSlideObjectData(objectData);
+        }
+    }
+
     public int GetCurrentSlide()
     {
         return currentSlide;
@@ -235,15 +250,14 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     
     public void ObserverAddSlideNextTo(int index)
     {
-        if (index > 0 && index <= MainSystem.Instance.GetSlideCount())
+        if (index > 0 && index + 1 < MainSystem.Instance.GetSlideCount())
         {
             SlideObjectData objectData = new SlideObjectData(slideData[index - 1]);
             slideData.Insert(index, objectData);
             XRAnimation animation = new XRAnimation();
             animation.SetParentObject(this);
             animation.SetPreviousSlideObjectData(objectData);
-            if(index < MainSystem.Instance.GetSlideCount())
-                animation.SetNextSlideObjectData(slideData[index + 1]);
+            animation.SetNextSlideObjectData(slideData[index + 1]);
             animationList[index - 1].SetNextSlideObjectData(objectData);
         }
     }
