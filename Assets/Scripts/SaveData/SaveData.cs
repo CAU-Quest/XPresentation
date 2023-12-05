@@ -61,6 +61,7 @@ public class SaveData : MonoBehaviour
             if (data.deployType == DeployType.ImportImage)
             {
                 string imagePath = data.imagePath.Replace("#", "\\");
+                go.GetComponent<SelectObject>().imagePath = imagePath;
                 Texture2D texture = LoadTexture(imagePath);
                 if(texture != null)
                     go.GetComponentInChildren<RawImage>().texture = texture;
@@ -71,11 +72,14 @@ public class SaveData : MonoBehaviour
                 string objectPath = data.objectPath.Replace("#", "\\");
                 GameObject model = new OBJLoader().Load(objectPath);
                 model.transform.SetParent(element.transform);
+                go.GetComponent<SelectObject>().objectPath = objectPath;
                 
                 string imagePath = data.imagePath.Replace("#", "\\");
                 Texture2D texture = LoadTexture(imagePath);
                 if(texture != null)
                     model.GetComponentInChildren<MeshRenderer>().material.mainTexture = texture;
+                
+                go.GetComponent<SelectObject>().imagePath = imagePath;
                 element.AddComponent<PresentationObject>();
             }
             PresentationObject presentationObject = go.GetComponentInChildren<PresentationObject>();

@@ -17,7 +17,7 @@ public class VideoManagerEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-
+        
         VideoManager videoManager = (VideoManager)target;
         
         GUILayout.Space(10);

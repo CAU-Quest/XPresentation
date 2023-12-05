@@ -45,6 +45,7 @@ public class ObjectCreator : MonoBehaviour
     
     public void ImportObject(string objectPath, string imagePath)
     {
+	    Debug.Log(objectPath);
 	    Debug.Log("Object 불러오기 성공");
 	    GameObject go = PresentationObjectPool.Instance.Get(6, SpawnPose.position, objectParent);
 	    GameObject element = go.GetComponentInChildren<Grabbable>().gameObject;
