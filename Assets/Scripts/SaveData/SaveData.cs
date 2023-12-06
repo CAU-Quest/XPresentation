@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Dummiesman;
 using Oculus.Interaction;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,7 @@ public struct SaveObjectData
     public List<XRAnimation> animations;
     public string objectPath;
     public string imagePath;
+    public string text;
 }
 
 public class SaveData : MonoBehaviour
@@ -50,8 +52,8 @@ public class SaveData : MonoBehaviour
 
     public void LoadGameData()
     {
-        MainSystem.Instance.SetSlideCount(ES3.Load<int>("SlideCount"));
         videoDatas = ES3.Load<List<VideoData>>("VideoData");
+        MainSystem.Instance.SetSlideCount(ES3.Load<int>("SlideCount"));
         VideoManager.Instance.videoDataList = videoDatas;
         objects = ES3.Load<List<SaveObjectData>>("ObjectData");
         for (int i = 0; i < objects.Count; i++)
@@ -81,6 +83,9 @@ public class SaveData : MonoBehaviour
                 
                 go.GetComponent<SelectObject>().imagePath = imagePath;
                 element.AddComponent<PresentationObject>();
+            } else if (data.deployType == DeployType.Text)
+            {
+                go.GetComponentInChildren<TMP_InputField>().text = data.text;
             }
             PresentationObject presentationObject = go.GetComponentInChildren<PresentationObject>();
             presentationObject.animationList = new List<XRAnimation>();

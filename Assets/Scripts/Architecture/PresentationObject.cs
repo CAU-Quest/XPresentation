@@ -5,6 +5,7 @@ using System.Text;
 using DimBoxes;
 using Oculus.Interaction;
 using Oculus.Interaction.PoseDetection;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -104,11 +105,13 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     private MeshRenderer meshRenderer;
     private RawImage image;
     private Grabbable grabbable;
-
+    
 
     public Transform Transform => transform.parent;
     public Material Material => (meshRenderer) ? meshRenderer.material : null;
     public RawImage Image => image;
+    public TMP_InputField tmpInputField;
+    
     public bool isGrabbableInPresentation = true;
     public bool isVisible = true;
 
@@ -135,6 +138,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
 
     public void ObserverDuplicateSlideNextTo(int index)
     {
+        currentSlide = MainSystem.Instance.currentSlideNum;
         if (index > 0 && index <= MainSystem.Instance.GetSlideCount())
         {
             SlideObjectData objectData = new SlideObjectData(slideData[index - 1]);
@@ -193,6 +197,10 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
             saveObjectData.imagePath = GetComponentInParent<SelectObject>().imagePath;
             saveObjectData.imagePath = saveObjectData.imagePath.Replace("\\", "#");
         }
+        else if (deployType == DeployType.Text)
+        {
+            saveObjectData.text = tmpInputField.text;
+        }
         Debug.Log(saveObjectData.imagePath);
         
         SaveData.Instance.objects.Add(saveObjectData);
@@ -233,6 +241,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     
     public void ObserverCreateVideo(int index)
     {
+        this.currentSlide = MainSystem.Instance.currentSlideNum;
         if (index > 0 && index <= MainSystem.Instance.GetSlideCount())
         {
             SlideObjectData objectData = new SlideObjectData(slideData[index - 1]);
@@ -250,6 +259,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     
     public void ObserverAddSlideNextTo(int index)
     {
+        currentSlide = MainSystem.Instance.currentSlideNum;
         if (index > 0 && index + 1 < MainSystem.Instance.GetSlideCount())
         {
             SlideObjectData objectData = new SlideObjectData(slideData[index - 1]);
@@ -339,6 +349,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     {
         Init(MainSystem.Instance.currentSlideNum);
         ApplyDataToObject(slideData[MainSystem.Instance.currentSlideNum]);
+        currentSlide = MainSystem.Instance.currentSlideNum;
     }
 
     public void Init(int currentSlideNum)
@@ -353,6 +364,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
         
         canvas = GetComponentInChildren<Canvas>();
         grabbable = GetComponent<Grabbable>();
+        tmpInputField = GetComponentInChildren<TMP_InputField>();
         if (grabbable == null) grabbable = GetComponentInParent<Grabbable>();
         if(meshRenderer != null) normalModeMaterial = meshRenderer.material;
         MainSystem.Instance.RegisterObserver(this);

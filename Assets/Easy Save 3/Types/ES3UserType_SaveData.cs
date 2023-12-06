@@ -29,7 +29,7 @@ namespace ES3Types
 				{
 					
 					case "Instance":
-						SaveData.Instance = reader.Read<SaveData>();
+						SaveData.Instance = reader.Read<SaveData>(ES3UserType_SaveData.Instance);
 						break;
 					case "objects":
 						instance.objects = reader.Read<System.Collections.Generic.List<SaveObjectData>>();
