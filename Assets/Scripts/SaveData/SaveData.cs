@@ -74,6 +74,8 @@ public class SaveData : MonoBehaviour
                 string objectPath = data.objectPath.Replace("#", "\\");
                 GameObject model = new OBJLoader().Load(objectPath);
                 model.transform.SetParent(element.transform);
+	            model.transform.position = element.transform.position;
+	            model.transform.rotation = element.transform.rotation;
                 go.GetComponent<SelectObject>().objectPath = objectPath;
                 
                 string imagePath = data.imagePath.Replace("#", "\\");

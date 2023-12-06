@@ -50,6 +50,8 @@ public class ObjectCreator : MonoBehaviour
 	    GameObject go = PresentationObjectPool.Instance.Get(6, SpawnPose.position, objectParent);
 	    GameObject element = go.GetComponentInChildren<Grabbable>().gameObject;
 	    GameObject model = new OBJLoader().Load(objectPath);
+	    model.transform.position = element.transform.position;
+	    model.transform.rotation = element.transform.rotation;
 	    
 	    go.GetComponent<SelectObject>().objectPath = objectPath;
 
