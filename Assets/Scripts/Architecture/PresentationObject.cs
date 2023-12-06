@@ -139,18 +139,45 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     public void ObserverDuplicateSlideNextTo(int index)
     {
         currentSlide = MainSystem.Instance.currentSlideNum;
-        if (index > 0 && index <= MainSystem.Instance.GetSlideCount())
+        if (index > 0 && index < MainSystem.Instance.GetSlideCount())
         {
-            SlideObjectData objectData = new SlideObjectData(slideData[index - 1]);
+            SlideObjectData objectData = new SlideObjectData(slideData[index]);
             slideData.Insert(index, objectData);
             XRAnimation animation = new XRAnimation();
             animation.SetParentObject(this);
             animation.SetPreviousSlideObjectData(objectData);
-            if(index < MainSystem.Instance.GetSlideCount())
-                animation.SetNextSlideObjectData(slideData[index + 1]);
-            animationList[index - 1].SetNextSlideObjectData(objectData);
+            if(index + 1 < MainSystem.Instance.GetSlideCount()) animation.SetNextSlideObjectData(slideData[index + 1]);
+            if(index - 1 > 0) animationList[index - 1].SetNextSlideObjectData(objectData);
+            animationList.Insert(index, animation);
+        }
+        if (index == 0 && index < MainSystem.Instance.GetSlideCount())
+        {
+            SlideObjectData objectData = new SlideObjectData(slideData[index]);
+            slideData.Insert(index, objectData);
+            XRAnimation animation = new XRAnimation();
+            animation.SetParentObject(this);
+            animation.SetPreviousSlideObjectData(objectData);
+            if(index + 1 < MainSystem.Instance.GetSlideCount()) animation.SetNextSlideObjectData(slideData[index + 1]);
+            animationList.Insert(index, animation);
         }
     }
+    
+    public void ObserverAddSlideNextTo(int index)
+    {
+        currentSlide = MainSystem.Instance.currentSlideNum;
+        if (index >= 0 && index < MainSystem.Instance.GetSlideCount())
+        {
+            SlideObjectData objectData = new SlideObjectData();
+            slideData.Insert(index, objectData);
+            XRAnimation animation = new XRAnimation();
+            animation.SetParentObject(this);
+            animation.SetPreviousSlideObjectData(objectData);
+            if(index + 1 < MainSystem.Instance.GetSlideCount()) animation.SetNextSlideObjectData(slideData[index + 1]);
+            if(index - 1 > 0) animationList[index - 1].SetNextSlideObjectData(objectData);
+            animationList.Insert(index, animation);
+        }
+    }
+
 
     public int GetCurrentSlide()
     {
@@ -242,7 +269,7 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
     public void ObserverCreateVideo(int index)
     {
         this.currentSlide = MainSystem.Instance.currentSlideNum;
-        if (index > 0 && index <= MainSystem.Instance.GetSlideCount())
+        if (index > 0 && index < MainSystem.Instance.GetSlideCount())
         {
             SlideObjectData objectData = new SlideObjectData(slideData[index - 1]);
             objectData.isVideo = true;
@@ -250,28 +277,12 @@ public class PresentationObject : MonoBehaviour, IPresentationObject, ISystemObs
             XRAnimation animation = new XRAnimation();
             animation.SetParentObject(this);
             animation.SetPreviousSlideObjectData(objectData);
-            if(index < MainSystem.Instance.GetSlideCount())
+            if(index + 1 < MainSystem.Instance.GetSlideCount())
                 animation.SetNextSlideObjectData(slideData[index + 1]);
             animationList[index - 1].SetNextSlideObjectData(objectData);
         }
     }
     
-    
-    public void ObserverAddSlideNextTo(int index)
-    {
-        currentSlide = MainSystem.Instance.currentSlideNum;
-        if (index > 0 && index + 1 < MainSystem.Instance.GetSlideCount())
-        {
-            SlideObjectData objectData = new SlideObjectData(slideData[index - 1]);
-            slideData.Insert(index, objectData);
-            XRAnimation animation = new XRAnimation();
-            animation.SetParentObject(this);
-            animation.SetPreviousSlideObjectData(objectData);
-            animation.SetNextSlideObjectData(slideData[index + 1]);
-            animationList[index - 1].SetNextSlideObjectData(objectData);
-        }
-    }
-
     
     public void removeSlide(int index)
     {

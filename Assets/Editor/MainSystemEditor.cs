@@ -36,7 +36,15 @@ public class MainSystemEditor : Editor
         {
             mainSystem.GoToNextSlide();
         }
+        if (GUILayout.Button("마지막 슬라이드에 복제된 슬라이드 추가하기"))
+        {
+            mainSystem.AddSlide();
+        }
         if (GUILayout.Button("다음 슬라이드에 복제된 슬라이드 추가하기"))
+        {
+            mainSystem.DuplicateSlideNextToCurrent();
+        }
+        if (GUILayout.Button("다음 슬라이드에 빈 슬라이드 추가하기"))
         {
             mainSystem.AddSlideNextToCurrent();
         }
