@@ -23,6 +23,9 @@ public class VideoManager : MonoBehaviour, ISystemObserver
     public GameObject sphere;
 
     public GameObject stage;
+    public GameObject dome;
+    
+    public GameObject objects;
 
     public List<VideoData> videoDataList = new List<VideoData>();
 
@@ -232,6 +235,8 @@ public class VideoManager : MonoBehaviour, ISystemObserver
     public void StartVideo(string url)
     {
         stage.SetActive(false);
+        dome.SetActive(false);
+        objects.SetActive(false);
         sphere.SetActive(true);
         videoPlayer.url = url;
         videoPlayer.Play();
@@ -246,6 +251,11 @@ public class VideoManager : MonoBehaviour, ISystemObserver
     {
         videoPlayer.Stop();
         sphere.SetActive(false);
-        stage.SetActive(true);
+        if(MainSystem.Instance.mode == MainSystem.Mode.Preview)
+            dome.SetActive(true);
+        else
+            stage.SetActive(true);
+        objects.SetActive(true);
+        
     }
 }
