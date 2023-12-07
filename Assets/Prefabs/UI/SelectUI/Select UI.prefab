@@ -5914,7 +5914,8 @@ MonoBehaviour:
   whenOff: {fileID: 21300000, guid: 4c826502468371d41a2fc0d9fa598fd3, type: 3}
   presentationObject: {fileID: 0}
   currentSlideNumber: 0
-  selectEasingButton: {fileID: 0}
+  selectEasingButton: {fileID: 4415168226675690108}
+  toggleAnimationPlayButton: {fileID: 9067306109873086168}
 --- !u!114 &8867564440017104233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6329,7 +6330,8 @@ MonoBehaviour:
   whenOff: {fileID: 21300000, guid: 4c826502468371d41a2fc0d9fa598fd3, type: 3}
   presentationObject: {fileID: 0}
   currentSlideNumber: 0
-  selectEasingButton: {fileID: 0}
+  selectEasingButton: {fileID: 4328516593359251750}
+  toggleAnimationPlayButton: {fileID: 167224963474503586}
 --- !u!114 &8610833631414724012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12317,7 +12319,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &8492973628438225180
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13194,6 +13196,7 @@ MonoBehaviour:
   presentationObject: {fileID: 0}
   currentSlideNumber: 0
   selectEasingButton: {fileID: 0}
+  toggleAnimationPlayButton: {fileID: 0}
 --- !u!114 &2146744179000667627
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -32226,6 +32229,11 @@ PrefabInstance:
       propertyPath: animationPanel
       value: 
       objectReference: {fileID: 2221699332749396395}
+    - target: {fileID: 4300792033671239329, guid: 630d30a52b34b934e8a5e8c9a69d137e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5786820994707573512, guid: 630d30a52b34b934e8a5e8c9a69d137e,
         type: 3}
       propertyPath: m_Pivot.x
@@ -32345,6 +32353,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Left Select Easing Button
+      objectReference: {fileID: 0}
+    - target: {fileID: 8926383523877544702, guid: 630d30a52b34b934e8a5e8c9a69d137e,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

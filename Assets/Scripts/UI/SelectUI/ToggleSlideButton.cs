@@ -7,7 +7,8 @@ public class ToggleSlideButton : ATypeToggleButton
 {
     [HideInInspector] public PresentationObject presentationObject;
     [HideInInspector] public int currentSlideNumber;
-    [HideInInspector] public SelectEasingButton selectEasingButton;
+    public SelectEasingButton selectEasingButton;
+    public ToggleAnimationPlayButton toggleAnimationPlayButton;
 
     public override void OnSelect()
     {
@@ -18,7 +19,8 @@ public class ToggleSlideButton : ATypeToggleButton
         presentationObject.ApplyDataToSlideWithIndex(so, currentSlideNumber);
         XRSelector.Instance.NotifySlideObjectDataChangeToObservers();
 
-        if (isOn) selectEasingButton.InitializeProperty(presentationObject);
+        if (isOn && selectEasingButton) selectEasingButton.InitializeProperty(presentationObject);
+        if(toggleAnimationPlayButton) toggleAnimationPlayButton.SetUsable(isOn);
     }
 
     public void SetActive(bool isActive)
@@ -26,5 +28,8 @@ public class ToggleSlideButton : ATypeToggleButton
         isOn = isActive;
         ToggleSprite();
         OnUnhover();
+        
+        if (isOn && selectEasingButton) selectEasingButton.InitializeProperty(presentationObject);
+        if(toggleAnimationPlayButton) toggleAnimationPlayButton.SetUsable(isOn);
     }
 }
