@@ -39,11 +39,9 @@ public class VideoManager : MonoBehaviour, ISystemObserver
 
     public void ObserverUpdateSlide(int slide)
     {
-        Debug.Log("Update Slide 시작");
         for (int i = 0; i < videoDataList.Count; i++)
         {
             var videoData = videoDataList[i];
-            Debug.Log("Check 1 : " + MainSystem.Instance.currentSlideNum + " / " + videoData.slideNumber);
             if (MainSystem.Instance.currentSlideNum == videoData.slideNumber)
             {
                 StartVideo(videoData.url);

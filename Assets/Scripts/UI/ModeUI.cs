@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Net.Mime;
 using DG.Tweening;
-using Microsoft.Unity.VisualStudio.Editor;
 using UnityEngine;
 using Image = UnityEngine.UI.Image;
 
