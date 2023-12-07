@@ -38,8 +38,10 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
     public GameObject dottedLinePrefab;
 
     public UnityAction onSelct;
-    
-    [Header("Functions")]
+
+    [Header("Functions")] 
+    public GameObject[] stages;
+    public GameObject dome;
     
     public int moved;
     public int count;
@@ -141,6 +143,26 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
         slideCount = count;
     }
 
+    public void ActiveDome()
+    {
+        Debug.Log("Dome");
+
+        foreach (GameObject stage in stages)
+        {
+            stage.SetActive(false);
+        }
+        
+        dome.SetActive(true);
+    }
+
+    public void DeactiveDome()
+    {
+        foreach (GameObject stage in stages)
+        {
+            stage.SetActive(true);
+        }
+        dome.SetActive(false);
+    }
     
     public void AddSlide()
     {
@@ -248,6 +270,15 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
     {
         if (this.mode != mode)
         {
+            if (mode == Mode.Preview)
+            {
+                Debug.Log("ActiveDome");
+                ActiveDome();
+            }
+            else
+            {
+                DeactiveDome();
+            }
             this.mode = mode;
             NotifyObservers();
         }
