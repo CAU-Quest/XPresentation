@@ -40,7 +40,7 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
     public UnityAction onSelct;
 
     [Header("Functions")] 
-    public GameObject stage;
+    public GameObject[] stages;
     public GameObject dome;
     
     public int moved;
@@ -146,13 +146,21 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
     public void ActiveDome()
     {
         Debug.Log("Dome");
-        stage.SetActive(false);
+
+        foreach (GameObject stage in stages)
+        {
+            stage.SetActive(false);
+        }
+        
         dome.SetActive(true);
     }
 
     public void DeactiveDome()
     {
-        stage.SetActive(true);
+        foreach (GameObject stage in stages)
+        {
+            stage.SetActive(true);
+        }
         dome.SetActive(false);
     }
     
