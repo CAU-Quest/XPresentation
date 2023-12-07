@@ -29,6 +29,8 @@ public class VideoManager : MonoBehaviour, ISystemObserver
 
     public List<VideoData> videoDataList = new List<VideoData>();
 
+    private bool isVideoOn = false;
+
     #region Observer Handling
 
     public void ObserverUpdateMode(MainSystem.Mode mode)
@@ -41,20 +43,14 @@ public class VideoManager : MonoBehaviour, ISystemObserver
         for (int i = 0; i < videoDataList.Count; i++)
         {
             var videoData = videoDataList[i];
-            if (slide == videoData.slideNumber)
+            Debug.Log("Check 1 : " + MainSystem.Instance.currentSlideNum + " / " + videoData.slideNumber);
+            if (MainSystem.Instance.currentSlideNum == videoData.slideNumber)
             {
-                Debug.Log("일치하는 slide 존재함");
-                stage.SetActive(false);
-                sphere.SetActive(true);
-                
                 StartVideo(videoData.url);
                 return;
             }
         }
-        
-        stage.SetActive(true);
-        sphere.SetActive(false);
-        StopVideo();
+        FinishVideo();
     }
 
     public void ObserverRemoveSlide(int index)
@@ -240,6 +236,7 @@ public class VideoManager : MonoBehaviour, ISystemObserver
         sphere.SetActive(true);
         videoPlayer.url = url;
         videoPlayer.Play();
+        isVideoOn = true;
     }
 
     public void StopVideo()

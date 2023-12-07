@@ -17,6 +17,7 @@ public class ControllerInputHandler : MonoBehaviour
     //Switch Slider
     [SerializeField] private SnapListController snapListController;
     private bool _isReadyToSwitch;
+
         
     private void Awake()
     {
@@ -48,6 +49,7 @@ public class ControllerInputHandler : MonoBehaviour
     private void Update()
     {
         Locomotion();
+        PreviewHandling();
         SwitchSlide();
     }
 
@@ -65,6 +67,18 @@ public class ControllerInputHandler : MonoBehaviour
 
         _lastActiveL = isActiveL;
         _lastActiveR = isActiveR;
+    }
+
+    private void PreviewHandling()
+    {
+        if (MainSystem.Instance.mode == MainSystem.Mode.Preview)
+        {
+            var Xbutton = OVRInput.GetDown(OVRInput.RawButton.X);
+            var Ybutton = OVRInput.GetDown(OVRInput.RawButton.Y);
+            
+            if(Xbutton) MainSystem.Instance.AnimationToggle();
+            if(Ybutton) MainSystem.Instance.GoToPreviousSlide();
+        }
     }
 
     private void SwitchSlide()
