@@ -133,13 +133,15 @@ public class AnimationPanel : MonoBehaviour,IUserInterfaceObserver, ISelectedObj
                 if (panelType == PanelType.Previous)
                 {
                     XRSelector.Instance.beforeAnimationGhost.SetVisible();
-                    XRSelector.Instance.beforeAnimationGhost.ApplySlideObjectData(slideObjectDatas[index]);
+                    if(slideObjectDatas.Count > index)
+                        XRSelector.Instance.beforeAnimationGhost.ApplySlideObjectData(slideObjectDatas[index]);
                 }
 
                 if (panelType == PanelType.Next)
                 {
                     XRSelector.Instance.afterAnimationGhost.SetVisible();
-                    XRSelector.Instance.afterAnimationGhost.ApplySlideObjectData(slideObjectDatas[index]);
+                    if(slideObjectDatas.Count > index)
+                        XRSelector.Instance.afterAnimationGhost.ApplySlideObjectData(slideObjectDatas[index]);
                 }
                 toggleSlideButton.gameObject.SetActive(true);
                 toggleSlideButton.presentationObject = (PresentationObject)selectedObject;

@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using DG.Tweening;
 using Oculus.Interaction;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class SelectUI : MonoBehaviour
@@ -55,6 +52,7 @@ public class SelectUI : MonoBehaviour
 
     private void GetSelectedObjectInfo(GrabInteractable interactable)
     {
+        if (MainSystem.Instance.mode == MainSystem.Mode.Preview) return;
         var parent = interactable.transform;
         while (parent != null)
         {
@@ -70,6 +68,7 @@ public class SelectUI : MonoBehaviour
     
     private void GetSelectedObjectInfo(RayInteractable interactable)
     {
+        if (MainSystem.Instance.mode == MainSystem.Mode.Preview) return;
         var parent = interactable.transform;
         while (parent != null)
         {

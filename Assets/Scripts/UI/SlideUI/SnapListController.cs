@@ -52,7 +52,7 @@ public class SnapListController : MonoBehaviour, ISlideObserver
 
     public void AddSlide()
     {
-        MainSystem.Instance.AddSlideNextToCurrent();
+        MainSystem.Instance.DuplicateSlideNextToCurrent();
     }
     
     public void RemoveSlide()
@@ -305,7 +305,7 @@ public class SnapListController : MonoBehaviour, ISlideObserver
 
     #region Polishing
 
-    private void SetVisualActive()
+    public void SetVisualActive()
     {
         foreach (var visual in visuals)
         {
@@ -314,6 +314,13 @@ public class SnapListController : MonoBehaviour, ISlideObserver
     }
     
     private void SetVisualInactive(PresentationObject selectedObject)
+    {
+        foreach (var visual in visuals)
+        {
+            visual.SetActive(false);
+        }
+    }
+    public void SetVisualInactive()
     {
         foreach (var visual in visuals)
         {

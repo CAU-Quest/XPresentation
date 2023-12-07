@@ -5,6 +5,7 @@ using Dummiesman;
 using Oculus.Interaction;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public struct SaveObjectData
@@ -103,32 +104,32 @@ public class SaveData : MonoBehaviour
                 presentationObject.animationList.Add(data.animations[j]);
             }
         }
-        
-        
-        Texture2D LoadTexture(string path)
+        MainSystem.Instance.NotifySlideChangeToObservers();
+    }
+    
+    Texture2D LoadTexture(string path)
+    {
+        if (File.Exists(path))
         {
-            if (File.Exists(path))
+            byte[] fileData = System.IO.File.ReadAllBytes(path);
+
+            Texture2D texture = new Texture2D(2, 2); // 텍스쳐의 가로 세로 크기를 지정합니다. 실제 크기에 맞게 수정하세요.
+            bool success = texture.LoadImage(fileData); // 바이트 배열을 텍스쳐에 로드합니다.
+
+            if (success)
             {
-                byte[] fileData = System.IO.File.ReadAllBytes(path);
-
-                Texture2D texture = new Texture2D(2, 2); // 텍스쳐의 가로 세로 크기를 지정합니다. 실제 크기에 맞게 수정하세요.
-                bool success = texture.LoadImage(fileData); // 바이트 배열을 텍스쳐에 로드합니다.
-
-                if (success)
-                {
-                    // 텍스쳐 로드 성공 시 반환
-                    return texture;
-                }
-                else
-                {
-                    // 텍스쳐 로드 실패 시 null 반환
-                    return null;
-                }
+                // 텍스쳐 로드 성공 시 반환
+                return texture;
             }
             else
             {
+                // 텍스쳐 로드 실패 시 null 반환
                 return null;
             }
+        }
+        else
+        {
+            return null;
         }
     }
 }

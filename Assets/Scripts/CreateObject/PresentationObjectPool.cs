@@ -9,7 +9,7 @@ public class PresentationObjectPool : MonoBehaviour
     
     public GameObject[] prefabs; 
     List<GameObject>[] pools;
-
+    public GameObject objectsPool;
     void Start()
     {
         if (null == Instance)
@@ -83,8 +83,15 @@ public class PresentationObjectPool : MonoBehaviour
 
     public void ClearAll()
     {
+        SelectObject[] objects = objectsPool.GetComponentsInChildren<SelectObject>(true);
         for (int index = 0; index < pools.Length; index++)
-            foreach (GameObject item in pools[index])
-                item.SetActive(false);
+        {
+            pools[index].Clear();
+        }
+
+        for (int i = 0; i < objects.Length; i++)
+        {
+            Destroy(objects[i].gameObject);
+        }
     }
 }

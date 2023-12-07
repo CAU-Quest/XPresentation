@@ -65,6 +65,7 @@ public class SelectObject : MonoBehaviour
     }
     public void Select()
     {
+        if (MainSystem.Instance.mode == MainSystem.Mode.Preview) return;
         if(XRSelector.Instance.transformByVertexHandler) XRSelector.Instance.transformByVertexHandler.enabled = false;
         if(XRSelector.Instance.centerPositionByVertex) XRSelector.Instance.centerPositionByVertex.enabled = false;
         if(XRSelector.Instance.boundBox) XRSelector.Instance.boundBox.enabled = false;

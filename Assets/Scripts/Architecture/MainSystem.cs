@@ -43,7 +43,7 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
     public GameObject[] stages;
     public GameObject dome;
     
-    public GameObject[] uiList;
+    public SnapListController slideUI;
     
     public int moved;
     public int count;
@@ -274,18 +274,12 @@ public class MainSystem : MonoBehaviour, ISubject, ISlideSubject
         {
             if (mode == Mode.Preview)
             {
-                foreach (GameObject uielement in uiList)
-                {
-                    uielement.SetActive(false);
-                }
+                slideUI.SetVisualInactive();
                 ActiveDome();
             }
             else
             {
-                foreach (GameObject uielement in uiList)
-                {
-                    uielement.SetActive(true);
-                }
+                slideUI.SetVisualActive();
                 DeactiveDome();
             }
             this.mode = mode;
