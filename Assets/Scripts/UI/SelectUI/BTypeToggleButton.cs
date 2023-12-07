@@ -13,6 +13,11 @@ public class BTypeToggleButton : MonoBehaviour
     
     protected bool isOn;
 
+    private void Awake()
+    {
+        canvas.SetActive(false);
+    }
+
     public virtual void OnHover()
     {
         buttonImage.DOColor(ColorManager.Hover, 0.3f);
